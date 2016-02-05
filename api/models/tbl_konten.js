@@ -3,7 +3,7 @@ var con = mysql.createConnection({
 		host     : 'localhost',
 		user     : 'root',
 		password : '',
-		database : 'one_app',
+		database : 'oneapp',
 	});
 
 module.exports = {
