@@ -28,7 +28,7 @@ app.get('/tbl_user', userModel.getuser);
 
 app.post('/tbl_user', userModel.postUser);
 
-app.put('/tbl_user', userModel.putUser); 
+app.put('/tbluser', userModel.putUser); 
 
 app.delete('/tbl_user', userModel.deleteUser);
 
