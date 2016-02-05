@@ -1,0 +1,16 @@
+{
+  "name": "one_app",
+  "version": "1.0.0",
+  "description": "OneApp adalah aplikasinya anak satu",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "TeamB",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.4",
+    "node-uuid": "^1.4.7"
+  }
+}
