@@ -7,7 +7,7 @@ var con = mysql.createConnection({
 	});
 
 module.exports = {
-	getKonten : function (req,res){
+	getContent : function (req,res){
 	var data = {
 		"error":1,
 		"data":""
@@ -24,7 +24,7 @@ module.exports = {
 		}
 	});},
 	
-	postKonten : function (req,res){
+	postContent : function (req,res){
 	var Id = uuID.v4();
 	var Id_Kat_Konten = req.body.id_kat_konten;
 	var Id_User = req.body.id_user;
@@ -50,7 +50,7 @@ module.exports = {
 		res.json(data);
 	}},
 
-	putKonten : function (req,res){
+	putContent : function (req,res){
 	var Id = req.body.id;
 	var Id_Kat_Konten = req.body.id_kat_konten;
 	var Id_User = req.body.id_user;
@@ -76,7 +76,7 @@ module.exports = {
 		res.json(data);
 	}},
 
-	deleteKonten : function (req,res){
+	deleteContent : function (req,res){
 	var Id = req.body.id;
 	var data = {
 		"error":1,
