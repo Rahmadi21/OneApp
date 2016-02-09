@@ -15,7 +15,7 @@ JABATAN			/contents/cat_position				get,post,put,delete			*											catPositio
 
 JURUSAN			/contents/cat_uniform				get,post,put,delete			*											catUniform					
 			/contents/cat_course				get,post,put,delete			*											catCourse
-			/contents/divisions				get,postCONTENT,put,delete		*											division
+			/contents/divisions				get,postCONTENT,putCONTENT,delete	*											division
 			/contents/divisions/courses			get,post,put,delete			*											course
 			/contents/divisions/uniforms			get,post,put,delete			*											uniform
 			/contents/divisions/scores			get,post,put,delete			*											score
@@ -28,11 +28,11 @@ RESPON			/contents/cat_response				get,post,put,delete			*											catResponse
 			/contents/responses/reply			get					id_konten,comment_reply_ID,username,photo_profile,isi_comment,waktu_comment 		responseReply
 			/contents/responses/attends			get					id_konten dan jumlah attend								responseAttend
 
-EVENT			/contents/events				get,postCONTENT,put,delete		*											event
+EVENT			/contents/events				get,postCONTENT,putCONTENT,delete	*											event
 
-EKSKUL			/contents/club					get,postCONTENT,put,delete		*											club
+EKSKUL			/contents/club					get,postCONTENT,putCONTENT,delete	*											club
 
-BERITA			/contents/news					get,postCONTENT,put,delete		*											news
+BERITA			/contents/news					get,postCONTENT,putContent,delete	*											news
 			/contents/news/tags				get,post,put,delete			*											newsTag
 			/contents/news/pivot				get					*											newsPivot
 
