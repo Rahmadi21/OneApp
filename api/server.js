@@ -316,6 +316,17 @@ app.delete('/contents/news/tags', newsTag.deleteNewsTag);
 
 /*--------------------------------------------------------*/
 
+/*===================== REPORT ==========================*/
+
+app.get('/users/report', newsTag.getNewsTag);
+
+app.post('/users/report', newsTag.postNewsTag);
+
+app.put('/contents/news/tags', newsTag.putNewsTag); 
+
+app.delete('/contents/news/tags', newsTag.deleteNewsTag);
+
+/*--------------------------------------------------------*/
 http.listen(8080,function(){
 	console.log("Connected & Listen to port 8080");
 });

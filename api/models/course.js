@@ -8,17 +8,17 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getCourse : 
+	getCourse : {}
 
 	,
 
-	postCourse :
+	postCourse :{}
 
 	,
 
-	putCourse  :
+	putCourse  :{}
 
 	,
 
-	deleteCourse :
+	deleteCourse :{}
 }

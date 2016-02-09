@@ -8,5 +8,5 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getNewsPivot :
+	getNewsPivot :{}
 }
