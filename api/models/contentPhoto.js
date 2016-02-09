@@ -8,17 +8,109 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getContentPhoto : 
+	getContentPhoto : function (req, res){
+	var data = {
+		"error": 1,
+		"one_app":""
+	};
+	connection.query("SELECT * from tbl_foto", function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});
 
-	,
+	},
 
-	postContentPhoto :
+	postContentPhoto : function (req, res){
+	
+		var id = req.body.id;
+		var id_konten = req.body.id_konten;
+		var foto = req.body.foto;
+		var data = {
+			"error":1,
+			"one_app":""
+		};
+		if(id && id_konten && foto){
+			connection.query("INSERT INTO tbl_foto VALUES(?,?,?)",[id, id_konten, foto], function (err, rows, fields){
+				if(!!err){
+					data["one_app"] = "error dalam menambahkan data";
+				}else{
+					data["error"] = 0;
+					data["one_app"] = "data berhasil ditambahkan";
+				}
+			
+			res.json(data);
+	});
+		
+			}else{
+		data["one_app"] = "Tolong lengkapi semua data (i.e : id, id_konten, foto)";
+		res.json(data);
 
-	,
 
-	putContentPhoto  :
+		}
 
-	,
+	},
 
-	deleteContentPhoto :
+	putContentPhoto  : function (req, res){
+	
+		var id = req.body.id;
+		var id_konten = req.body.id_konten;
+		var foto = req.body.foto;
+		var data = {
+			"error":1,
+			"one_app":""
+		};
+
+			if(id && id_konten && foto){
+			connection.query("UPDATE tbl_foto SET id_konten=?, foto=? WHERE id=?",[id_konten, foto, id], function (err, rows, fields){
+				if(!!err){
+					data["one_app"] = "error mengupdate data";
+				}else{
+					data["error"] = 0;
+					data["one_app"] = "data berhasil di update";
+				}
+			
+			res.json(data);
+		});
+		
+		}
+		else{
+		data["one_app"] = "Tolong lengkapi semua data (i.e : id, id_konten, foto)";
+		res.json(data);
+
+
+		}
+
+	},
+
+	deleteContentPhoto :  function (req, res){
+		var id = req.body.id;
+		var data = {
+			"error":1,
+			"one_app":""
+		};
+		if(!!id){
+			connection.query("DELETE FROM tbl_foto WHERE id=?",[id], function (err, rows, fields){
+				if(!!err){
+					data["tbl_foto"] = "error delete data";
+				}else{
+					data["error"] = 0;
+					data["tbl_foto"] = " Delete user sukses";
+
+				}
+				res.json(data);
+				
+			});
+
+			
+		}else{
+			data["one_app"] = "Tolong lengkapi semua data (i.e :id)";
+			res.json(data);
+			}
+	}
 }
