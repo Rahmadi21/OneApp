@@ -8,28 +8,28 @@ var bodyParser = require("body-parser");
 var userModel 			= require("./models/tbl_user.js");
 var katUserModel		= require("./models/tbl_kat_user.js");
 var catContent			= require("./models/catContent.js");
-var catCourse			= require("./models/catCourse");
-var catPosition			= require("./models/catPosition");
-var catResponse			= require("./models/catResponse");
-var catUniform			= require("./models/catUniform");
-var club				= require("./models/club");
-var content				= require("./models/content");
-var contentPhoto		= require("./models/contentPhoto");
-var course				= require("./models/course");
-var division			= require("./models/division");
-var divisionFavorite	= require("./models/divisionFavorite");
-var events				= require("./models/event");
-var news				= require("./models/news");
-var newsPivot			= require("./models/newsPivot");
-var newsTag				= require("./models/newsTag");
-var position			= require("./models/position");
-var response			= require("./models/response"); 
-var responseAttend		= require("./models/responseAttend"); 
-var responseComment		= require("./models/responseComment"); 
-var responseLike		= require("./models/responseLike"); 
-var responseReply		= require("./models/responseReply"); 
-var score				= require("./models/score"); 
-var uniform 			= require("./models/uniform");
+var catCourse			= require("./models/catCourse.js");
+var catPosition			= require("./models/catPosition.js");
+var catResponse			= require("./models/catResponse.js");
+var catUniform			= require("./models/catUniform.js");
+var club				= require("./models/club.js");
+var content				= require("./models/content.js");
+var contentPhoto		= require("./models/contentPhoto.js");
+var course				= require("./models/course.js");
+var division			= require("./models/division.js");
+var divisionFavorite	= require("./models/divisionFavorite.js");
+var events				= require("./models/event.js");
+var news				= require("./models/news.js");
+var newsPivot			= require("./models/newsPivot.js");
+var newsTag				= require("./models/newsTag.js");
+var position			= require("./models/position.js");
+var response			= require("./models/response.js"); 
+var responseAttend		= require("./models/responseAttend.js"); 
+var responseComment		= require("./models/responseComment.js"); 
+var responseLike		= require("./models/responseLike.js"); 
+var responseReply		= require("./models/responseReply.js"); 
+var score				= require("./models/score.js"); 
+var uniform 			= require("./models/uniform.js");
 
 /*-------------END INCLUDE------------------*/
 
@@ -164,11 +164,11 @@ app.delete('/contents/cat_course', catCourse.deleteCatCourse);
 
 app.get('/contents/divisions', division.getDivision);
 
-app.post('/contents/divisions', division.postDivison);
+app.post('/contents/divisions', division.postDivision);
 
-app.put('/contents/divisions', division.putDivison); 
+app.put('/contents/divisions', division.putDivision); 
 
-app.delete('/contents/divisions', division.deleteDivison);
+app.delete('/contents/divisions', division.deleteDivision);
 
 /*--------------------------------------------------------*/
 
