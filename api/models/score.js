@@ -1,11 +1,7 @@
-var mysql = require('mysql');
-var uuID  = require('node-uuid');
-var connection = mysql.createConnection({
-	host	 : 'localhost',
-	user	 : 'root',
-	password : '',
-	database : 'one_app',
-});
+var mysql 		= require('mysql');
+var uuID  		= require('node-uuid');
+var conn 		= require('../config/conn.js')
+var connection  = mysql.createConnection(conn);
 
 module.exports = {
 	getScore : function (req,res){

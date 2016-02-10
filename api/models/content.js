@@ -1,11 +1,7 @@
 var mysql = require('mysql');
 var uuID = require('node-uuid');
-var con = mysql.createConnection({
-		host     : 'localhost',
-		user     : 'root',
-		password : '',
-		database : 'one_app',
-	});
+var connection 		= require('../config/conn.js')
+var con  = mysql.createConnection(connection);
 
 module.exports = {
 	getContent : function (req,res){

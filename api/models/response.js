@@ -1,17 +1,9 @@
-var mysql = require('mysql');
-var uuid  = require('node-uuid');
-var connection = mysql.createConnection({
-	host	 : 'localhost',
-	user	 : 'root',
-	password : '',
-	database : 'one_app',
-});
-
+var mysql 		= require('mysql');
+var uuid  		= require('node-uuid');
+var conn 		= require('../config/conn.js')
+var connection  = mysql.createConnection(conn);
 module.exports = {
-<<<<<<< HEAD
-	getResponse : function () {}
-=======
-<<<<<<< HEAD
+
 	getResponse : function (req,res){
 	var data = {
 		"data":""
@@ -105,24 +97,4 @@ module.exports = {
 		data["data"] = "Please provide all required data";
 		res.json(data);
 	}}
-=======
-	getResponse : {}
->>>>>>> 6882b2bebf711a4c8712c1875689741559cb0539
-
-	,
-
-	postResponse :function () {}
-
-	,
-
-	putResponse  :function () {}
-
-	,
-
-<<<<<<< HEAD
-	deleteResponse :function () {}
-=======
-	deleteResponse :{}
->>>>>>> 212251080acff3c3cf59a66e8549d6fa9b09ba43
->>>>>>> 6882b2bebf711a4c8712c1875689741559cb0539
 }

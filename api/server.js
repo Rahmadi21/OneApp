@@ -25,9 +25,6 @@ var newsTag				= require("./models/newsTag.js");
 var position			= require("./models/position.js");
 var response			= require("./models/response.js"); 
 var responseAttend		= require("./models/responseAttend.js"); 
-var responseComment		= require("./models/responseComment.js"); 
-var responseLike		= require("./models/responseLike.js"); 
-var responseReply		= require("./models/responseReply.js"); 
 var score				= require("./models/score.js"); 
 var uniform 			= require("./models/uniform.js");
 
@@ -238,27 +235,9 @@ app.delete('/contents/responses', response.deleteResponse);
 
 /*--------------------------------------------------------*/
 
-/*================= response attend =======================*/
+/*================= response by category =======================*/
 
-app.get('/contents/responses/attends', responseAttend.getResponseAttend);
-
-/*--------------------------------------------------------*/
-
-/*================= response comment =======================*/
-
-app.get('/contents/responses/comments', responseComment.getResponseComment);
-
-/*--------------------------------------------------------*/
-
-/*================= response like =======================*/
-
-app.get('/contents/responses/likes', responseLike.getResponseLike);
-
-/*--------------------------------------------------------*/
-
-/*================= response reply =======================*/
-
-app.get('/contents/responses/reply', responseReply.getResponseReply);
+app.get('/contents/responses/:cat', responseAttend.getResponseAttend);
 
 /*--------------------------------------------------------*/
 
