@@ -1,102 +1,103 @@
-var mysql = require('mysql');
-var uuid  = require('node-uuid');
-var connection = mysql.createConnection({
-	host	 : 'localhost',
-	user	 : 'root',
-	password : '',
-	database : 'one_app',
-});
+var mysql 		= require('mysql');
+var uuid  		= require('node-uuid');
+var conn 		= require('../config/conn.js')
+var connection  = mysql.createConnection(conn);
 
 module.exports = {
-	getEvents : function (req,res){
-	var data = {
-		"error":1,
-		"Data":""
-	};
+
+	getEvents :  function (req, res){
 	
-	connection.query("SELECT * from tbl_nem",function (err, rows, fields){
-		if(rows.length != 0){
+	var data = {
+		"error": 1,
+		"data":""
+	};
+	connection.query("SELECT * from tbl_konten WHERE id_kat_konten='f1678bf8-cf1d-11e5-8978-b888e391'", function (err, rows, fields){
+		if(rows.length !=0){
 			data["error"] = 0;
-			data["Data"] = rows;
+			data["data"] = rows;
 			res.json(data);
 		}else{
-			data["Data"] = 'No books Found..';
+			data["data"] = 'tidak ditemukan';
 			res.json(data);
+		}
+		});
 
-	});
 },
 
 	postEvents : function (req,res){
-
-	var id = uuid.v4;
+	var Id = uuid.v4();
+	var Id_Kat_Konten = req.body.id_kat_konten;
+	var Id_User = req.body.id_user;
+	var Tgl_Posting = req.body.tgl_posting;
+	var Judul = req.body.judul;
+	var Isi = req.body.isi;
+	var Status = req.body.status;
 	var data = {
 		"error":1,
-		"Data":""
+		"data":""
 	};
-	if(!!id && !! && !!tahun && !!nem_tinggi){
-		connection.query("INSERT tbl_nem SET id_konten=?, tahun=?, nem_tinggi=?, nem_rendah? WHERE id=?",[id, id_konten,tahun,nem_tinggi, nem_rendah],function (err, rows, fields){
+	if(Id && Id_Kat_Konten && Id_User && Tgl_Posting && Judul && Isi && Status){
+		connection.query("INSERT INTO tbl_konten VALUES(?,?,?,?,?,?,?)",[Id,Id_Kat_Konten,Id_User,Tgl_Posting,Judul,Isi,Status],function (err, rows, fields){
 			if(!!err){
-				data["Data"] = "Error Updating data";
+				data["data"] = err;
 			}else{
 				data["error"] = 0;
-				data["Data"] = "Updated Book Successfully";
 			}
 			res.json(data);
 		});
 	}else{
-		data["Data"] = "Please provide all required data (i.e : id, id_konten,tahun, nama_pelajaran)";
+		data["data"] = "Please provide all required data";
 		res.json(data);
-
 	}
 },
 
-	putEvents  : function (req, res){
+	putEvents  : function (req,res){
 
-	var id = uuid.v4;
+	var Id = req.body.id;
+	var Id_Kat_Konten = req.body.id_kat_konten;
+	var Id_User = req.body.id_user;
+	var Tgl_Posting = req.body.tgl_posting;
+	var Judul = req.body.judul;
+	var Isi = req.body.isi;
+	var Status = req.body.status;
 	var data = {
 		"error":1,
-		"Data":""
+		"data":""
 	};
-	if(!!id && !!tipe_respon){
-		connection.query("UPDATE tbl_kat_respon SET tipe_respon=?, WHERE id=?",[id,tipe_respon], function (err, rows, fields){
-			if (!!err){
-				data["Data"] = "Error Updating Data";
+	if(Id && Id_Kat_Konten && Id_User && Tgl_Posting && Judul && Isi && Status){
+		connection.query("UPDATE tbl_konten SET id_kat_konten=?, id_user=?, tgl_posting=?, judul=?, isi=?, status=? WHERE id=?",[Id_Kat_Konten,Id_User,Tgl_Posting,Judul,Isi,Status,Id],function (err, rows, fields){
+			if(!!err){
+				data["data"] = err;
 			}else{
 				data["error"] = 0;
-				data["Data"] = "Updated Book Succesfully";
 			}
 			res.json(data);
 		});
-	}else {
-		data["Data"] = "Please provide all required data (i.e : id, nama_kat)";
+	}else{
+		data["data"] = "Please provide all required data";
 		res.json(data);
 	}
-
 },
 
-	deleteEvents :function (req, res){
 
-	var id = uuid;
-	var tipe_respon = req.body.tipe_respon;
+	deleteEvents : function (req,res){
+	var Id = req.body.id;
 	var data = {
 		"error":1,
-		"Data":""
+		"Users":""
 	};
-	if(!!id && !!tipe_respon){
-		connection.query("DELETE FROM tbl_kat_respon WHERE id=?",[id, tipe_respon],function (err, rows, fields){
-			if (!!err){
-				data["Data"] = "Error Updating Data";
-			}else{y
-
+	if(!!Id){
+		connection.query("DELETE FROM tbl_konten WHERE id=?",[Id],function (err, rows, fields){
+			if(!!err){
+				data["data"] = err;
+			}else{
 				data["error"] = 0;
-				data["Data"] = "Updated Book Succesfully";
 			}
 			res.json(data);
 		});
-	}else {
-		data["Data"] = "Please provide all required data (i.e : id, nama_kat)";
+	}else{
+		data["data"] = "Please provide all required data";
 		res.json(data);
-	}
-
-};
+	
+	}}
 }

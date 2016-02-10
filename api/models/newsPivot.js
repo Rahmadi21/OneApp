@@ -1,12 +1,22 @@
-var mysql = require('mysql');
-var uuid  = require('node-uuid');
-var connection = mysql.createConnection({
-	host	 : 'localhost',
-	user	 : 'root',
-	password : '',
-	database : 'one_app',
-});
-
+var mysql 		= require('mysql');
+var uuID 		= require('node-uuid');
+var conn 		= require('../config/conn.js')
+var connection  = mysql.createConnection(conn);
 module.exports = {
-	getNewsPivot :
+	getNewsPivot : function (req,res){
+	var data = {
+		"error":1,
+		"data":""
+	};
+	
+	connection.query("SELECT * from tbl_konten_pivot",function (err, rows, fields){
+		if(rows.length != 0){
+			data["data"] = rows;
+			res.json(data);
+		}else{
+			data["data"] = 'Not Found..';
+			res.json(data);
+		}
+	});
+}
 }
