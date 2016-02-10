@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-var uuid  = require('node-uuid');
+var uuID  = require('node-uuid');
 var connection = mysql.createConnection({
 	host	 : 'localhost',
 	user	 : 'root',
@@ -8,5 +8,19 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getNewsPivot :
+	getNewsPivot : function (req,res){
+	var data = {
+		"error":1,
+		"data":""
+	};
+	
+	connection.query("SELECT * from tbl_konten_pivot",function (err, rows, fields){
+		if(rows.length != 0){
+			data["data"] = rows;
+			res.json(data);
+		}else{
+			data["data"] = 'Not Found..';
+			res.json(data);
+		}
+	});}
 }
