@@ -8,10 +8,6 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-<<<<<<< HEAD
-	getScore : function () {}
-=======
-<<<<<<< HEAD
 	getScore : function (req,res){
 	var data = {
 		"error":1,
@@ -104,24 +100,4 @@ module.exports = {
 		data["data"] = "Please provide all required data";
 		res.json(data);
 	}}
-=======
-	getScore : {}
->>>>>>> 6882b2bebf711a4c8712c1875689741559cb0539
-
-	,
-
-	postScore :function () {}
-
-	,
-
-	putScore  :function () {}
-
-	,
-
-<<<<<<< HEAD
-	deleteScore :function () {}
-=======
-	deleteScore :{}
->>>>>>> 212251080acff3c3cf59a66e8549d6fa9b09ba43
->>>>>>> 6882b2bebf711a4c8712c1875689741559cb0539
 }

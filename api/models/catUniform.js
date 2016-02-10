@@ -8,12 +8,7 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-<<<<<<< HEAD
-	getCatUniform : function () {
-		
-	}
-=======
-<<<<<<< HEAD
+
 	getCatUniform : function (req,res){
 	var data = {
 		"error":1,
@@ -99,29 +94,5 @@ module.exports = {
 		data["data"] = "Please provide all required data";
 		res.json(data);
 	}}
-=======
-	getCatUniform : {}
->>>>>>> 6882b2bebf711a4c8712c1875689741559cb0539
-
-	,
-
-	postCatUniform : function () {
-		
-	}
-
-	,
-
-	putCatUniform  : function () {
-		
-	}
-	,
-
-<<<<<<< HEAD
-	deleteCatUniform : function () {
-		
-	}
-=======
-	deleteCatUniform : {}
->>>>>>> 212251080acff3c3cf59a66e8549d6fa9b09ba43
->>>>>>> 6882b2bebf711a4c8712c1875689741559cb0539
+	
 }

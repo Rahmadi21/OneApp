@@ -8,10 +8,7 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-<<<<<<< HEAD
-	getUniform : function () {}
-=======
-<<<<<<< HEAD
+
 	getUniform : function (req,res){
 	var data = {
 		"error":1,
@@ -105,24 +102,4 @@ module.exports = {
 		data["data"] = "Please provide all required data";
 		res.json(data);
 	}}
-=======
-	getUniform : {}
->>>>>>> 6882b2bebf711a4c8712c1875689741559cb0539
-
-	,
-
-	postUniform : function () {}
-
-	,
-
-	putUniform  :function () {}
-
-	,
-
-<<<<<<< HEAD
-	deleteUniform :function () {}
-=======
-	deleteUniform :{}
->>>>>>> 212251080acff3c3cf59a66e8549d6fa9b09ba43
->>>>>>> 6882b2bebf711a4c8712c1875689741559cb0539
 }

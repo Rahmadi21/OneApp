@@ -8,10 +8,6 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-<<<<<<< HEAD
-	getNewsPivot :function () {}
-=======
-<<<<<<< HEAD
 	getNewsPivot : function (req,res){
 	var data = {
 		"error":1,
@@ -26,9 +22,6 @@ module.exports = {
 			data["data"] = 'Not Found..';
 			res.json(data);
 		}
-	});}
-=======
-	getNewsPivot :{}
->>>>>>> 212251080acff3c3cf59a66e8549d6fa9b09ba43
->>>>>>> 6882b2bebf711a4c8712c1875689741559cb0539
+	});
+}
 }
