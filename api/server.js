@@ -27,6 +27,7 @@ var response			= require("./models/response.js");
 var responseAttend		= require("./models/responseAttend.js"); 
 var score				= require("./models/score.js"); 
 var uniform 			= require("./models/uniform.js");
+var report 				= require("./models/report.js");
 
 /*-------------END INCLUDE------------------*/
 
@@ -297,13 +298,13 @@ app.delete('/contents/news/tags', newsTag.deleteNewsTag);
 
 /*===================== REPORT ==========================*/
 
-app.get('/users/report', newsTag.getNewsTag);
+app.get('/users/report', report.getReport);
 
-app.post('/users/report', newsTag.postNewsTag);
+app.post('/users/report', report.postReport);
 
-app.put('/contents/news/tags', newsTag.putNewsTag); 
+app.put('/users/report', report.putReport); 
 
-app.delete('/contents/news/tags', newsTag.deleteNewsTag);
+app.delete('/users/report', report.deleteReport);
 
 /*--------------------------------------------------------*/
 http.listen(8080,function(){

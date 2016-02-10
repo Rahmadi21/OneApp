@@ -32,7 +32,7 @@ module.exports = {
 	var Tgl_Posting = req.body.tgl_posting;
 	var Judul = req.body.judul;
 	var Isi = req.body.isi;
-	var Status = req.body.status;
+	var Status = req.body.status.toString();
 	var data = {
 		"error":1,
 		"data":""
