@@ -53,7 +53,7 @@ module.exports = {
 	},
 
 	putCatPosition  : function (req, res){
-		var id = req.body.id;
+		var id = req.body.id || uuid.v4();
 		var jabatan = req.body.jabatan;
 		var data = {
 			"error":1,
