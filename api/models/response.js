@@ -8,6 +8,7 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
+<<<<<<< HEAD
 	getResponse : function (req,res){
 	var data = {
 		"data":""
@@ -101,4 +102,19 @@ module.exports = {
 		data["data"] = "Please provide all required data";
 		res.json(data);
 	}}
+=======
+	getResponse : {}
+
+	,
+
+	postResponse :{}
+
+	,
+
+	putResponse  :{}
+
+	,
+
+	deleteResponse :{}
+>>>>>>> 212251080acff3c3cf59a66e8549d6fa9b09ba43
 }

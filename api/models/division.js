@@ -8,6 +8,7 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
+<<<<<<< HEAD
 	getDivision : function (req,res){
 	var data = {
 		"error":1,
@@ -102,4 +103,19 @@ module.exports = {
 		data["data"] = "Please provide all required data";
 		res.json(data);
 	}}
+=======
+	getDivision : {}
+
+	,
+
+	postDivison :{}
+
+	,
+
+	putDivison  :{}
+
+	,
+
+	deleteDivison :{}
+>>>>>>> 212251080acff3c3cf59a66e8549d6fa9b09ba43
 }
