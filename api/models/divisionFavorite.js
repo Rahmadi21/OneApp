@@ -8,6 +8,6 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getFavorite : {}
+	getFavorite : function () {}
 
 }

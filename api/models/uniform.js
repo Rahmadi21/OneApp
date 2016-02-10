@@ -8,17 +8,17 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getUniform : {}
+	getUniform : function () {}
 
 	,
 
-	postUniform : {}
+	postUniform : function () {}
 
 	,
 
-	putUniform  :{}
+	putUniform  :function () {}
 
 	,
 
-	deleteUniform :{}
+	deleteUniform :function () {}
 }

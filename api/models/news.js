@@ -8,17 +8,17 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getNews : {}
+	getNews : function () {}
 
 	,
 
-	postNews :{}
+	postNews :function () {}
 
 	,
 
-	putNews  :{}
+	putNews  :function () {}
 
 	,
 
-	deleteNews :{}
+	deleteNews :function () {}
 }

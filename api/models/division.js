@@ -8,17 +8,17 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getDivision : {}
+	getDivision : function () {}
 
 	,
 
-	postDivison :{}
+	postDivision :function () {}
 
 	,
 
-	putDivison  :{}
+	putDivision  :function () {}
 
 	,
 
-	deleteDivison :{}
+	deleteDivision :function () {}
 }

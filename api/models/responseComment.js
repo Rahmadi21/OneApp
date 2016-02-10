@@ -8,6 +8,20 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getResponseComment : {}
-
+	getResponseComment : function (req,res){
+		var data = {
+			"error":1,
+			"one_app":""
+		}
+		connection.query("SELECT * FROM tbl_konten_respon WHERE id_kat_respon='c8aa2967-cbbd-11e5-86b1-00269e3e'",function (err,rows,fields){
+			if(rows.length != 0){
+				data["error"] = 0;
+				data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}	
+		});
+	}
 }

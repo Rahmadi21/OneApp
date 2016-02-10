@@ -8,17 +8,17 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getEvents : {}
+	getEvents : function () {}
 
 	,
 
-	postEvents :{}
+	postEvents :function () {}
 
 	,
 
-	putEvents  :{}
+	putEvents  :function () {}
 
 	,
 
-	deleteEvents :{}
+	deleteEvents :function () {}
 }

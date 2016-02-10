@@ -8,17 +8,24 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getCatUniform : {}
+	getCatUniform : function () {
+		
+	}
 
 	,
 
-	postCatUniform : {}
+	postCatUniform : function () {
+		
+	}
 
 	,
 
-	putCatUniform  : {}
-
+	putCatUniform  : function () {
+		
+	}
 	,
 
-	deleteCatUniform : {}
+	deleteCatUniform : function () {
+		
+	}
 }

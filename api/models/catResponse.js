@@ -8,17 +8,25 @@ var connection = mysql.createConnection({
 });
 
 module.exports = {
-	getCatResponse : {}
+	getCatResponse : function () {
+		
+	}
 
 	,
 
-	postCatResponse :{}
+	postCatResponse :function () {
+		
+	}
 
 	,
 
-	putCatResponse  :{}
+	putCatResponse  :function () {
+		
+	}
 
 	,
 
-	deleteCatResponse :{}
+	deleteCatResponse :function () {
+		
+	}
 }
