@@ -98,4 +98,5 @@ module.exports = {
 		data["data"] = "Please provide all required data";
 		res.json(data);
 	}}
+
 }

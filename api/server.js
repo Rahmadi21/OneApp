@@ -8,18 +8,15 @@ var bodyParser = require("body-parser");
 var userModel 			= require("./models/tbl_user.js");
 var katUserModel		= require("./models/tbl_kat_user.js");
 var catContent			= require("./models/catContent.js");
+var catContentIsi		= require("./models/catContentIsi.js");
 var catCourse			= require("./models/catCourse.js");
 var catPosition			= require("./models/catPosition.js");
 var catResponse			= require("./models/catResponse.js");
 var catUniform			= require("./models/catUniform.js");
-var club				= require("./models/club.js");
 var content				= require("./models/content.js");
 var contentPhoto		= require("./models/contentPhoto.js");
 var course				= require("./models/course.js");
-var division			= require("./models/division.js");
 var divisionFavorite	= require("./models/divisionFavorite.js");
-var events				= require("./models/event.js");
-var news				= require("./models/news.js");
 var newsPivot			= require("./models/newsPivot.js");
 var newsTag				= require("./models/newsTag.js");
 var position			= require("./models/position.js");
@@ -63,7 +60,9 @@ app.delete('/cat_user', katUserModel.deleteKatUser);
 
 /*========================User=======================*/
 
-app.get('/users', userModel.getuser);
+app.get('/users', userModel.getCatUser);
+
+app.get('/users/:cat', userModel.getCatUser)
 
 app.post('/users', userModel.postUser);
 
@@ -73,17 +72,6 @@ app.delete('/users', userModel.deleteUser);
 
 /*--------------------------------------------------------*/
 
-/*================= category content =======================*/
-
-app.get('/cat_content', catContent.getCatContent);
-
-app.post('/cat_content', catContent.postCatContent);
-
-app.put('/cat_content', catContent.putCatContent); 
-
-app.delete('/cat_content', catContent.deleteCatContent);
-
-/*--------------------------------------------------------*/
 
 /*========================== content =======================*/
 
@@ -94,6 +82,30 @@ app.post('/contents', content.postContent);
 app.put('/contents', content.putContent); 
 
 app.delete('/contents', content.deleteContent);
+
+/*--------------------------------------------------------*/
+
+/*================= category content =======================*/
+
+app.get('/contents/cat_content', catContent.getCatContent);
+
+app.post('/contents/cat_content', catContent.postCatContent);
+
+app.put('/contents/cat_content', catContent.putCatContent); 
+
+app.delete('/contents/cat_content', catContent.deleteCatContent);
+
+/*--------------------------------------------------------*/
+
+/*================= Isi category content =======================*/
+
+app.get('/contents/cat_content/:cat', catContentIsi.getCat);
+
+app.post('/contents/cat_content/:cat', catContentIsi.postCat);
+
+app.put('/contents/cat_content/:cat', catContentIsi.putCat);
+
+app.delete('/contents/cat_content/:cat', catContentIsi.deleteCat);
 
 /*--------------------------------------------------------*/
 
@@ -118,18 +130,6 @@ app.post('/contents/cat_position', catPosition.postCatPosition);
 app.put('/contents/cat_position', catPosition.putCatPosition); 
 
 app.delete('/contents/cat_position', catPosition.deleteCatPosition);
-
-/*--------------------------------------------------------*/
-
-/*==================== position =======================*/
-
-app.get('/contents/positions', position.getPosition);
-
-app.post('/contents/positions', position.postPosition);
-
-app.put('/contents/positions', position.putPosition); 
-
-app.delete('/contents/positions', position.deletePosition);
 
 /*--------------------------------------------------------*/
 
@@ -158,57 +158,45 @@ app.delete('/contents/cat_course', catCourse.deleteCatCourse);
 
 /*--------------------------------------------------------*/
 
-/*======================= division =======================*/
-
-app.get('/contents/divisions', division.getDivision);
-
-app.post('/contents/divisions', division.postDivision);
-
-app.put('/contents/divisions', division.putDivision); 
-
-app.delete('/contents/divisions', division.deleteDivision);
-
-/*--------------------------------------------------------*/
-
 /*========================= course =======================*/
 
-app.get('/contents/divisions/courses', course.getCourse);
+app.get('/contents/cat_content/:cat/courses', course.getCourse);
 
-app.post('/contents/divisions/courses', course.postCourse);
+app.post('/contents/cat_content/:cat/courses', course.postCourse);
 
-app.put('/contents/divisions/courses', course.putCourse); 
+app.put('/contents/cat_content/:cat/courses', course.putCourse); 
 
-app.delete('/contents/divisions/courses', course.deleteCourse);
+app.delete('/contents/cat_content/:cat/courses', course.deleteCourse);
 
 /*--------------------------------------------------------*/
 
 /*===================== score ===========================*/
 
-app.get('/contents/divisions/scores', score.getScore);
+app.get('/contents/cat_content/:cat/scores', score.getScore);
 
-app.post('/contents/divisions/scores', score.postScore);
+app.post('/contents/cat_content/:cat/scores', score.postScore);
 
-app.put('/contents/divisions/scores', score.putScore); 
+app.put('/contents/cat_content/:cat/scores', score.putScore); 
 
-app.delete('/contents/divisions/scores', score.deleteScore);
+app.delete('/contents/cat_content/:cat/scores', score.deleteScore);
 
 /*--------------------------------------------------------*/
 
 /*======================= uniform =========================*/
 
-app.get('/contents/divisions/uniforms', uniform.getUniform);
+app.get('/contents/cat_content/:cat/uniforms', uniform.getUniform);
 
-app.post('/contents/divisions/uniforms', uniform.postUniform);
+app.post('/contents/cat_content/:cat/uniforms', uniform.postUniform);
 
-app.put('/contents/divisions/uniforms', uniform.putUniform); 
+app.put('/contents/cat_content/:cat/uniforms', uniform.putUniform); 
 
-app.delete('/contents/divisions/uniforms', uniform.deleteUniform);
+app.delete('/contents/cat_content/:cat/uniforms', uniform.deleteUniform);
 
 /*--------------------------------------------------------*/
 
 /*================= division favorite =======================*/
 
-app.get('/contents/divisions/favorites', divisionFavorite.getFavorite);
+app.get('/contents/cat_content/:cat/favorites', divisionFavorite.getFavorite);
 
 /*--------------------------------------------------------*/
 
@@ -242,71 +230,48 @@ app.get('/contents/responses/:cat', responseAttend.getResponseAttend);
 
 /*--------------------------------------------------------*/
 
-/*========================== club =============================*/
-
-app.get('/contents/club', club.getClub);
-
-app.post('/contents/club', club.postClub);
-
-app.put('/contents/club', club.putClub); 
-
-app.delete('/contents/club', club.deleteClub);
-
-/*--------------------------------------------------------*/
-
-/*======================== event ============================*/
-
-app.get('/contents/events', events.getEvents);
-
-app.post('/contents/events', events.postEvents);
-
-app.put('/contents/events', events.putEvents); 
-
-app.delete('/contents/events', events.deleteEvents);
-
-/*--------------------------------------------------------*/
-
-/*======================= news =============================*/
-
-app.get('/contents/news', news.getNews);
-
-app.post('/contents/news', news.postNews);
-
-app.put('/contents/news', news.putNews); 
-
-app.delete('/contents/news', news.deleteNews);
-
-/*--------------------------------------------------------*/
-
 /*==================== news pivot ==========================*/
 
-app.get('/contents/news/pivot', newsPivot.getNewsPivot);
+app.get('/contents/cat_content/:cat/pivot', newsPivot.getNewsPivot);
 
 /*--------------------------------------------------------*/
 
 /*===================== news tag ==========================*/
 
-app.get('/contents/news/tags', newsTag.getNewsTag);
+app.get('/contents/cat_content/:cat/tags', newsTag.getNewsTag);
 
-app.post('/contents/news/tags', newsTag.postNewsTag);
+app.post('/contents/cat_content/:cat/tags', newsTag.postNewsTag);
 
-app.put('/contents/news/tags', newsTag.putNewsTag); 
+app.put('/contents/cat_content/:cat/tags', newsTag.putNewsTag); 
 
-app.delete('/contents/news/tags', newsTag.deleteNewsTag);
+app.delete('/contents/cat_content/:cat/tags', newsTag.deleteNewsTag);
 
 /*--------------------------------------------------------*/
 
 /*===================== REPORT ==========================*/
 
-app.get('/users/report', report.getReport);
+app.get('/reports', report.getReport);
 
-app.post('/users/report', report.postReport);
+app.post('/reports', report.postReport);
 
-app.put('/users/report', report.putReport); 
+app.put('/reports', report.putReport); 
 
-app.delete('/users/report', report.deleteReport);
+app.delete('/reports', report.deleteReport);
 
 /*--------------------------------------------------------*/
+
+/*==================== position =======================*/
+
+app.get('/contents/cat_content/:cat/ket_jabatan', position.getPosition);
+
+app.post('/contents/cat_content/:cat/ket_jabatan', position.postPosition);
+
+app.put('/contents/cat_content/:cat/ket_jabatan', position.putPosition); 
+
+app.delete('/contents/cat_content/:cat/ket_jabatan', position.deletePosition);
+
+/*--------------------------------------------------------*/
+
 http.listen(8080,function(){
 	console.log("Connected & Listen to port 8080");
 });

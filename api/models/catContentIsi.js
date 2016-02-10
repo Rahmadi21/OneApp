@@ -1,31 +1,28 @@
 var mysql 		= require('mysql');
-var uuid  		= require('node-uuid');
+var uuID 		= require('node-uuid');
 var conn 		= require('../config/conn.js')
 var connection  = mysql.createConnection(conn);
 
 module.exports = {
-	getClub : function (req, res){
-	
-	var data = {
-		"error": 1,
-		"one_app":""
-	};
-	connection.query("SELECT * from tbl_konten WHERE id_kat_konten='f1689864-cf1d-11e5-8978-b888e391'", [req.params.id], function (err, rows, fields){
-		if(rows.length !=0){
-			data["error"] = 0;
-			data["one_app"] = rows;
+	getCat : function (req,res){
+		var data = {
+			"error":1,
+			"one_app":""
+		}
+		var cat = req.params.cat
+		connection.query("SELECT tbl_konten.* , tbl_kat_konten.konten FROM tbl_konten INNER JOIN tbl_kat_konten ON tbl_konten.id_kat_konten = tbl_kat_konten.id WHERE tbl_kat_konten.konten=? ",[cat],function (err,rows,fields){
+			if(rows.length != 0){
+				data["error"] = 0;
+				data["one_app"] = rows;
 			res.json(data);
 		}else{
 			data["one_app"] = 'tidak ditemukan';
 			res.json(data);
-		}
+		}	
 		});
-
-	}
-
-	,
-
-	postClub : function (req,res){
+	},
+	
+	postCat : function (req,res){
 	var Id = uuID.v4();
 	var Id_Kat_Konten = req.body.id_kat_konten;
 	var Id_User = req.body.id_user;
@@ -49,11 +46,9 @@ module.exports = {
 	}else{
 		data["data"] = "Please provide all required data";
 		res.json(data);
-	}}
+	}},
 
-	,
-
-	putClub  : function (req,res){
+	putCat : function (req,res){
 	var Id = req.body.id;
 	var Id_Kat_Konten = req.body.id_kat_konten;
 	var Id_User = req.body.id_user;
@@ -77,19 +72,16 @@ module.exports = {
 	}else{
 		data["data"] = "Please provide all required data";
 		res.json(data);
-	}}
+	}},
 
-
-	,
-
-	deleteClub : function (req,res){
+	deleteCat : function (req,res){
 	var Id = req.body.id;
 	var data = {
 		"error":1,
 		"Users":""
 	};
 	if(!!Id){
-		con.query("DELETE FROM tbl_konten WHERE id_konten=?",[Id],function (err, rows, fields){
+		con.query("DELETE FROM tbl_konten WHERE id=?",[Id],function (err, rows, fields){
 			if(!!err){
 				data["data"] = err;
 			}else{

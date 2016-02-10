@@ -2,7 +2,7 @@ var mysql 		= require('mysql');
 var uuid  		= require('node-uuid');
 var conn 		= require('../config/conn.js')
 var connection  = mysql.createConnection(conn);
-module.exports= {
+var controller = {
 	getuser: function (req, res){
 	var data = {
 		"error": 1,
@@ -114,8 +114,30 @@ module.exports= {
 			data["one_app"] = "Tolong lengkapi semua data (i.e :id)";
 			res.json(data);
 			}
+		},
+
+	getCatUser : function (req,res){
+		var data = {
+			"error":1,
+			"one_app":""
 		}
+		var cat = req.query.category;
+		if(!cat){
+			controller.getuser(req,res);
+			return
+		}
+		connection.query("SELECT tbl_user.*, tbl_kat_user.kategori FROM tbl_user INNER JOIN tbl_kat_user ON tbl_user.id_kat_user = tbl_kat_user.id WHERE tbl_kat_user.kategori=?",[cat],function (err,rows,fields){
+			if(rows.length != 0){
+				data["error"] = 0;
+				data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}	
+		});
+	}
 
 }
 
-
+module.exports = controller

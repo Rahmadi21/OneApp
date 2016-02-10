@@ -22,7 +22,7 @@ module.exports = {
 	},
 
 	postPosition : function (req, res){
-		var id = req.body.id;
+		var id = req.body.id || uuid.v4();
 		var id_konten = req.body.id_konten;
 		var id_kat_jabatan = req.body.id_kat_jabatan;
 		var nama = req.body.nama;
