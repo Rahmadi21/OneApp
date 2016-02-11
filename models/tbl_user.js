@@ -8,9 +8,9 @@ var controller = {
 		"error": 1,
 		"one_app":""
 	};
-	var id = req.query.id;
-	if(id){
-	connection.query("SELECT * from tbl_user where id=?",[id], function (err, rows, fields){
+	var cat = req.query.kategori;
+	if(cat){
+	connection.query("SELECT tbl_user.*, tbl_kat_user.kategori FROM tbl_user INNER JOIN tbl_kat_user ON tbl_user.id_kat_user = tbl_kat_user.id WHERE tbl_kat_user.kategori=?",[cat], function (err, rows, fields){
 		if(rows.length !=0){
 			data["error"] = 0;
 			data["one_app"] = rows;
@@ -22,7 +22,7 @@ var controller = {
 		});	
 	}
 	else{
-	connection.query("SELECT * from tbl_user", function (err, rows, fields){
+	connection.query("SELECT tbl_konten.* , tbl_kat_konten.konten FROM tbl_konten INNER JOIN tbl_kat_konten ON tbl_konten.id_kat_konten = tbl_kat_konten.id ", function (err, rows, fields){
 		if(rows.length !=0){
 			data["error"] = 0;
 			data["one_app"] = rows;
@@ -137,8 +137,8 @@ var controller = {
 			"error":1,
 			"one_app":""
 		}
-		var cat = req.params.cat;
-		connection.query("SELECT tbl_user.*, tbl_kat_user.kategori FROM tbl_user INNER JOIN tbl_kat_user ON tbl_user.id_kat_user = tbl_kat_user.id WHERE tbl_kat_user.kategori=?",[cat],function (err,rows,fields){
+		var id = req.params.id;
+		connection.query("SELECT tbl_user.*, tbl_kat_user.kategori FROM tbl_user INNER JOIN tbl_kat_user ON tbl_user.id_kat_user = tbl_kat_user.id WHERE tbl_user.id=?",[id],function (err,rows,fields){
 			if(rows.length != 0){
 				data["error"] = 0;
 				data["one_app"] = rows;

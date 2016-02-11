@@ -62,7 +62,7 @@ app.delete('/cat_user', katUserModel.deleteKatUser);
 
 app.get('/users', userModel.getuser);
 
-app.get('/users/:cat', userModel.getCatUser);
+app.get('/users/:id', userModel.getCatUser);
 
 app.post('/users', userModel.postUser);
 

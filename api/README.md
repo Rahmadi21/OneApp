@@ -1,2 +1,0 @@
-# OneApp
-aplikasinya anak satu
