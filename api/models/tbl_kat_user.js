@@ -8,6 +8,20 @@ module.exports = {
 		"error": 1,
 		"one_app":""
 	};
+	var id = req.query.id;
+	if(id){
+	connection.query("SELECT * from tbl_kat_user where id=?",[id], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else{
 	connection.query("SELECT * from tbl_kat_user", function (err, rows, fields){
 		if(rows.length !=0){
 			data["error"] = 0;
@@ -18,7 +32,9 @@ module.exports = {
 			res.json(data);
 		}
 		});
-	},
+	}
+
+},
 
 	postKatUser : function (req, res){
 	

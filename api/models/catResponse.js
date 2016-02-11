@@ -9,7 +9,21 @@ module.exports = {
 		"error": 1,
 		"one_app":""
 	};
-	connection.query("SELECT * from tbl_kat_respon", function (err, rows, fields){
+	var id = req.query.kategori;
+	if(id){
+	connection.query("SELECT tbl_konten_respon.id,tbl_konten_respon.id_konten,tbl_konten.judul as konten, tbl_kat_respon.tipe_respon , tbl_user.username, tbl_konten_respon.tgl_respon,tbl_konten_respon.isi from tbl_konten_respon INNER JOIN tbl_konten on tbl_konten_respon.id_konten = tbl_konten.id INNER join tbl_user on tbl_konten_respon.id_user = tbl_user.id INNER JOIN tbl_kat_respon on tbl_konten_respon.id_kat_respon = tbl_kat_respon.id where tbl_kat_respon.tipe_respon=?",[id], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else{
+	connection.query("SELECT tbl_konten_respon.id,tbl_konten_respon.id_konten,tbl_konten.judul as konten, tbl_kat_respon.tipe_respon , tbl_user.username, tbl_konten_respon.tgl_respon,tbl_konten_respon.isi from tbl_konten_respon INNER JOIN tbl_konten on tbl_konten_respon.id_konten = tbl_konten.id INNER join tbl_user on tbl_konten_respon.id_user = tbl_user.id INNER JOIN tbl_kat_respon on tbl_konten_respon.id_kat_respon = tbl_kat_respon.id", function (err, rows, fields){
 		if(rows.length !=0){
 			data["error"] = 0;
 			data["one_app"] = rows;
@@ -19,9 +33,9 @@ module.exports = {
 			res.json(data);
 		}
 		});
-
 	}
-	,
+
+},
 
 	postCatResponse :function (req, res){
 	

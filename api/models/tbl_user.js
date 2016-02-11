@@ -8,6 +8,20 @@ var controller = {
 		"error": 1,
 		"one_app":""
 	};
+	var id = req.query.id;
+	if(id){
+	connection.query("SELECT * from tbl_user where id=?",[id], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else{
 	connection.query("SELECT * from tbl_user", function (err, rows, fields){
 		if(rows.length !=0){
 			data["error"] = 0;
@@ -18,6 +32,8 @@ var controller = {
 			res.json(data);
 		}
 		});
+	}
+
 },
 
 	postUser : function (req, res){
@@ -121,11 +137,7 @@ var controller = {
 			"error":1,
 			"one_app":""
 		}
-		var cat = req.query.category;
-		if(!cat){
-			controller.getuser(req,res);
-			return
-		}
+		var cat = req.params.cat;
 		connection.query("SELECT tbl_user.*, tbl_kat_user.kategori FROM tbl_user INNER JOIN tbl_kat_user ON tbl_user.id_kat_user = tbl_kat_user.id WHERE tbl_kat_user.kategori=?",[cat],function (err,rows,fields){
 			if(rows.length != 0){
 				data["error"] = 0;
@@ -139,5 +151,5 @@ var controller = {
 	}
 
 }
+module.exports = controller;
 
-module.exports = controller

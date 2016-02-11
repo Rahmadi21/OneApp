@@ -4,22 +4,37 @@ var conn 		= require('../config/conn.js')
 var connection  = mysql.createConnection(conn);
 
 module.exports = {
-	getCatCourse :  function (req,res){
+	getCatCourse : function (req, res){
 	var data = {
-		"error":1,
-		"Data":""
+		"error": 1,
+		"one_app":""
 	};
-	
-	connection.query("SELECT * from tbl_kat_pelajaran",function (err, rows, fields){
-		if(rows.length != 0){
+	var id = req.query.kategori;
+	if(id){
+	connection.query("select tbl_nama_pelajaran.* ,tbl_kat_pelajaran.nama_kat as kategori, tbl_konten.judul as jurusan from tbl_nama_pelajaran inner join tbl_konten on tbl_nama_pelajaran.id_konten = tbl_konten.id inner join tbl_kat_pelajaran on tbl_nama_pelajaran.id_kategori = tbl_kat_pelajaran.id WHERE tbl_kat_pelajaran.nama_kat=?",[id], function (err, rows, fields){
+		if(rows.length !=0){
 			data["error"] = 0;
-			data["Data"] = rows;
+			data["one_app"] = rows;
 			res.json(data);
 		}else{
-			data["Data"] = 'No books Found..';
+			data["one_app"] = 'tidak ditemukan';
 			res.json(data);
 		}
-	});
+		});	
+	}
+	else{
+	connection.query("SELECT * from tbl_kat_pelajaran", function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});
+	}
+
 },
 	postCatCourse :function (req,res){
 	var id = uuid.v4();

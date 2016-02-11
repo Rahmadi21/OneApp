@@ -4,22 +4,38 @@ var connection 		= require('../config/conn.js')
 var con  = mysql.createConnection(connection);
 
 module.exports = {
-	getContent : function (req,res){
+	getContent : function (req, res){
 	var data = {
-		"error":1,
-		"data":""
+		"error": 1,
+		"one_app":""
 	};
-	
-	con.query("SELECT * from tbl_konten",function (err, rows, fields){
-		if(rows.length != 0){
+	var id = req.query.id;
+	if(id){
+	con.query("SELECT * from tbl_konten where id=?",[id], function (err, rows, fields){
+		if(rows.length !=0){
 			data["error"] = 0;
-			data["data"] = rows;
+			data["one_app"] = rows;
 			res.json(data);
 		}else{
-			data["data"] = 'Not Found..';
+			data["one_app"] = 'tidak ditemukan';
 			res.json(data);
 		}
-	});},
+		});	
+	}
+	else{
+	con.query("SELECT * from tbl_konten", function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});
+	}
+
+},
 	
 	postContent : function (req,res){
 	var Id = uuID.v4();

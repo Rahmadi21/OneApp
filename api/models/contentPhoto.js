@@ -9,6 +9,20 @@ module.exports = {
 		"error": 1,
 		"one_app":""
 	};
+	var id = req.query.id_konten;
+	if(id){
+	connection.query("SELECT * from tbl_foto where id_konten=?",[id], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else{
 	connection.query("SELECT * from tbl_foto", function (err, rows, fields){
 		if(rows.length !=0){
 			data["error"] = 0;
@@ -19,12 +33,13 @@ module.exports = {
 			res.json(data);
 		}
 		});
+	}
 
-	},
+},
 
 	postContentPhoto : function (req, res){
 	
-		var id = req.body.id;
+		var id = req.body.id || uuid.v4();
 		var id_konten = req.body.id_konten;
 		var foto = req.body.foto;
 		var data = {

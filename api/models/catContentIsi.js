@@ -1,26 +1,42 @@
 var mysql 		= require('mysql');
 var uuID 		= require('node-uuid');
 var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
+var con  = mysql.createConnection(conn);
 
 module.exports = {
-	getCat : function (req,res){
-		var data = {
-			"error":1,
-			"one_app":""
-		}
-		var cat = req.params.cat
-		connection.query("SELECT tbl_konten.* , tbl_kat_konten.konten FROM tbl_konten INNER JOIN tbl_kat_konten ON tbl_konten.id_kat_konten = tbl_kat_konten.id WHERE tbl_kat_konten.konten=? ",[cat],function (err,rows,fields){
-			if(rows.length != 0){
-				data["error"] = 0;
-				data["one_app"] = rows;
+	getCat : function (req, res){
+	var data = {
+		"error": 1,
+		"one_app":""
+	};
+	var id = req.query.id;
+	var cat = req.params.cat;
+	if(id){
+	con.query("SELECT tbl_konten.* , tbl_kat_konten.konten FROM tbl_konten INNER JOIN tbl_kat_konten ON tbl_konten.id_kat_konten = tbl_kat_konten.id WHERE tbl_kat_konten.konten=? AND tbl_konten.id=?",[cat,id], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
 			res.json(data);
 		}else{
 			data["one_app"] = 'tidak ditemukan';
 			res.json(data);
-		}	
+		}
+		});	
+	}
+	else{
+	con.query("SELECT tbl_konten.* , tbl_kat_konten.konten FROM tbl_konten INNER JOIN tbl_kat_konten ON tbl_konten.id_kat_konten = tbl_kat_konten.id WHERE tbl_kat_konten.konten=? ",[cat], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
 		});
-	},
+	}
+
+},
 	
 	postCat : function (req,res){
 	var Id = uuID.v4();

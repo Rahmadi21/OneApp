@@ -60,9 +60,9 @@ app.delete('/cat_user', katUserModel.deleteKatUser);
 
 /*========================User=======================*/
 
-app.get('/users', userModel.getCatUser);
+app.get('/users', userModel.getuser);
 
-app.get('/users/:cat', userModel.getCatUser)
+app.get('/users/:cat', userModel.getCatUser);
 
 app.post('/users', userModel.postUser);
 
@@ -173,6 +173,7 @@ app.delete('/contents/cat_content/:cat/courses', course.deleteCourse);
 /*===================== score ===========================*/
 
 app.get('/contents/cat_content/:cat/scores', score.getScore);
+app.get('/contents/cat_content/:cat/scores/:jur')
 
 app.post('/contents/cat_content/:cat/scores', score.postScore);
 

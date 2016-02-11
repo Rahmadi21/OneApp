@@ -9,7 +9,60 @@ module.exports = {
 		"error": 1,
 		"one_app":""
 	};
-	connection.query("SELECT * from tbl_nem", function (err, rows, fields){
+	var id = req.query.id;
+	var cat = req.query.tahun;
+	var jur = req.query.jurusan;
+	if(id && !cat && !jur){
+	connection.query("select tbl_nem.id, tbl_konten.judul as jurusan, tbl_nem.tahun, tbl_nem.nem_tinggi, tbl_nem.nem_rendah from tbl_nem inner join tbl_konten on tbl_nem.id_konten = tbl_konten.id where tbl_nem.id=?",[id], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else if(!id && cat && !jur){
+		connection.query("select tbl_nem.id, tbl_konten.judul as jurusan, tbl_nem.tahun, tbl_nem.nem_tinggi, tbl_nem.nem_rendah from tbl_nem inner join tbl_konten on tbl_nem.id_konten = tbl_konten.id where tbl_nem.tahun =?",[cat], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else if(!id && !cat && jur){
+		connection.query("select tbl_nem.id, tbl_konten.judul as jurusan, tbl_nem.tahun, tbl_nem.nem_tinggi, tbl_nem.nem_rendah from tbl_nem inner join tbl_konten on tbl_nem.id_konten = tbl_konten.id where tbl_konten.judul =?",[jur], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else if(!id && cat && jur){
+		connection.query("select tbl_nem.id, tbl_konten.judul as jurusan, tbl_nem.tahun, tbl_nem.nem_tinggi, tbl_nem.nem_rendah from tbl_nem inner join tbl_konten on tbl_nem.id_konten = tbl_konten.id where tbl_konten.judul =? AND tbl_nem.tahun=?",[jur,cat], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+
+	else{
+	connection.query("select tbl_nem.id, tbl_konten.judul as jurusan, tbl_nem.tahun, tbl_nem.nem_tinggi, tbl_nem.nem_rendah from tbl_nem inner join tbl_konten on tbl_nem.id_konten = tbl_konten.id", function (err, rows, fields){
 		if(rows.length !=0){
 			data["error"] = 0;
 			data["one_app"] = rows;
@@ -19,7 +72,9 @@ module.exports = {
 			res.json(data);
 		}
 		});
-	},
+	}
+
+},
 
 	postScore : function (req,res){
 	var id = uuid.v4;

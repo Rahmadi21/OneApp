@@ -9,6 +9,46 @@ module.exports = {
 		"error": 1,
 		"one_app":""
 	};
+	var id = req.query.id;
+	var pelapor = req.query.pelapor;
+	var terlapor = req.query.terlapor;
+	if(id && !pelapor && !terlapor){
+	connection.query("SELECT * from tbl_report where id=?",[id], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else if(!id && pelapor && !terlapor){
+	connection.query("SELECT * from tbl_report where id_user_pelapor=?",[pelapor], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else if(!id && !pelapor && terlapor){
+	connection.query("SELECT * from tbl_report where id_user_terlapor=?",[terlapor], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else{
 	connection.query("SELECT * from tbl_report", function (err, rows, fields){
 		if(rows.length !=0){
 			data["error"] = 0;
@@ -19,10 +59,9 @@ module.exports = {
 			res.json(data);
 		}
 		});
-
 	}
 
-	,
+},
 
 	postReport :function (req,res){
 	var id = uuid.v4();

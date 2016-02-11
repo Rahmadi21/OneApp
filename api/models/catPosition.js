@@ -10,6 +10,20 @@ module.exports = {
 		"error": 1,
 		"one_app":""
 	};
+	var bagian = req.query.bagian;
+	if(bagian){
+	connection.query("select tbl_jabatan.* , tbl_kat_jabatan.jabatan from tbl_jabatan inner join tbl_kat_jabatan ON tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id WHERE tbl_kat_jabatan.jabatan=?",[bagian], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else{
 	connection.query("SELECT * from tbl_kat_jabatan", function (err, rows, fields){
 		if(rows.length !=0){
 			data["error"] = 0;
@@ -20,8 +34,9 @@ module.exports = {
 			res.json(data);
 		}
 		});
+	}
 
-	},
+},
 
 	postCatPosition : function (req, res){
 	

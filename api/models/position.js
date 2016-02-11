@@ -9,7 +9,47 @@ module.exports = {
 		"error": 1,
 		"one_app":""
 	};
-	connection.query("SELECT * from tbl_jabatan", function (err, rows, fields){
+	var id = req.query.id;
+	var jabatan= req.query.jabatan;
+	var konten = req.query.konten;
+	if(id && !jabatan && !konten){
+	connection.query("SELECT tbl_jabatan.id, tbl_jabatan.id_konten, tbl_kat_jabatan.jabatan, tbl_jabatan.nama, tbl_jabatan.bidang from tbl_jabatan INNER JOIN tbl_kat_jabatan on tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id where tbl_jabatan.id=?",[id], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else if(!id && jabatan && !konten){
+	connection.query("SELECT tbl_jabatan.id, tbl_jabatan.id_konten, tbl_kat_jabatan.jabatan, tbl_jabatan.nama, tbl_jabatan.bidang from tbl_jabatan INNER JOIN tbl_kat_jabatan on tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id where tbl_kat_jabatan.jabatan=?",[jabatan], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else if(!id && !jabatan && konten){
+	connection.query("SELECT tbl_jabatan.id, tbl_jabatan.id_konten, tbl_kat_jabatan.jabatan, tbl_jabatan.nama, tbl_jabatan.bidang from tbl_jabatan INNER JOIN tbl_kat_jabatan on tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id where tbl_jabatan.id_konten=?",[konten], function (err, rows, fields){
+		if(rows.length !=0){
+			data["error"] = 0;
+			data["one_app"] = rows;
+			res.json(data);
+		}else{
+			data["one_app"] = 'tidak ditemukan';
+			res.json(data);
+		}
+		});	
+	}
+	else{
+	connection.query("SELECT tbl_jabatan.id, tbl_jabatan.id_konten, tbl_kat_jabatan.jabatan, tbl_jabatan.nama, tbl_jabatan.bidang from tbl_jabatan INNER JOIN tbl_kat_jabatan on tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id", function (err, rows, fields){
 		if(rows.length !=0){
 			data["error"] = 0;
 			data["one_app"] = rows;
@@ -19,7 +59,9 @@ module.exports = {
 			res.json(data);
 		}
 		});
-	},
+	}
+
+},
 
 	postPosition : function (req, res){
 		var id = req.body.id || uuid.v4();
