@@ -5,26 +5,26 @@ var uuid = require('node-uuid');
 var bodyParser = require("body-parser");
 /*-------------include Model----------------*/
 
-var userModel 			= require("./models/tbl_user.js");
-var katUserModel		= require("./models/tbl_kat_user.js");
-var catContent			= require("./models/catContent.js");
-var catContentIsi		= require("./models/catContentIsi.js");
-var catCourse			= require("./models/catCourse.js");
-var catPosition			= require("./models/catPosition.js");
-var catResponse			= require("./models/catResponse.js");
-var catUniform			= require("./models/catUniform.js");
-var content				= require("./models/content.js");
-var contentPhoto		= require("./models/contentPhoto.js");
-var course				= require("./models/course.js");
-var divisionFavorite	= require("./models/divisionFavorite.js");
-var newsPivot			= require("./models/newsPivot.js");
-var newsTag				= require("./models/newsTag.js");
-var position			= require("./models/position.js");
-var response			= require("./models/response.js"); 
-var responseAttend		= require("./models/responseAttend.js"); 
-var score				= require("./models/score.js"); 
-var uniform 			= require("./models/uniform.js");
-var report 				= require("./models/report.js");
+var userModel 			= require("./controller/controller_user.js");
+var katUserModel		= require("./controller/controller_catUser.js");
+var catContent			= require("./controller/controller_catContent.js");
+var catContentIsi		= require("./controller/controller_catContentIsi.js");
+var catCourse			= require("./controller/controller_catCourse.js");
+var catPosition			= require("./controller/controller_catPosition.js");
+var catResponse			= require("./controller/controller_catResponse.js");
+var catUniform			= require("./controller/controller_catUniform.js");
+var content				= require("./controller/controller_content.js");
+var contentPhoto		= require("./controller/controller_contentPhoto.js");
+var course				= require("./controller/controller_course.js");
+var divisionFavorite	= require("./controller/controller_divisionFavorite.js");
+var newsPivot			= require("./controller/controller_newsPivot.js");
+var newsTag				= require("./controller/controller_newsTag.js");
+var position			= require("./controller/controller_position.js");
+var response			= require("./controller/controller_response.js"); 
+var responseAttend		= require("./controller/controller_responseAttend.js"); 
+var score				= require("./controller/controller_score.js"); 
+var uniform 			= require("./controller/controller_uniform.js");
+var report 				= require("./controller/controller_report.js");
 
 /*-------------END INCLUDE------------------*/
 

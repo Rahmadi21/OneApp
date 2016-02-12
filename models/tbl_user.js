@@ -3,40 +3,31 @@ var uuid  		= require('node-uuid');
 var conn 		= require('../config/conn.js')
 var connection  = mysql.createConnection(conn);
 var controller = {
-	getuser: function (req, res){
-	var data = {
-		"error": 1,
-		"one_app":""
-	};
+	getuser: function (req, callback){
+
 	var cat = req.query.kategori;
 	if(cat){
 	connection.query("SELECT tbl_user.*, tbl_kat_user.kategori FROM tbl_user INNER JOIN tbl_kat_user ON tbl_user.id_kat_user = tbl_kat_user.id WHERE tbl_kat_user.kategori=?",[cat], function (err, rows, fields){
-		if(rows.length !=0){
-			data["error"] = 0;
-			data["one_app"] = rows;
-			res.json(data);
+		if(err){
+			callback(err);
 		}else{
-			data["one_app"] = 'tidak ditemukan';
-			res.json(data);
+			callback(null, rows);
 		}
 		});	
 	}
 	else{
 	connection.query("SELECT tbl_konten.* , tbl_kat_konten.konten FROM tbl_konten INNER JOIN tbl_kat_konten ON tbl_konten.id_kat_konten = tbl_kat_konten.id ", function (err, rows, fields){
-		if(rows.length !=0){
-			data["error"] = 0;
-			data["one_app"] = rows;
-			res.json(data);
+		if(err){
+			callback(err);
 		}else{
-			data["one_app"] = 'tidak ditemukan';
-			res.json(data);
+			callback(null, rows);
 		}
 		});
 	}
 
 },
 
-	postUser : function (req, res){
+	postUser : function (req, callback){
 		var id = uuid.v4();
 		var id_kat_user = req.body.id_kat_user;
 		var email = req.body.email;
@@ -48,31 +39,22 @@ var controller = {
 		var foto_profile = req.body.foto_profile;
 		var jurusan_favorite = req.body.jurusan_favorite;
 		var reputasi = req.body.reputasi;
-		var data = {
-			"error":1,
-			"one_app":""
-		};
-
-
 
 		if(id && id_kat_user && email && username && password && nama_asli && tgl_lahir && password && foto_profile && jurusan_favorite && reputasi){
 			connection.query("INSERT INTO tbl_user VALUES(?,?,?,?,?,?,?,?,?,?,?)",[id, id_kat_user, email, username, password, nama_asli, tgl_lahir, pekerjaan, foto_profile, jurusan_favorite, reputasi], function(err, rows, fields){
-				if(!!err){
-					data["one_app"] = "Error dalam menambahkan data";	
+				if(err){
+					callback(err);	
 				}else{
-					data["error"] = 0;
-					data["one_app"] = "User berhasil ditambahkan";		
+					callback(null, rows;)
 				}
-				res.json(data);
+			
 			});
 		}else{
-			data["one_app"] = "Tolong lengkapi semua data (i.e : id, id_kat_user, email, username, password, nama_asli, tgl_lahir, pekerjaan, foto_profile, jurusan_favorite, reputasi)";
-			res.json(data);
-
+				console.log("error");
 			}
 	},
 
-	putUser : function (req, res){
+	putUser : function (req, callback){
 			
 			var id = req.body.id;
 			var id_kat_user = req.body.id_kat_user;
@@ -85,68 +67,48 @@ var controller = {
 			var foto_profile = req.body.foto_profile;
 			var jurusan_favorite = req.body.jurusan_favorite;
 			var reputasi = req.body.reputasi;
-			var data = {
-				"error":1,
-				"one_app":""
-			};
+			
 			if(id && id_kat_user && email && username && password && nama_asli && tgl_lahir && password && foto_profile && jurusan_favorite && reputasi){
 			connection.query("UPDATE tbl_user SET id_kat_user=?, email=?, username=?, password=?, nama_asli=?, tgl_lahir=?, pekerjaan=?, foto_profile=?, jurusan_favorite=?, reputasi=? WHERE id=?",[id_kat_user, email, username, password, nama_asli, tgl_lahir, pekerjaan, foto_profile, jurusan_favorite, reputasi, id], function (err, rows, fields){
-				if(!!err){
-					data["one_app"] = "Error mengupdate data";	
+				if(err){
+					callback(err);	
 				}else{
-					data["error"] = 0;
-					data["one_app"] = "data berhasil diupdate";		
+					callback(null, rows);
 				}
-				res.json(data);
 			});
 		}else{
-			data["one_app"] = "Tolong lengkapi semua data (i.e :id, id_kat_user, email, username, password, nama_asli, tgl_lahir, pekerjaan, foto_profile, jurusan_favorite, reputasi)";
-			res.json(data);
-
+			console.log("error");
 		}
 	},
 
-	deleteUser : function (req, res){
+	deleteUser : function (req, callback){
 			var id = req.body.id;
-			var data = {
-				"error":1,
-				"one_app":""
-			};
-			if(!!id){
+			
+			if(id){
 				connection.query("DELETE FROM tbl_user WHERE id=?",[id], function (err, rows, fields){
-					if(!!err){
-						data["tbl_user"] = err;
+					if(err){
+						callback(err);
 					}else{
-						data["error"] = 0;
-						data["tbl_user"] = " Delete user sukses";
-
+						callback(null,rows)
 					}
-					res.json(data);
 					
 				});
 
 			
 		}else{
-			data["one_app"] = "Tolong lengkapi semua data (i.e :id)";
-			res.json(data);
+				console.log("error");
 			}
 		},
 
-	getCatUser : function (req,res){
-		var data = {
-			"error":1,
-			"one_app":""
-		}
+	getCatUser : function (req,callback){
+
 		var id = req.params.id;
 		connection.query("SELECT tbl_user.*, tbl_kat_user.kategori FROM tbl_user INNER JOIN tbl_kat_user ON tbl_user.id_kat_user = tbl_kat_user.id WHERE tbl_user.id=?",[id],function (err,rows,fields){
-			if(rows.length != 0){
-				data["error"] = 0;
-				data["one_app"] = rows;
-			res.json(data);
-		}else{
-			data["one_app"] = 'tidak ditemukan';
-			res.json(data);
-		}	
+			if(err){
+				callback(err);
+			}else{
+				callback(null,rows)
+			}
 		});
 	}
 
