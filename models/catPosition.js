@@ -5,98 +5,71 @@ var connection  = mysql.createConnection(conn);
 
 
 module.exports = {
-	getCatPosition : function (req, res){
-	var data = {
-		"error": 1,
-		"one_app":""
-	};
+	getCatPosition : function(req, callback){
+
 	var bagian = req.query.bagian;
 	if(bagian){
 	connection.query("select tbl_jabatan.* , tbl_kat_jabatan.jabatan from tbl_jabatan inner join tbl_kat_jabatan ON tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id WHERE tbl_kat_jabatan.jabatan=?",[bagian], function (err, rows, fields){
-		if(rows.length !=0){
-			data["error"] = 0;
-			data["one_app"] = rows;
-			res.json(data);
-		}else{
-			data["one_app"] = 'tidak ditemukan';
-			res.json(data);
-		}
+			if(err){
+				callback(err);
+			}else{
+				callback(null,rows);
+			}
 		});	
 	}
 	else{
 	connection.query("SELECT * from tbl_kat_jabatan", function (err, rows, fields){
-		if(rows.length !=0){
-			data["error"] = 0;
-			data["one_app"] = rows;
-			res.json(data);
-		}else{
-			data["one_app"] = 'tidak ditemukan';
-			res.json(data);
-		}
+			if(err){
+				callback(err);
+			}else{
+				callback(null,rows);
+			}
 		});
 	}
 
 },
 
-	postCatPosition : function (req, res){
+	postCatPosition : function(req, callback){
 	
 		var id = req.body.id;
 		var jabatan = req.body.jabatan;
-		var data = {
-			"error":1,
-			"one_app":""
-		};
+
 		if(id && jabatan){
 			connection.query("INSERT INTO tbl_kat_jabatan VALUES(?,?)",[id, jabatan], function (err, rows, fields){
-				if(!!err){
-					data["one_app"] = "error dalam menambahkan data";
-				}else{
-					data["error"] = 0;
-					data["one_app"] = "data berhasil ditambahkan";
-				}
-			
-			res.json(data);
-	});
+			if(err){
+				callback(err);
+			}else{
+				callback(null,rows);
+			}
+		});
 		
 			}else{
-		data["one_app"] = "Tolong lengkapi semua data (i.e : id, jabatan)";
-		res.json(data);
-
+			console.log("error");
 
 		}
 
 	},
 
-	putCatPosition  : function (req, res){
+	putCatPosition  : function(req, callback){
 		var id = req.body.id || uuid.v4();
 		var jabatan = req.body.jabatan;
-		var data = {
-			"error":1,
-			"one_app":""
-		};
 		if(id && jabatan){
 			connection.query("UPDATE tbl_kat_jabatan SET jabatan=? WHERE id=?",[jabatan, id], function (err, rows, fields){
-				if(!!err){
-					data["one_app"] = "error mengupdate data";
-				}else{
-					data["error"] = 0;
-					data["one_app"] = "data berhasil di update";
-				}
-			
-			res.json(data);
+			if(err){
+				callback(err);
+			}else{
+				callback(null,rows);
+			}
 		});
 		
 		}
 		else{
-		data["one_app"] = "Tolong lengkapi semua data (i.e : id, jabatan)";
-		res.json(data);
-
-
+			console.log("error");
 		}
 
 	},
 
-	deleteCatPosition : function (req, res){
+	deleteCatPosition : function(req, callback){
 		var id = req.body.id;
 		var data = {
 			"error":1,
