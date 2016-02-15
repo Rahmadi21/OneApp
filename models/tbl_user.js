@@ -7,7 +7,7 @@ var controller = {
 
 	var cat = req.query.kategori;
 	if(cat){
-	connection.query("SELECT tbl_user.*, tbl_kat_user.kategori FROM tbl_user INNER JOIN tbl_kat_user ON tbl_user.id_kat_user = tbl_kat_user.id WHERE tbl_kat_user.kategori=?",[cat], function (err, rows, fields){
+	connection.query("SELECT tbl_user.*,tbl_konten.judul as jurusan_favorite, tbl_kat_user.kategori FROM tbl_user INNER JOIN tbl_kat_user ON tbl_user.id_kat_user = tbl_kat_user.id left join tbl_konten on tbl_user.jurusan_favorite = tbl_konten.id WHERE tbl_kat_user.kategori=?",[cat], function (err, rows, fields){
 		if(err){
 			callback(err);
 		}else{
@@ -16,7 +16,7 @@ var controller = {
 		});	
 	}
 	else{
-	connection.query("SELECT tbl_konten.* , tbl_kat_konten.konten FROM tbl_konten INNER JOIN tbl_kat_konten ON tbl_konten.id_kat_konten = tbl_kat_konten.id ", function (err, rows, fields){
+	connection.query("SELECT tbl_user.*, tbl_konten.judul as jurusan_favorite,tbl_kat_user.kategori FROM tbl_user INNER JOIN tbl_kat_user ON tbl_user.id_kat_user = tbl_kat_user.id left join tbl_konten on tbl_user.jurusan_favorite = tbl_konten.id", function (err, rows, fields){
 		if(err){
 			callback(err);
 		}else{
@@ -45,7 +45,7 @@ var controller = {
 				if(err){
 					callback(err);	
 				}else{
-					callback(null, rows;)
+					callback(null, rows);
 				}
 			
 			});

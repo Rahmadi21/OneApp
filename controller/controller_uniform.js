@@ -10,7 +10,7 @@ var data = {
 module.exports = {
 
 	getUniform : function (req,res){
-		model.get(req, function (error,result){
+		model.getUniform(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -24,7 +24,7 @@ module.exports = {
 	},
 
 	postUniform : function (req,res){
-		model.get(req, function (error,result){
+		model.postUniform(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -38,7 +38,7 @@ module.exports = {
 	},
 
 	putUniform  : function (req,res){
-		model.get(req, function (error,result){
+		model.putUniform(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -52,7 +52,7 @@ module.exports = {
 	},
 
 	deleteUniform : function (req,res){
-		model.get(req, function (error,result){
+		model.deleteUniform(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

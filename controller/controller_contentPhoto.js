@@ -9,7 +9,7 @@ var data = {
 
 module.exports = {
 	getContentPhoto : function (req,res){
-		model.get(req, function (error,result){
+		model.getContentPhoto(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -23,7 +23,7 @@ module.exports = {
 	},
 
 	postContentPhoto : function (req,res){
-		model.get(req, function (error,result){
+		model.postContentPhoto(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -37,7 +37,7 @@ module.exports = {
 	},
 
 	putContentPhoto  : function (req,res){
-		model.get(req, function (error,result){
+		model.putContentPhoto(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -51,7 +51,7 @@ module.exports = {
 	},
 
 	deleteContentPhoto :  function (req,res){
-		model.get(req, function (error,result){
+		model.deleteContentPhoto(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

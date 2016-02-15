@@ -9,7 +9,7 @@ var data = {
 
 module.exports = {
 	getResponseAttend : function (req,res){
-		model.get(req, function (error,result){
+		model.getResponseAttend(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

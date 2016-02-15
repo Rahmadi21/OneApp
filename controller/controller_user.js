@@ -1,4 +1,4 @@
-var model = require("../models/user.js");
+var model = require("../models/tbl_user.js");
 
 var data = {
 
@@ -9,17 +9,22 @@ var data = {
 
 var controller = {
 	getuser: function (req,res){
-		model.get(req,function (error,result){
+		model.getuser(req,function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
 			}
+			else{
+				data["status"] = "success";
+				data["detail"] = result;
+			}
+			res.json(data);
 			
 		})
 	},
 
 	postUser : function (req,res){
-		model.get(req, function (error,result){
+		model.postUser(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -33,7 +38,7 @@ var controller = {
 	},
 
 	putUser : function (req,res){
-		model.get(req, function (error,result){
+		model.putUser(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -47,7 +52,7 @@ var controller = {
 	},
 
 	deleteUser : function (req,res){
-		model.get(req, function (error,result){
+		model.deleteUser(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -61,7 +66,7 @@ var controller = {
 	},
 
 	getCatUser : function (req,res){
-		model.get(req, function (error,result){
+		model.getCatUser(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

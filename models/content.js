@@ -8,7 +8,7 @@ module.exports = {
 
 	var id = req.query.id;
 	if(id){
-	con.query("SELECT * from tbl_konten where id=?",[id], function (err, rows, fields){
+	con.query("SELECT tbl_konten.*,tbl_kat_konten.konten,tbl_user.username as penulis from tbl_konten INNER JOIN tbl_kat_konten ON tbl_konten.id_kat_konten = tbl_kat_konten.id inner join tbl_user on tbl_konten.id_user = tbl_user.id where id=?",[id], function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{
@@ -17,7 +17,7 @@ module.exports = {
 		});	
 	}
 	else{
-	con.query("SELECT * from tbl_konten", function (err, rows, fields){
+	con.query("SELECT tbl_konten.*,tbl_kat_konten.konten,tbl_user.username as penulis from tbl_konten INNER JOIN tbl_kat_konten ON tbl_konten.id_kat_konten = tbl_kat_konten.id inner join tbl_user on tbl_konten.id_user = tbl_user.id ", function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{

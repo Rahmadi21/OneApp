@@ -9,7 +9,7 @@ var data = {
 
 module.exports = {
 	getScore : function (req,res){
-		model.get(req, function (error,result){
+		model.getScore(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -23,7 +23,7 @@ module.exports = {
 	},
 
 	postScore : function (req,res){
-		model.get(req, function (error,result){
+		model.postScore(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -37,7 +37,7 @@ module.exports = {
 	},
 	
 	putScore  :function (req,res){
-		model.get(req, function (error,result){
+		model.putScore(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -51,7 +51,7 @@ module.exports = {
 	},
 
 	deleteScore : function (req,res){
-		model.get(req, function (error,result){
+		model.deleteScore(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

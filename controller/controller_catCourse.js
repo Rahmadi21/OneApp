@@ -9,7 +9,7 @@ var data = {
 
 module.exports = {
 	getCatCourse : function (req,res){
-		model.get(req, function (error,result){
+		model.getCatCourse(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -22,7 +22,7 @@ module.exports = {
 		});
 	},
 	postCatCourse : function (req,res){
-		model.get(req, function (error,result){
+		model.postCatCourse(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -35,7 +35,7 @@ module.exports = {
 		});
 	},
 	putCatCourse  : function (req,res){
-		model.get(req, function (error,result){
+		model.putCatCourse(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -48,7 +48,7 @@ module.exports = {
 		});
 	},
 	deleteCatCourse : function (req,res){
-		model.get(req, function (error,result){
+		model.deleteCatCourse(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

@@ -7,7 +7,7 @@ var data = {
 
 module.exports = {
 	getCatContent : function (req,res){
-		model.get(function (error,result){
+		model.getCatContent(function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -22,7 +22,7 @@ module.exports = {
 
 
 	postCatContent : function (req,res){
-		model.get(req, function (error,result){
+		model.postCatContent(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -36,7 +36,7 @@ module.exports = {
 	},
 
 	putCatContent  : function (req,res){
-		model.get(req, function (error,result){
+		model.putCatContent(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -50,7 +50,7 @@ module.exports = {
 	},
 
 	deleteCatContent : function (req,res){
-		model.get(req, function (error,result){
+		model.deleteCatContent(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

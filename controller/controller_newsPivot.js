@@ -1,8 +1,15 @@
 var model = require("../models/newsPivot.js");
 
+var data = {
+
+	"status" : "error",
+	"detail" : "data not found"
+	
+};
+
 module.exports = {
 	getNewsPivot : function (req,res){
-		model.get(req, function (error,result){
+		model.getNewsPivot(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

@@ -9,7 +9,7 @@ var data = {
 
 module.exports = {
 	getCatPosition : function (req,res){
-		model.get(req, function (error,result){
+		model.getCatPosition(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -23,7 +23,7 @@ module.exports = {
 	},
 
 	postCatPosition : function (req,res){
-		model.get(req, function (error,result){
+		model.postCatPosition(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -37,7 +37,7 @@ module.exports = {
 	},
 
 	putCatPosition  : function (req,res){
-		model.get(req, function (error,result){
+		model.putCatPosition(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -51,7 +51,7 @@ module.exports = {
 	},
 
 	deleteCatPosition : function (req,res){
-		model.get(req, function (error,result){
+		model.deleteCatPosition(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

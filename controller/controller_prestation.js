@@ -1,4 +1,4 @@
-var model = require("../models/response.js");
+var model = require("../models/prestation.js");
 
 var data = {
 
@@ -8,9 +8,38 @@ var data = {
 };
 
 module.exports = {
+	getPrestation : function (req,res){
+		model.getPrestation(function (error,result){
+			if(error){
+				data["status"] = "error";
+				data["detail"] = error;
+			}
+			else{
+				data["status"] = "success";
+				data["detail"] = result;
+			}
+			res.json(data);
+		});
+	}
+	,
 
-	getResponse : function (req,res){
-		model.getResponse(req, function (error,result){
+	postPrestation : function (req,res){
+		model.postPrestation(req, function (error,result){
+			if(error){
+				data["status"] = "error";
+				data["detail"] = error;
+			}
+			else{
+				data["status"] = "success";
+				data["detail"] = result;
+			}
+			res.json(data);
+		});
+	}
+	,
+
+	putPrestation : function (req,res){
+		model.putPrestation(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -23,36 +52,8 @@ module.exports = {
 		});
 	},
 
-	postResponse : function (req,res){
-		model.postResponse(req, function (error,result){
-			if(error){
-				data["status"] = "error";
-				data["detail"] = error;
-			}
-			else{
-				data["status"] = "success";
-				data["detail"] = result;
-			}
-			res.json(data);
-		});
-	},
-
-	putResponse  : function (req,res){
-		model.putResponse(req, function (error,result){
-			if(error){
-				data["status"] = "error";
-				data["detail"] = error;
-			}
-			else{
-				data["status"] = "success";
-				data["detail"] = result;
-			}
-			res.json(data);
-		});
-	},
-
-	deleteResponse : function (req,res){
-		model.deleteResponse(req, function (error,result){
+	deletePrestation : function (req,res){
+		model.deletePrestation(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

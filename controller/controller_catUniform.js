@@ -10,7 +10,7 @@ var data = {
 module.exports = {
 
 	getCatUniform : function (req,res){
-		model.get(req, function (error,result){
+		model.getCatUniform(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -24,7 +24,7 @@ module.exports = {
 	},
 
 	postCatUniform : function (req,res){
-		model.get(req, function (error,result){
+		model.postCatUniform(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -38,7 +38,7 @@ module.exports = {
 	},
 
 	putCatUniform  : function (req,res){
-		model.get(req, function (error,result){
+		model.putCatUniform(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -52,7 +52,7 @@ module.exports = {
 	},
 
 	deleteCatUniform : function (req,res){
-		model.get(req, function (error,result){
+		model.deleteCatUniform(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

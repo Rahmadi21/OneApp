@@ -7,9 +7,9 @@ var connection  = mysql.createConnection(conn);
 module.exports = {
 	getCatPosition : function(req, callback){
 
-	var bagian = req.query.bagian;
-	if(bagian){
-	connection.query("select tbl_jabatan.* , tbl_kat_jabatan.jabatan from tbl_jabatan inner join tbl_kat_jabatan ON tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id WHERE tbl_kat_jabatan.jabatan=?",[bagian], function (err, rows, fields){
+	var jabatan = req.query.jabatan;
+	if(jabatan){
+	connection.query("select tbl_jabatan.* , tbl_kat_jabatan.jabatan from tbl_jabatan inner join tbl_kat_jabatan ON tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id WHERE tbl_kat_jabatan.jabatan=?",[jabatan], function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{
@@ -71,27 +71,20 @@ module.exports = {
 
 	deleteCatPosition : function(req, callback){
 		var id = req.body.id;
-		var data = {
-			"error":1,
-			"one_app":""
-		};
+
 		if(!!id){
 			connection.query("DELETE FROM tbl_kat_jabatan WHERE id=?",[id], function (err, rows, fields){
-				if(!!err){
-					data["tbl_kat_jabatan"] = "error delete data";
-				}else{
-					data["error"] = 0;
-					data["tbl_kat_jabatan"] = " Delete user sukses";
-
-				}
-				res.json(data);
+			if(err){
+				callback(err);
+			}else{
+				callback(null,rows);
+			}
 				
 			});
 
 			
 		}else{
-			data["one_app"] = "Tolong lengkapi semua data (i.e :id)";
-			res.json(data);
+			console.log("error");
 			}
 	}
 }

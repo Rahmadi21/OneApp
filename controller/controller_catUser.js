@@ -1,4 +1,4 @@
-var model = require("../models/catUser.js");
+var model = require("../models/tbl_kat_user.js");
 
 var data = {
 
@@ -9,7 +9,7 @@ var data = {
 
 module.exports = {
 	getKatUser : function (req,res){
-		model.get(req, function (error,result){
+		model.getKatUser(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -23,7 +23,7 @@ module.exports = {
 	},
 
 	postKatUser : function (req,res){
-		model.get(req, function (error,result){
+		model.postKatUser(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -37,7 +37,7 @@ module.exports = {
 	},
 
 	putKatUser : function (req,res){
-		model.get(req, function (error,result){
+		model.putKatUser(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -51,7 +51,7 @@ module.exports = {
 	},
 
 	deleteKatUser : function (req,res){
-		model.get(req, function (error,result){
+		model.deleteKatUser(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

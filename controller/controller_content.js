@@ -9,7 +9,7 @@ var data = {
 
 module.exports = {
 	getContent : function (req,res){
-		model.get(req, function (error,result){
+		model.getContent(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -23,7 +23,7 @@ module.exports = {
 	},
 	
 	postContent : function (req,res){
-		model.get(req, function (error,result){
+		model.postContent(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -37,7 +37,7 @@ module.exports = {
 	},
 
 	putContent : function (req,res){
-		model.get(req, function (error,result){
+		model.putContent(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -51,7 +51,7 @@ module.exports = {
 	},
 
 	deleteContent : function (req,res){
-		model.get(req, function (error,result){
+		model.deleteContent(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

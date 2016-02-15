@@ -9,7 +9,7 @@ var data = {
 
 module.exports = {
 	getCourse : function (req,res){
-		model.get(req, function (error,result){
+		model.getCourse(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -23,7 +23,7 @@ module.exports = {
 	},
 
 postCourse : function (req,res){
-		model.get(req, function (error,result){
+		model.postCourse(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -36,7 +36,7 @@ postCourse : function (req,res){
 		});
 	},	
 putCourse  : function (req,res){
-		model.get(req, function (error,result){
+		model.putCourse(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -50,7 +50,7 @@ putCourse  : function (req,res){
 	},
 
 	deleteCourse : function (req,res){
-		model.get(req, function (error,result){
+		model.deleteCourse(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

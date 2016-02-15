@@ -10,7 +10,7 @@ var data = {
 module.exports = {
 
 	getNewsTag : function (req,res){
-		model.get(req, function (error,result){
+		model.getNewsTag(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -24,7 +24,7 @@ module.exports = {
 	},
 
 	postNewsTag : function (req,res){
-		model.get(req, function (error,result){
+		model.postNewsTag(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -38,7 +38,7 @@ module.exports = {
 	},
 
 	putNewsTag  : function (req,res){
-		model.get(req, function (error,result){
+		model.putNewsTag(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -52,7 +52,7 @@ module.exports = {
 	},
 
 	deleteNewsTag : function (req,res){
-		model.get(req, function (error,result){
+		model.deleteNewsTag(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

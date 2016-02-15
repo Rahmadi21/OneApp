@@ -1,4 +1,4 @@
-var model = require("../models/divisionFavorite.js");
+var model = require("../models/prestationPivot.js");
 
 var data = {
 
@@ -8,8 +8,8 @@ var data = {
 };
 
 module.exports = {
-	getFavorite : function (req,res){
-		model.getFavorite(req, function (error,result){
+	getPrestationPivot : function (req,res){
+		model.getPrestationPivot(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

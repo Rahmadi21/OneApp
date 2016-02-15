@@ -20,6 +20,8 @@ var divisionFavorite	= require("./controller/controller_divisionFavorite.js");
 var newsPivot			= require("./controller/controller_newsPivot.js");
 var newsTag				= require("./controller/controller_newsTag.js");
 var position			= require("./controller/controller_position.js");
+var prestation			= require("./controller/controller_prestation.js");
+var prestationPivot		= require("./controller/controller_prestationPivot.js");
 var response			= require("./controller/controller_response.js"); 
 var responseAttend		= require("./controller/controller_responseAttend.js"); 
 var score				= require("./controller/controller_score.js"); 
@@ -28,12 +30,8 @@ var report 				= require("./controller/controller_report.js");
 
 /*-------------END INCLUDE------------------*/
 
-var connection = mysql.createConnection({
-	host	 : 'localhost',
-	user	 : 'root',
-	password : '',
-	database : 'one_app',
-});
+var conn 		= require('./config/conn.js')
+var connection  = mysql.createConnection(conn);
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -173,7 +171,6 @@ app.delete('/contents/cat_content/:cat/courses', course.deleteCourse);
 /*===================== score ===========================*/
 
 app.get('/contents/cat_content/:cat/scores', score.getScore);
-app.get('/contents/cat_content/:cat/scores/:jur')
 
 app.post('/contents/cat_content/:cat/scores', score.postScore);
 
@@ -270,6 +267,24 @@ app.post('/contents/cat_content/:cat/ket_jabatan', position.postPosition);
 app.put('/contents/cat_content/:cat/ket_jabatan', position.putPosition); 
 
 app.delete('/contents/cat_content/:cat/ket_jabatan', position.deletePosition);
+
+/*--------------------------------------------------------*/
+
+/*==================== prestation =======================*/
+
+app.get('/contents/cat_content/:cat/ket_prestasi', prestation.getPrestation);
+
+app.post('/contents/cat_content/:cat/ket_prestasi', prestation.postPrestation);
+
+app.put('/contents/cat_content/:cat/ket_prestasi', prestation.putPrestation); 
+
+app.delete('/contents/cat_content/:cat/ket_prestasi', prestation.deletePrestation);
+
+/*--------------------------------------------------------*/
+
+/*==================== prestasi pivot ==========================*/
+
+app.get('/contents/cat_content/:cat/prestasi_pivot', prestationPivot.getPrestationPivot);
 
 /*--------------------------------------------------------*/
 

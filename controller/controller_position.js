@@ -9,7 +9,7 @@ var data = {
 
 module.exports = {
 	getPosition : function (req,res){
-		model.get(req, function (error,result){
+		model.getPosition(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -24,7 +24,7 @@ module.exports = {
 	,
 
 	postPosition : function (req,res){
-		model.get(req, function (error,result){
+		model.postPosition(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -39,7 +39,7 @@ module.exports = {
 	,
 
 	putPosition : function (req,res){
-		model.get(req, function (error,result){
+		model.putPosition(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -53,7 +53,7 @@ module.exports = {
 	},
 
 	deletePosition : function (req,res){
-		model.get(req, function (error,result){
+		model.deletePosition(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

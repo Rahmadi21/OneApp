@@ -7,7 +7,8 @@ module.exports = {
 
 	var id = req.query.id;
 	var kon = req.query.konten;
-	if(id && !kon){
+	var tag = req.query.tag;
+	if(id && !kon && !tag){
 	connection.query("select * from tbl_konten_pivot where id=?",[id], function (err, rows, fields){
 			if(err){
 				callback(err);
@@ -16,8 +17,17 @@ module.exports = {
 			}
 		});	
 	}
-	else if(!id && kon){
+	else if(!id && kon && !tag){
 	connection.query("SELECT * from tbl_konten_pivot where id_konten=?",[kon], function (err, rows, fields){
+			if(err){
+				callback(err);
+			}else{
+				callback(null,rows);
+			}
+		});	
+	}
+	else if(!id && !kon && tag){
+	connection.query("SELECT * from tbl_konten_pivot where id_tag=?",[tag], function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{
