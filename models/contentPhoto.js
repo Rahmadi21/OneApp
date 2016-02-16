@@ -6,9 +6,19 @@ var connection  = mysql.createConnection(conn);
 module.exports = {
 	getContentPhoto : function(req, callback){
 
-	var id = req.query.id_konten;
-	if(id){
-	connection.query("SELECT * from tbl_foto where id_konten=?",[id], function (err, rows, fields){
+	var kon = req.query.konten;
+	var id  = req.query.id;
+	if(kon && !id){
+	connection.query("SELECT * from tbl_foto where id_konten=?",[kon], function (err, rows, fields){
+			if(err){
+				callback(err);
+			}else{
+				callback(null,rows);
+			}
+		});	
+	}
+	else if(!kon && id){
+	connection.query("SELECT * from tbl_foto where id=?",[id], function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{

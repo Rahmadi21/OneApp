@@ -64,9 +64,8 @@ var controller = {
 			res.json(data);
 		});
 	},
-
-	getCatUser : function (req,res){
-		model.getCatUser(req, function (error,result){
+	getCatUser: function (req,res){
+		model.getCatUser(req,function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
@@ -76,7 +75,8 @@ var controller = {
 				data["detail"] = result;
 			}
 			res.json(data);
-		});
+			
+		})
 	}
 
 }
