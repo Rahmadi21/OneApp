@@ -284,7 +284,7 @@ app.delete('/contents/cat_content/:cat/ket_prestasi', prestation.deletePrestatio
 
 /*==================== prestasi pivot ==========================*/
 
-app.get('/contents/cat_content/:cat/prestasi_pivot', prestationPivot.getPrestationPivot);
+app.get('/contents/cat_content/:cat/pivot', prestationPivot.getPrestationPivot);
 
 /*--------------------------------------------------------*/
 
