@@ -12,6 +12,7 @@
     "body-parser": "^1.14.2",
     "express": "^4.13.4",
     "knex": "^0.10.0-rc1",
+    "lodash": "^4.4.0",
     "mysql": "^2.10.2",
     "node-uuid": "^1.4.7",
     "sequelize": "^3.19.2"

@@ -9,7 +9,7 @@ var data = {
 
 module.exports = {
 	getFavorite : function (req,res){
-		model.getFavorite(req, function (error,result){
+		model.getFavorite(function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
