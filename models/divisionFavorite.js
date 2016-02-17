@@ -17,7 +17,7 @@ module.exports = {
 			rows = _.groupBy(rows, 'judul');
 			rows = _.reduce(rows, function(total, jurusans, namaJurusan) {
 				var jurusan={}
-				jurusan.nama = namaJurusan;
+				jurusan.jurusan = namaJurusan;
 
 				jurusan.total = _.reduce(jurusans, function(total,jurusans){
 					if(jurusans.user_id){
@@ -29,6 +29,11 @@ module.exports = {
 				total.push(jurusan);
 				return total;
 			}, []);
+			rows = _.orderBy(rows, ['total'],['desc']);
+			rows = rows.map(function(detail,key){
+				detail.rank = key+1;
+				return detail;
+			})
 			callback(null, rows);
 	
 		}
