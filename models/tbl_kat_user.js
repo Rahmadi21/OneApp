@@ -1,27 +1,30 @@
-var mysql 		= require('mysql');
 var uuid  		= require('node-uuid');
-var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
+
 module.exports = {
 	getKatUser : function (req, callback){
 
 	var id = req.query.id;
 	if(id){
-	connection.query("SELECT * from tbl_kat_user where id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows)
-			}
-		});	
+		knex.select()
+		.from('tbl_kat_konten')
+		.whereRaw("id=?",[id])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows)
+		}
+		});
 	}
 	else{
-	connection.query("SELECT * from tbl_kat_user", function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows)
-			}
+		knex.select().from('tbl_kat_user').then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows)
+		}
 		});
 	}
 
@@ -29,15 +32,17 @@ module.exports = {
 
 	postKatUser : function (req, callback){
 	
-		var id = req.body.id;
+		var id = req.body.id || uuid.v4();
 		var kategori = req.body.kategori;
 
 		if(id && kategori){
-			connection.query("INSERT INTO tbl_kat_user VALUES(?,?)",[id, kategori], function (err, rows, fields){
+			knex('tbl_kat_user')
+			.insert(knex.raw('values(?,?)',[id,kategori]))
+			.then(function (err, rows, fields){
 				if(err){
 					callback(err);
 				}else{
-					callback(null,rows)
+					callback(null, rows);
 				}
 		
 			});
@@ -46,20 +51,21 @@ module.exports = {
 			else{
 				console.log("error");
 		}
-	},
+	}
+	,
 
 	putKatUser : function (req, callback){
 		var id = req.body.id;
 		var kategori = req.body.kategori;
 
 		if(id && kategori){
-			connection.query("UPDATE tbl_kat_user SET kategori=? WHERE id=?",[kategori, id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
-			
+			knex.raw("UPDATE tbl_kat_user SET kategori=? WHERE id=?",[kategori, id])
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}			
 		});
 		
 		}
@@ -72,12 +78,15 @@ module.exports = {
 		var id = req.body.id;
 
 		if(id){
-			connection.query("DELETE FROM tbl_kat_user WHERE id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex('tbl_kat_user')
+			.whereRaw("id = ?",[id])
+			.del()
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 			});
 
 			

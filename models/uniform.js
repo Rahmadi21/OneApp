@@ -1,7 +1,6 @@
-var mysql 		= require('mysql');
-var uuID 		= require('node-uuid');
-var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
+var uuID  		= require('node-uuid');
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 
 module.exports = {
 
@@ -58,12 +57,15 @@ module.exports = {
 	var Foto = req.body.foto;
 
 	if(Id && Id_Kat_Seragam && Id_Konten && Nama && Waktu_Pakai && Foto){
-		connection.query("INSERT INTO tbl_seragam VALUES(?,?,?,?,?,?)",[Id,Id_Kat_Seragam,Id_Konten,Nama,Waktu_Pakai,Foto],function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null, rows);
-			}
+
+			knex('tbl_kat_konten')
+			.insert(knex.raw("VALUES(?,?,?,?,?,?)",[Id,Id_Kat_Seragam,Id_Konten,Nama,Waktu_Pakai,Foto]))
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 
 		});
 	}else{
@@ -81,12 +83,14 @@ module.exports = {
 	var Foto = req.body.foto;
 
 	if(Id && Id_Kat_Seragam && Id_Konten && Nama && Waktu_Pakai && Foto){
-		connection.query("UPDATE tbl_seragam SET id_kat_seragam=?, id_konten=?, nama=?, waktu_pakai=?, foto=? WHERE id=?",[Id_Kat_Seragam,Id_Konten,Nama,Waktu_Pakai,Foto,Id],function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null, rows);
-			}
+
+			knex.raw("UPDATE tbl_seragam SET id_kat_seragam=?, id_konten=?, nama=?, waktu_pakai=?, foto=? WHERE id=?",[Id_Kat_Seragam,Id_Konten,Nama,Waktu_Pakai,Foto,Id])
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 			
 		});
 	}else{
@@ -98,12 +102,15 @@ module.exports = {
 	deleteUniform : function (req,callback){
 	var Id = req.body.id;
 	if(Id){
-		connection.query("DELETE FROM tbl_seragam WHERE id=?",[Id],function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null, rows);
-			}
+		knex('tbl_seragam')
+			.whereRaw("id = ?",[id])
+			.del()
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 	}else{
 		console.log("error");
