@@ -1,7 +1,6 @@
-var mysql 		= require('mysql');
 var uuid  		= require('node-uuid');
-var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 module.exports = {
 	getCourse : function(req, callback){
 
@@ -9,39 +8,75 @@ module.exports = {
 	var cat = req.query.kategori;
 	var jur = req.query.jurusan;
 	if(id && !cat && !jur){
-	connection.query("select tbl_nama_pelajaran.* ,tbl_kat_pelajaran.nama_kat as kategori, tbl_konten.judul as jurusan from tbl_nama_pelajaran inner join tbl_konten on tbl_nama_pelajaran.id_konten = tbl_konten.id inner join tbl_kat_pelajaran on tbl_nama_pelajaran.id_kategori = tbl_kat_pelajaran.id where tbl_nama_pelajaran.id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	
+		knex('tbl_nama_pelajaran')
+		.join('tbl_kat_pelajaran','tbl_kat_pelajaran.id','tbl_nama_pelajaran.id_kategori')
+		.join('tbl_konten','tbl_konten.id','tbl_nama_pelajaran.id_konten')
+		.select('tbl_nama_pelajaran.*' ,'tbl_kat_pelajaran.nama_kat as kategori', 'tbl_konten.judul as jurusan')
+		.whereRaw('tbl_nama_pelajaran.id = ?',[id])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
 	else if(!id && cat && !jur){
-		connection.query("select tbl_nama_pelajaran.* ,tbl_kat_pelajaran.nama_kat as kategori, tbl_konten.judul as jurusan from tbl_nama_pelajaran inner join tbl_konten on tbl_nama_pelajaran.id_konten = tbl_konten.id inner join tbl_kat_pelajaran on tbl_nama_pelajaran.id_kategori = tbl_kat_pelajaran.id WHERE tbl_kat_pelajaran.nama_kat=?",[cat], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+
+		knex('tbl_nama_pelajaran')
+		.join('tbl_kat_pelajaran','tbl_kat_pelajaran.id','tbl_nama_pelajaran.id_kategori')
+		.join('tbl_konten','tbl_konten.id','tbl_nama_pelajaran.id_konten')
+		.select('tbl_nama_pelajaran.*' ,'tbl_kat_pelajaran.nama_kat as kategori', 'tbl_konten.judul as jurusan')
+		.whereRaw('tbl_kat_pelajaran.nama_kat = ?',[cat])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
 	else if(!id && !cat && jur){
-		connection.query("select tbl_nama_pelajaran.* ,tbl_kat_pelajaran.nama_kat as kategori, tbl_konten.judul as jurusan from tbl_nama_pelajaran inner join tbl_konten on tbl_nama_pelajaran.id_konten = tbl_konten.id inner join tbl_kat_pelajaran on tbl_nama_pelajaran.id_kategori = tbl_kat_pelajaran.id WHERE tbl_konten.judul=?",[jur], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+		knex('tbl_nama_pelajaran')
+		.join('tbl_kat_pelajaran','tbl_kat_pelajaran.id','tbl_nama_pelajaran.id_kategori')
+		.join('tbl_konten','tbl_konten.id','tbl_nama_pelajaran.id_konten')
+		.select('tbl_nama_pelajaran.*' ,'tbl_kat_pelajaran.nama_kat as kategori', 'tbl_konten.judul as jurusan')
+		.whereRaw('tbl_konten.judul = ?',[jur])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
+		});	
+	}
+	else if(!id && cat && jur){
+		knex('tbl_nama_pelajaran')
+		.join('tbl_kat_pelajaran','tbl_kat_pelajaran.id','tbl_nama_pelajaran.id_kategori')
+		.join('tbl_konten','tbl_konten.id','tbl_nama_pelajaran.id_konten')
+		.select('tbl_nama_pelajaran.*' ,'tbl_kat_pelajaran.nama_kat as kategori', 'tbl_konten.judul as jurusan')
+		.whereRaw('tbl_konten.judul = ? AND tbl_kat_pelajaran.nama_kat = ?',[jur,cat])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
 	else{
-	connection.query("select tbl_nama_pelajaran.* ,tbl_kat_pelajaran.nama_kat as kategori, tbl_konten.judul as jurusan from tbl_nama_pelajaran inner join tbl_konten on tbl_nama_pelajaran.id_konten = tbl_konten.id inner join tbl_kat_pelajaran on tbl_nama_pelajaran.id_kategori = tbl_kat_pelajaran.id", function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex('tbl_nama_pelajaran')
+		.join('tbl_kat_pelajaran','tbl_kat_pelajaran.id','tbl_nama_pelajaran.id_kategori')
+		.join('tbl_konten','tbl_konten.id','tbl_nama_pelajaran.id_konten')
+		.select('tbl_nama_pelajaran.*' ,'tbl_kat_pelajaran.nama_kat as kategori', 'tbl_konten.judul as jurusan')
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
+
 		});
 	}
 
@@ -54,12 +89,15 @@ postCourse : function(req, callback){
 		var nama_pelajaran = req.body.nama_pelajaran;
 
 		if(id && id_konten && id_kategori && nama_pelajaran){
-			connection.query("INSERT INTO tbl_nama_pelajaran VALUES(?,?,?,?)",[id, id_konten, id_kategori, nama_pelajaran], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	
+			knex('tbl_nama_pelajaran')
+			.insert(knex.raw('VALUES(?,?,?,?)',[id, id_konten, id_kategori, nama_pelajaran]))
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 	});
 		
 		}else{
@@ -74,12 +112,14 @@ putCourse  : function(req, callback){
 	var nama_pelajaran = req.body.nama_pelajaran;
 
 	if(!!id && !!id_konten && !!id_kategori && !!nama_pelajaran){
-		connection.query("UPDATE tbl_nama_pelajaran SET id_konten=?, id_kategori=?, nama_pelajaran=? WHERE id=?",[id, id_konten, id_kategori, nama_pelajaran], function (err, rows, fileds){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+		
+			knex.raw("UPDATE tbl_nama_pelajaran SET id_konten=?, id_kategori=?, nama_pelajaran=? WHERE id=?",[id, id_konten, id_kategori, nama_pelajaran])
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 	}else {
 		console.log("error");
@@ -91,12 +131,15 @@ putCourse  : function(req, callback){
 	var Id = req.body.id || uuid.v4();
 
 	if(!!Id){
-		connection.query("DELETE FROM tbl_nama_pelajaran WHERE id=?",[Id],function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex('tbl_nama_pelajaran')
+			.whereRaw("id = ?",[id])
+			.del()
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 	}else{
 		console.log("error");

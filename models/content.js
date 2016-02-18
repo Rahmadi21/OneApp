@@ -1,28 +1,36 @@
-var mysql = require('mysql');
-var uuID = require('node-uuid');
-var connection 		= require('../config/conn.js')
-var con  = mysql.createConnection(connection);
-
+var uuid  		= require('node-uuid');
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 module.exports = {
 	getContent : function (req,callback){
 
 	var id = req.query.id;
 	if(id){
-	con.query("SELECT tbl_konten.*,tbl_kat_konten.konten,tbl_user.username as penulis from tbl_konten INNER JOIN tbl_kat_konten ON tbl_konten.id_kat_konten = tbl_kat_konten.id inner join tbl_user on tbl_konten.id_user = tbl_user.id where tbl_konten.id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	
+		knex('tbl_konten')
+		.join('tbl_kat_konten','tbl_kat_konten.id','tbl_konten.id_kat_konten')
+		.join('tbl_user','tbl_user.id','tbl_konten.id_user')
+		.select('tbl_konten.*','tbl_kat_konten.konten','tbl_user.username as penulis')
+		.whereRaw('tbl_konten.id = ?',[id])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
 	else{
-	con.query("SELECT tbl_konten.*,tbl_kat_konten.konten,tbl_user.username as penulis from tbl_konten INNER JOIN tbl_kat_konten ON tbl_konten.id_kat_konten = tbl_kat_konten.id inner join tbl_user on tbl_konten.id_user = tbl_user.id ", function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex('tbl_konten')
+		.join('tbl_kat_konten','tbl_kat_konten.id','tbl_konten.id_kat_konten')
+		.join('tbl_user','tbl_user.id','tbl_konten.id_user')
+		.select('tbl_konten.*','tbl_kat_konten.konten','tbl_user.username as penulis')
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});
 	}
 
@@ -38,12 +46,14 @@ module.exports = {
 	var Status = req.body.status.toString();
 
 	if(Id && Id_Kat_Konten && Id_User && Tgl_Posting && Judul && Isi && Status){
-		con.query("INSERT INTO tbl_konten VALUES(?,?,?,?,?,?,?)",[Id,Id_Kat_Konten,Id_User,Tgl_Posting,Judul,Isi,Status],function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+		knex('tbl_konten')
+			.insert(knex.raw('VALUES(?,?,?,?,?,?,?)',[Id,Id_Kat_Konten,Id_User,Tgl_Posting,Judul,Isi,Status]))
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 	}else{
 		console.log("error");
@@ -59,12 +69,13 @@ module.exports = {
 	var Status = req.body.status;
 
 	if(Id && Id_Kat_Konten && Id_User && Tgl_Posting && Judul && Isi && Status){
-		con.query("UPDATE tbl_konten SET id_kat_konten=?, id_user=?, tgl_posting=?, judul=?, isi=?, status=? WHERE id=?",[Id_Kat_Konten,Id_User,Tgl_Posting,Judul,Isi,Status,Id],function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+		knex.raw("UPDATE tbl_konten SET id_kat_konten=?, id_user=?, tgl_posting=?, judul=?, isi=?, status=? WHERE id=?",[Id_Kat_Konten,Id_User,Tgl_Posting,Judul,Isi,Status,Id])
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 	}else{
 		console.log("error");
@@ -74,12 +85,15 @@ module.exports = {
 	var Id = req.body.id;
 
 	if(!!Id){
-		con.query("DELETE FROM tbl_konten WHERE id=?",[Id],function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex('tbl_konten')
+			.whereRaw("id = ?",[id])
+			.del()
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 	}else{
 		console.log("error");

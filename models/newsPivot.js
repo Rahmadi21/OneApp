@@ -1,7 +1,6 @@
-var mysql 		= require('mysql');
-var uuID 		= require('node-uuid');
-var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
+var uuid  		= require('node-uuid');
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 module.exports = {
 	getNewsPivot : function (req, callback){
 
@@ -9,7 +8,7 @@ module.exports = {
 	var kon = req.query.konten;
 	var tag = req.query.tag;
 	if(id && !kon && !tag){
-	connection.query("select * from tbl_konten_pivot where id=?",[id], function (err, rows, fields){
+	knex.select().from('tbl_konten_pivot').whereRaw('id = ?',[id]).then(function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{
@@ -18,7 +17,7 @@ module.exports = {
 		});	
 	}
 	else if(!id && kon && !tag){
-	connection.query("SELECT * from tbl_konten_pivot where id_konten=?",[kon], function (err, rows, fields){
+	knex.select().from('tbl_konten_pivot').whereRaw('id_konten = ?',[kon]).then(function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{
@@ -27,7 +26,8 @@ module.exports = {
 		});	
 	}
 	else if(!id && !kon && tag){
-	connection.query("SELECT * from tbl_konten_pivot where id_tag=?",[tag], function (err, rows, fields){
+
+			knex.select().from('tbl_konten_pivot').whereRaw('id_tag = ?',[tag]).then(function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{
@@ -37,7 +37,7 @@ module.exports = {
 	}
 	
 	else{
-	connection.query("SELECT * from tbl_konten_pivot", function (err, rows, fields){
+	knex.select().from('tbl_konten_pivot').then(function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{

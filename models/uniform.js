@@ -9,7 +9,13 @@ module.exports = {
 	var cat = req.query.jurusan;
 	var cat2= req.query.kategori;
 	if(id && !cat && !cat2){
-	connection.query("select tbl_seragam.id, tbl_kat_seragam.kategori, tbl_konten.judul as jurusan, tbl_seragam.nama, tbl_seragam.waktu_pakai, tbl_seragam.foto from tbl_seragam inner join tbl_konten on tbl_seragam.id_konten = tbl_konten.id inner join tbl_kat_seragam on tbl_seragam.id_kat_seragam = tbl_kat_seragam.id where tbl_seragam.id=?",[id], function (err, rows, fields){
+	
+		knex('tbl_seragam')
+		.join('tbl_konten','tbl_konten.id','tbl_seragam.id_konten')
+		.join('tbl_kat_seragam','tbl_kat_seragam.id','tbl_seragam.id_kat_seragam')
+		.select('tbl_seragam.id', 'tbl_kat_seragam.kategori', 'tbl_konten.judul as jurusan', 'tbl_seragam.nama', 'tbl_seragam.waktu_pakai', 'tbl_seragam.foto')
+		.whereRaw('tbl_seragam.id=?',[id])
+		.then(function (err, rows, fields){
 		if(err){
 			callback(err);
 		}else{
@@ -18,16 +24,28 @@ module.exports = {
 		});	
 	}
 	else if(!id && cat && !cat2){
-	connection.query("select tbl_seragam.id, tbl_kat_seragam.kategori, tbl_konten.judul as jurusan, tbl_seragam.nama, tbl_seragam.waktu_pakai, tbl_seragam.foto from tbl_seragam inner join tbl_konten on tbl_seragam.id_konten = tbl_konten.id inner join tbl_kat_seragam on tbl_seragam.id_kat_seragam = tbl_kat_seragam.id where tbl_konten.judul=?",[cat], function (err, rows, fields){
+
+		knex('tbl_seragam')
+		.join('tbl_konten','tbl_konten.id','tbl_seragam.id_konten')
+		.join('tbl_kat_seragam','tbl_kat_seragam.id','tbl_seragam.id_kat_seragam')
+		.select('tbl_seragam.id', 'tbl_kat_seragam.kategori', 'tbl_konten.judul as jurusan', 'tbl_seragam.nama', 'tbl_seragam.waktu_pakai', 'tbl_seragam.foto')
+		.whereRaw('tbl_konten.judul=?',[cat])
+		.then(function (err, rows, fields){
 		if(err){
-			callback(err)
+			callback(err);
 		}else{
-			callback(null, rows)
+			callback(null, rows);
 		}
 		});	
 	}
 	else if(!id && !cat && cat2){
-		connection.query("select tbl_seragam.id, tbl_kat_seragam.kategori, tbl_konten.judul as jurusan, tbl_seragam.nama, tbl_seragam.waktu_pakai, tbl_seragam.foto from tbl_seragam inner join tbl_konten on tbl_seragam.id_konten = tbl_konten.id inner join tbl_kat_seragam on tbl_seragam.id_kat_seragam = tbl_kat_seragam.id WHERE tbl_kat_seragam.kategori=?",[cat2], function (err, rows, fields){
+
+		knex('tbl_seragam')
+		.join('tbl_konten','tbl_konten.id','tbl_seragam.id_konten')
+		.join('tbl_kat_seragam','tbl_kat_seragam.id','tbl_seragam.id_kat_seragam')
+		.select('tbl_seragam.id', 'tbl_kat_seragam.kategori', 'tbl_konten.judul as jurusan', 'tbl_seragam.nama', 'tbl_seragam.waktu_pakai', 'tbl_seragam.foto')
+		.whereRaw('tbl_kat_seragam.kategori=?',[cat2])
+		.then(function (err, rows, fields){
 		if(err){
 			callback(err);
 		}else{
@@ -37,11 +55,15 @@ module.exports = {
 	}
 	
 	else{
-	connection.query("select tbl_seragam.id, tbl_kat_seragam.kategori, tbl_konten.judul as jurusan, tbl_seragam.nama, tbl_seragam.waktu_pakai, tbl_seragam.foto from tbl_seragam inner join tbl_konten on tbl_seragam.id_konten = tbl_konten.id inner join tbl_kat_seragam on tbl_seragam.id_kat_seragam = tbl_kat_seragam.id ", function (err, rows, fields){
+	knex('tbl_seragam')
+		.join('tbl_konten','tbl_konten.id','tbl_seragam.id_konten')
+		.join('tbl_kat_seragam','tbl_kat_seragam.id','tbl_seragam.id_kat_seragam')
+		.select('tbl_seragam.id', 'tbl_kat_seragam.kategori', 'tbl_konten.judul as jurusan', 'tbl_seragam.nama', 'tbl_seragam.waktu_pakai', 'tbl_seragam.foto')
+		.then(function (err, rows, fields){
 		if(err){
-			callback(err)
+			callback(err);
 		}else{
-			callback(null, rows)
+			callback(null, rows);
 		}
 		});
 	}
