@@ -1,7 +1,6 @@
-var mysql 		= require('mysql');
 var uuid  		= require('node-uuid');
-var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 
 module.exports = {
 	getReport :function (req, callback){
@@ -57,12 +56,14 @@ module.exports = {
 	var tgl_report = req.body.tgl_report;
 
 	if(id && id_user_pelapor && id_user_terlapor && id_respon && status && tgl_report){
-		connection.query("INSERT INTO tbl_report VALUES(?,?,?,?,?,?)",[id,id_user_pelapor,id_user_terlapor,id_respon,status,tgl_report],function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex('tbl_report')
+			.insert(knex.raw('VALUES(?,?,?,?,?,?)',[id,id_user_pelapor,id_user_terlapor,id_respon,status,tgl_report]))
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 	}else{
 		console.log("error");
@@ -75,12 +76,14 @@ module.exports = {
 	var status = req.body.status.toString();
 
 	if(id && status){
-		connection.query("UPDATE tbl_report SET status=? WHERE id=?",[status,id],function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex.raw("UPDATE tbl_report SET status=? WHERE id=?",[status,id])
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
+
 		});
 	}else{
 		console.log("error");
@@ -92,12 +95,15 @@ module.exports = {
 		var id = req.body.id;
 
 		if(!!id){
-			connection.query("DELETE FROM tbl_report WHERE id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}				
+			knex('tbl_report')
+			.whereRaw("id = ?",[id])
+			.del()
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}		
 			});
 
 			

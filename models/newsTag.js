@@ -1,7 +1,6 @@
-var mysql 		= require('mysql');
 var uuID  		= require('node-uuid');
-var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 
 module.exports = {
 
@@ -46,12 +45,14 @@ module.exports = {
 	var Tag = req.body.id_kat_respon;
 
 	if(Id && Id_Konten && Tag){
-		connection.query("INSERT INTO tbl_konten_pivot VALUES(?,?,?)",[Id,Id_Konten,Tag],function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex('tbl_konten_pivot')
+			.insert(knex.raw('VALUES(?,?,?)',[Id,Id_Konten,Tag]))
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 	}else{
 		console.log("error");
@@ -65,12 +66,13 @@ module.exports = {
 	var Tag = req.body.id_kat_respon;
 
 	if(Id && Id_Konten && Tag){
-		connection.query("UPDATE tbl_konten_pivot SET id_konten=?, id_kat_respon=?, id_user=?, tgl_respon=?,isi=? WHERE id=?",[Id_Konten,Id_Kat_Respon,Id_User,Tgl_Respon,Isi,Id],function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex.raw("UPDATE tbl_konten_pivot SET id_konten=?, id_kat_respon=?, id_user=?, tgl_respon=?,isi=? WHERE id=?",[Id_Konten,Id_Kat_Respon,Id_User,Tgl_Respon,Isi,Id])
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 	}else{
 		console.log("error");
@@ -82,12 +84,16 @@ module.exports = {
 	var Id = req.body.id;
 
 	if(!!Id){
-		connection.query("DELETE FROM tbl_konten_tag WHERE id=?",[Id],function (err, rows, fields){
-					if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex('tbl_konten_pivot')
+			.whereRaw("id = ?",[id])
+			.del()
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
+
 		});
 	}else{
 		console.log("error");

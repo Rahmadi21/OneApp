@@ -1,7 +1,6 @@
-var mysql 		= require('mysql');
-var uuID  		= require('node-uuid');
-var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
+var uuid  		= require('node-uuid');
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 
 module.exports = {
 	getScore : function (req, callback){
@@ -66,14 +65,15 @@ module.exports = {
 	var nem_rendah = req.body.nem_rendah;
 
 	if(!!id && !!id_konten && !!tahun && !!nem_tinggi){
-		connection.query("INSERT tbl_nem SET id_konten=?, tahun=?, nem_tinggi=?, nem_rendah? WHERE id=?",[id, id_konten,tahun,nem_tinggi, nem_rendah],function (err, rows, fields){
-			if(!!err){
-				data["Data"] = "Error Updating data";
-			}else{
-				data["error"] = 0;
-				data["Data"] = "Updated Book Successfully";
-			}
-			res.json(data);
+
+			knex('tbl_nem')
+			.insert(knex.raw('values(?,?,?,?,?)',[id, id_konten,tahun,nem_tinggi, nem_rendah]))
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 	}else{
 		data["Data"] = "Please provide all required data (i.e : id, id_konten,tahun, nama_pelajaran)";
@@ -97,6 +97,14 @@ module.exports = {
 			}else{
 				callback(null,rows);
 			}
+
+			knex.raw("UPDATE tbl_nem SET id_konten=?, tahun=?, nem_tinggi=?, nem_rendah? WHERE id=?",[id, id_konten, tahun, nem_tinggi, nem_rendah])
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 	}else {
 		console.log("error");
@@ -108,12 +116,15 @@ module.exports = {
 		var id = req.body.id;
 
 		if(!!id){
-			connection.query("DELETE FROM tbl_nem WHERE id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}	
+			knex('tbl_nem')
+			.whereRaw("id = ?",[id])
+			.del()
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}	
 		});
 
 			

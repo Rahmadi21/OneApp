@@ -1,7 +1,6 @@
-var mysql 		= require('mysql');
 var uuid  		= require('node-uuid');
-var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 
 module.exports = {
 	getPrestation : function (callback){
@@ -22,12 +21,14 @@ module.exports = {
 		var peserta = req.body.peserta;
 
 		if(id && id_konten && tingkat && peserta){
-			connection.query("INSERT INTO tbl_jabatan VALUES(?,?,?,?)",[id, id_konten, tingkat, peserta], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex('tbl_prestasi')
+			.insert(knex.raw('VALUES(?,?,?,?)',[id, id_konten, tingkat, peserta]))
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 	});
 		
 			}else{
@@ -42,12 +43,13 @@ module.exports = {
 		var peserta = req.body.peserta;
 
 		if(id && id_konten && tingkat && peserta){
-			connection.query("UPDATE tbl_prestasi SET id_konten=?, tingkat=?, peserta=? WHERE id=?",[id_konten, tingkat, peserta, id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex.raw("UPDATE tbl_prestasi SET id_konten=?, tingkat=?, peserta=? WHERE id=?",[id_konten, tingkat, peserta, id])
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 		
 		}
@@ -60,12 +62,15 @@ module.exports = {
 		var id = req.body.id;
 
 		if(!!id){
-			connection.query("DELETE FROM tbl_prestasi WHERE id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex('tbl_prestasi')
+			.whereRaw("id = ?",[id])
+			.del()
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 			});
 
 			
