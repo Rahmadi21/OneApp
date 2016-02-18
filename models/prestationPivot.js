@@ -5,44 +5,47 @@ var connection  = mysql.createConnection(conn);
 module.exports = {
 	getPrestationPivot : function (req, callback){
 
-	var id = req.query.id;
+var id = req.query.id;
 	var kon = req.query.konten;
 	var peserta = req.query.peserta;
 	if(id && !kon && !peserta){
-	connection.query("select * from tbl_prestasi_pivot where id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	
+	knex.select().from('tbl_prestasi_pivot').whereRaw('id = ?',[id]).then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
+		
+	
 		});	
 	}
 	else if(!id && kon && !peserta){
-	connection.query("SELECT * from tbl_prestasi_pivot where id_konten=?",[kon], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex.select().from('tbl_prestasi_pivot').whereRaw('id_konten = ?',[kon]).then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
 	else if(!id && !kon && peserta){
-	connection.query("SELECT * from tbl_prestasi_pivot where id_prestasi=?",[peserta], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex.select().from('tbl_prestasi_pivot').whereRaw('id_prestasi = ?',[peserta]).then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
 	
 	else{
-	connection.query("SELECT * from tbl_prestasi_pivot", function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex.select().from('tbl_prestasi_pivot').then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});
 	}
 

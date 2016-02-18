@@ -5,53 +5,73 @@ var knex		= require('knex')(conn);
 module.exports = {
 	getScore : function (req, callback){
 
-	var id = req.query.id;
-	var cat = req.query.tahun;
+var id = req.query.id;
+	var tahun = req.query.tahun;
 	var jur = req.query.jurusan;
-	if(id && !cat && !jur){
-	connection.query("select tbl_nem.id, tbl_konten.judul as jurusan, tbl_nem.tahun, tbl_nem.nem_tinggi, tbl_nem.nem_rendah from tbl_nem inner join tbl_konten on tbl_nem.id_konten = tbl_konten.id where tbl_nem.id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	if(id && !tahun && !jur){
+	
+		knex('tbl_nem')
+		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
+		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
+		.whereRaw('tbl_nem.id = ?',[id])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
-	else if(!id && cat && !jur){
-		connection.query("select tbl_nem.id, tbl_konten.judul as jurusan, tbl_nem.tahun, tbl_nem.nem_tinggi, tbl_nem.nem_rendah from tbl_nem inner join tbl_konten on tbl_nem.id_konten = tbl_konten.id where tbl_nem.tahun =?",[cat], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	else if(!id && tahun && !jur){
+		knex('tbl_nem')
+		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
+		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
+		.whereRaw('tbl_nem.tahun = ?',[tahun])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
-	else if(!id && !cat && jur){
-		connection.query("select tbl_nem.id, tbl_konten.judul as jurusan, tbl_nem.tahun, tbl_nem.nem_tinggi, tbl_nem.nem_rendah from tbl_nem inner join tbl_konten on tbl_nem.id_konten = tbl_konten.id where tbl_konten.judul =?",[jur], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	else if(!id && !tahun && jur){
+		knex('tbl_nem')
+		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
+		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
+		.whereRaw('tbl_konten.judul = ?',[jur])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
-	else if(!id && cat && jur){
-		connection.query("select tbl_nem.id, tbl_konten.judul as jurusan, tbl_nem.tahun, tbl_nem.nem_tinggi, tbl_nem.nem_rendah from tbl_nem inner join tbl_konten on tbl_nem.id_konten = tbl_konten.id where tbl_konten.judul =? AND tbl_nem.tahun=?",[jur,cat], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	else if(!id && tahun && jur){
+		knex('tbl_nem')
+		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
+		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
+		.whereRaw('tbl_nem.tahun = ? AND tbl_konten.judul = ?',[tahun,jur])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
 
 	else{
-	connection.query("select tbl_nem.id, tbl_konten.judul as jurusan, tbl_nem.tahun, tbl_nem.nem_tinggi, tbl_nem.nem_rendah from tbl_nem inner join tbl_konten on tbl_nem.id_konten = tbl_konten.id", function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex('tbl_nem')
+		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
+		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});
 	}
 
@@ -91,13 +111,6 @@ module.exports = {
 	var nem_rendah = req.body.nem_rendah;
 
 	if(!!id && !!id_konten && !!tahun && !!nem_tinggi){
-		connection.query("UPDATE tbl_nem SET id_konten=?, tahun=?, nem_tinggi=?, nem_rendah? WHERE id=?",[id, id_konten, tahun, nem_tinggi, nem_rendah], function (err, rows, fileds){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
-
 			knex.raw("UPDATE tbl_nem SET id_konten=?, tahun=?, nem_tinggi=?, nem_rendah? WHERE id=?",[id, id_konten, tahun, nem_tinggi, nem_rendah])
 			.then(function (err, rows, fields){
 				if(err){

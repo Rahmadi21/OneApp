@@ -9,7 +9,9 @@ module.exports = {
 	var pelapor = req.query.pelapor;
 	var terlapor = req.query.terlapor;
 	if(id && !pelapor && !terlapor){
-	connection.query("SELECT * from tbl_report where id=?",[id], function (err, rows, fields){
+	knex.select().from('tbl_report')
+	.whereRaw('id = ?',[id])
+	.then(function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{
@@ -18,7 +20,9 @@ module.exports = {
 		});	
 	}
 	else if(!id && pelapor && !terlapor){
-	connection.query("SELECT * from tbl_report where id_user_pelapor=?",[pelapor], function (err, rows, fields){
+	knex.select().from('tbl_report')
+	.whereRaw('id_user_pelapor = ?',[pelapor])
+	.then(function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{
@@ -27,7 +31,9 @@ module.exports = {
 		});	
 	}
 	else if(!id && !pelapor && terlapor){
-	connection.query("SELECT * from tbl_report where id_user_terlapor=?",[terlapor], function (err, rows, fields){
+	knex.select().from('tbl_report')
+	.whereRaw('id_user_terlapor = ?', [terlapor])
+	.then(function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{
@@ -36,7 +42,8 @@ module.exports = {
 		});	
 	}
 	else{
-	connection.query("SELECT * from tbl_report", function (err, rows, fields){
+	knex.select().from('tbl_report')
+	.then(function (err, rows, fields){
 			if(err){
 				callback(err);
 			}else{

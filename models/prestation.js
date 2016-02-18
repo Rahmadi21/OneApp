@@ -4,14 +4,13 @@ var knex		= require('knex')(conn);
 
 module.exports = {
 	getPrestation : function (callback){
-	connection.query("SELECT * from tbl_prestasi", function (err, rows, fields){
+	knex.select().from('tbl_prestasi').then(function (err, rows, fields){
 		if(err){
 			callback(err);
 		}else{
 			callback(null, rows);
 		}
 		});
-
 	},
 
 	postPrestation : function(req, callback){

@@ -9,33 +9,46 @@ module.exports = {
 	var id = req.query.id;
 	var kon = req.query.konten;
 	if(id && !kon){
-	connection.query("SELECT tbl_konten_tag.id, tbl_konten_tag.id_konten, tbl_konten.judul as konten, tbl_konten_tag.tag from tbl_konten_tag INNER JOIN tbl_konten on tbl_konten_tag.id_konten = tbl_konten.id where tbl_konten_tag.id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+		knex('tbl_konten_tag')
+		.join('tbl_konten','tbl_konten.id','tbl_konten_tag.id_konten')
+		.select('tbl_konten_tag.id', 'tbl_konten_tag.id_konten', 'tbl_konten.judul as konten', 'tbl_konten_tag.tag')
+		.whereRaw('tbl_konten_tag.id = ?',[id])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
 	else if(!id && kon){
-	connection.query("SELECT tbl_konten_tag.id, tbl_konten_tag.id_konten, tbl_konten.judul as konten, tbl_konten_tag.tag from tbl_konten_tag INNER JOIN tbl_konten on tbl_konten_tag.id_konten = tbl_konten.id where tbl_konten.id=?",[kon], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+
+		knex('tbl_konten_tag')
+		.join('tbl_konten','tbl_konten.id','tbl_konten_tag.id_konten')
+		.select('tbl_konten_tag.id', 'tbl_konten_tag.id_konten', 'tbl_konten.judul as konten', 'tbl_konten_tag.tag')
+		.whereRaw('tbl_konten.id = ?',[kon])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
-	
 	else{
-	connection.query("SELECT tbl_konten_tag.id, tbl_konten_tag.id_konten, tbl_konten.judul as konten, tbl_konten_tag.tag from tbl_konten_tag INNER JOIN tbl_konten on tbl_konten_tag.id_konten = tbl_konten.id", function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}z
+
+		knex('tbl_konten_tag')
+		.join('tbl_konten','tbl_konten.id','tbl_konten_tag.id_konten')
+		.select('tbl_konten_tag.id', 'tbl_konten_tag.id_konten', 'tbl_konten.judul as konten', 'tbl_konten_tag.tag')
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});
 	}
+
 
 },
 
