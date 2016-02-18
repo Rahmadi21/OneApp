@@ -33,7 +33,7 @@ module.exports = {
 				callback(err);
 			}else{
 				callback(null,rows);
-			}
+			}z
 		});
 	}
 

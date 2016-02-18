@@ -1,7 +1,6 @@
-var mysql 		= require('mysql');
 var uuid  		= require('node-uuid');
-var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 
 module.exports = {
 	getContentPhoto : function(req, callback){
@@ -9,30 +8,30 @@ module.exports = {
 	var kon = req.query.konten;
 	var id  = req.query.id;
 	if(kon && !id){
-	connection.query("SELECT * from tbl_foto where id_konten=?",[kon], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex.select().from('tbl_foto').whereRaw('id_konten = ?',[kon]).then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows)
+		}
 		});	
 	}
 	else if(!kon && id){
-	connection.query("SELECT * from tbl_foto where id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex.select().from('tbl_foto').whereRaw('id = ?',[id]).then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows)
+		}
 		});	
 	}
 	else{
-	connection.query("SELECT * from tbl_foto", function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex.select().from('tbl_foto').then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows)
+		}
 		});
 	}
 
@@ -45,12 +44,15 @@ module.exports = {
 		var foto = req.body.foto;
 
 		if(id && id_konten && foto){
-			connection.query("INSERT INTO tbl_foto VALUES(?,?,?)",[id, id_konten, foto], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			
+			knex('tbl_foto')
+			.insert(knex.raw('VALUES(?,?,?)',[id, id_konten, foto]))
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 	});
 		
 		}else{
@@ -68,12 +70,14 @@ module.exports = {
 
 
 			if(id && id_konten && foto){
-			connection.query("UPDATE tbl_foto SET id_konten=?, foto=? WHERE id=?",[id_konten, foto, id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	
+			knex.raw("UPDATE tbl_foto SET id_konten=?, foto=? WHERE id=?",[id_konten, foto, id])
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 		
 		}
@@ -87,12 +91,15 @@ module.exports = {
 		var id = req.body.id;
 
 		if(!!id){
-			connection.query("DELETE FROM tbl_foto WHERE id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			knex('tbl_foto')
+			.whereRaw("id = ?",[id])
+			.del()
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 			});
 
 			

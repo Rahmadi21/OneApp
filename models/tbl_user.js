@@ -118,12 +118,17 @@ var controller = {
 	getCatUser : function (req,callback){
 
 		var id = req.params.id;
-		connection.query("SELECT tbl_user.*, tbl_kat_user.kategori FROM tbl_user INNER JOIN tbl_kat_user ON tbl_user.id_kat_user = tbl_kat_user.id WHERE tbl_user.id=?",[id],function (err,rows,fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows)
-			}
+		knex('tbl_user')
+		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
+		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
+		.select('tbl_user.*','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
+		.whereRaw('tbl_user.id = ?',[id])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});
 	}
 

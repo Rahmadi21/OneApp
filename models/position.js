@@ -10,39 +10,55 @@ module.exports = {
 	var jabatan= req.query.jabatan;
 	var konten = req.query.konten;
 	if(id && !jabatan && !konten){
-	connection.query("SELECT tbl_jabatan.id, tbl_jabatan.id_konten, tbl_kat_jabatan.jabatan, tbl_jabatan.nama, tbl_jabatan.bidang from tbl_jabatan INNER JOIN tbl_kat_jabatan on tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id where tbl_jabatan.id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+
+		knex('tbl_jabatan')
+		.join('tbl_kat_jabatan','tbl_kat_jabatan.id','tbl_jabatan.id_kat_jabatan')
+		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten', 'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
+		.whereRaw('tbl_jabatan.id = ?',[id])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
 	else if(!id && jabatan && !konten){
-	connection.query("SELECT tbl_jabatan.id, tbl_jabatan.id_konten, tbl_kat_jabatan.jabatan, tbl_jabatan.nama, tbl_jabatan.bidang from tbl_jabatan INNER JOIN tbl_kat_jabatan on tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id where tbl_kat_jabatan.jabatan=?",[jabatan], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+		knex('tbl_jabatan')
+		.join('tbl_kat_jabatan','tbl_kat_jabatan.id','tbl_jabatan.id_kat_jabatan')
+		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten', 'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
+		.whereRaw('tbl_kat_jabatan.jabatan= ?',[jabatan])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
 	else if(!id && !jabatan && konten){
-	connection.query("SELECT tbl_jabatan.id, tbl_jabatan.id_konten, tbl_kat_jabatan.jabatan, tbl_jabatan.nama, tbl_jabatan.bidang from tbl_jabatan INNER JOIN tbl_kat_jabatan on tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id where tbl_jabatan.id_konten=?",[konten], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex('tbl_jabatan')
+		.join('tbl_kat_jabatan','tbl_kat_jabatan.id','tbl_jabatan.id_kat_jabatan')
+		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten', 'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
+		.whereRaw('tbl_jabatan.id_konten = ?',[id_konten])
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});	
 	}
 	else{
-	connection.query("SELECT tbl_jabatan.id, tbl_jabatan.id_konten, tbl_kat_jabatan.jabatan, tbl_jabatan.nama, tbl_jabatan.bidang from tbl_jabatan INNER JOIN tbl_kat_jabatan on tbl_jabatan.id_kat_jabatan = tbl_kat_jabatan.id", function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex('tbl_jabatan')
+		.join('tbl_kat_jabatan','tbl_kat_jabatan.id','tbl_jabatan.id_kat_jabatan')
+		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten', 'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
+		.then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows);
+		}
 		});
 	}
 

@@ -1,17 +1,15 @@
-var mysql 		= require('mysql');
 var uuid  		= require('node-uuid');
-var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
-
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 module.exports = {
 	getCatResponse : function(callback){
 
-	connection.query("SELECT * FROM tbl_kat_respon", function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+	knex.select().from('tbl_kat_respon').then(function (err, rows, fields){
+		if(err){
+			callback(err);
+		}else{
+			callback(null, rows)
+		}
 		});
 
 
@@ -23,12 +21,15 @@ module.exports = {
 		var tipe_respon = req.body.tipe_respon;
 
 		if(id && tipe_respon){
-			connection.query("INSERT INTO tbl_kat_respon VALUES(?,?)",[id, tipe_respon], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+			
+			knex('tbl_kat_respon')
+			.insert(knex.raw('values(?,?)',[id,tipe_respon]))
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 	});
 		
 			}else{
@@ -43,12 +44,14 @@ module.exports = {
 		var tipe_respon = req.body.tipe_respon;
 
 		if(id && tipe_respon){
-			connection.query("UPDATE tbl_kat_respon SET tipe_respon=? WHERE id=?",[tipe_respon, id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
+
+			knex.raw("UPDATE tbl_kat_respon SET tipe_respon=? WHERE id=?",[tipe_respon, id])
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}
 		});
 		
 		}
@@ -63,12 +66,15 @@ module.exports = {
 		var id = req.body.id;
 		
 		if(!!id){
-			connection.query("DELETE FROM tbl_kat_respon WHERE id=?",[id], function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}		
+			knex('tbl_kat_respon')
+			.whereRaw("id = ?",[id])
+			.del()
+			.then(function (err, rows, fields){
+				if(err){
+					callback(err);
+				}else{
+					callback(null, rows);
+				}		
 			});
 
 			
