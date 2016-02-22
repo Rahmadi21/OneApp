@@ -1,18 +1,17 @@
-var mysql 		= require('mysql');
 var uuid  		= require('node-uuid');
-var conn 		= require('../config/conn.js')
-var connection  = mysql.createConnection(conn);
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 var _			= require('lodash');
 
 module.exports = {
 	getFavorite : function (callback) {
 		
-		connection.query("SELECT tbl_konten.judul as judul, tbl_user.id as user_id from tbl_konten LEFT JOIN tbl_user ON tbl_user.jurusan_favorite = tbl_konten.id WHERE tbl_konten.id_kat_konten = '6a1ec81d-cbbd-11e5-86b1-00269e3e' ", function (err, rows, fields){
-		if(err){
-			callback(err);
-		}
-		else{
-			
+		knex('tbl_konten')
+		.join('tbl_kat_konten','tbl_kat_konten.id','tbl_konten.id_kat_konten')
+		.leftJoin('tbl_user','tbl_user.jurusan_favorite','tbl_konten.id')
+		.select('tbl_konten.judul as judul', 'tbl_user.id as user_id')
+		.where('tbl_kat_konten.konten','jurusan')
+		.then(function ( rows){	
 			
 			rows = _.groupBy(rows, 'judul');
 			rows = _.reduce(rows, function(total, jurusans, namaJurusan) {
@@ -36,8 +35,11 @@ module.exports = {
 			})
 			callback(null, rows);
 	
-		}
-		});
+		
+		})
+		.catch(function (err){
+			callback(err)
+		})
 	}
 
 }

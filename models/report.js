@@ -11,47 +11,43 @@ module.exports = {
 	if(id && !pelapor && !terlapor){
 	knex.select().from('tbl_report')
 	.whereRaw('id = ?',[id])
-	.then(function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
-		});	
-	}
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	}		
 	else if(!id && pelapor && !terlapor){
 	knex.select().from('tbl_report')
 	.whereRaw('id_user_pelapor = ?',[pelapor])
-	.then(function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
-		});	
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 	else if(!id && !pelapor && terlapor){
 	knex.select().from('tbl_report')
 	.whereRaw('id_user_terlapor = ?', [terlapor])
-	.then(function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
-		});	
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 	else{
 	knex.select().from('tbl_report')
-	.then(function (err, rows, fields){
-			if(err){
-				callback(err);
-			}else{
-				callback(null,rows);
-			}
-		});
-	}
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 
+}
 },
 
 	postReport :function(res,callback){
@@ -62,19 +58,22 @@ module.exports = {
 	var status = req.body.status;
 	var tgl_report = req.body.tgl_report;
 
-	if(id && id_user_pelapor && id_user_terlapor && id_respon && status && tgl_report){
 			knex('tbl_report')
-			.insert(knex.raw('VALUES(?,?,?,?,?,?)',[id,id_user_pelapor,id_user_terlapor,id_respon,status,tgl_report]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
-	}else{
-		console.log("error");
-	}}
+			.insert({
+				'id':id,
+				'id_user_pelapor':id_user_pelapor,
+				'id_user_terlapor':id_user_terlapor,
+				'id_respon':id_respon,
+				'status':status,
+				'tgl_report':tgl_report
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	}
 
 	,
 
@@ -82,40 +81,33 @@ module.exports = {
 	var id = req.body.id;
 	var status = req.body.status.toString();
 
-	if(id && status){
-			knex.raw("UPDATE tbl_report SET status=? WHERE id=?",[status,id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-
-		});
-	}else{
-		console.log("error");
-	}}
+			knex('tbl_report')
+			.where('id',id)
+			.update({
+				'status':status
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	}
 
 	,
 
 	deleteReport :function (req, res){
 		var id = req.body.id;
 
-		if(!!id){
 			knex('tbl_report')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}		
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
 			});
 
-			
-		}else{
-			console.log("error")
-			}
 	}
 }

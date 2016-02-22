@@ -1,7 +1,6 @@
-var mysql = require('mysql');
-var uuid  = require('node-uuid');
-var conn = require('../config/conn.js');
-var connection = mysql.createConnection(conn);
+var uuid  		= require('node-uuid');
+var conn 		= require('../config/connection.js');
+var knex		= require('knex')(conn);
 
 module.exports = {
 	getResponseAttend : function (req, callback){
@@ -16,13 +15,12 @@ module.exports = {
 		.join('tbl_kat_respon','tbl_kat_respon.id','tbl_konten_respon.id_kat_respon')
 		.select('tbl_konten_respon.id','tbl_konten_respon.id_konten','tbl_konten.judul as konten', 'tbl_kat_respon.tipe_respon' , 'tbl_user.username', 'tbl_konten_respon.tgl_respon','tbl_konten_respon.isi')
 		.whereRaw('tbl_kat_respon.tipe_respon=? AND tbl_konten_respon.id=?',[cat,id])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});	
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});	
 	}
 	else if(!id && !cat && kon){
 		knex('tbl_konten_respon')
@@ -31,14 +29,12 @@ module.exports = {
 		.join('tbl_kat_respon','tbl_kat_respon.id','tbl_konten_respon.id_kat_respon')
 		.select('tbl_konten_respon.id','tbl_konten_respon.id_konten','tbl_konten.judul as konten', 'tbl_kat_respon.tipe_respon' , 'tbl_user.username', 'tbl_konten_respon.tgl_respon','tbl_konten_respon.isi')
 		.whereRaw('tbl_kat_respon.tipe_respon=? AND tbl_konten.id=?',[cat,kon])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-
-		});
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 	else{
 	knex('tbl_konten_respon')
@@ -47,13 +43,12 @@ module.exports = {
 		.join('tbl_kat_respon','tbl_kat_respon.id','tbl_konten_respon.id_kat_respon')
 		.select('tbl_konten_respon.id','tbl_konten_respon.id_konten','tbl_konten.judul as konten', 'tbl_kat_respon.tipe_respon' , 'tbl_user.username', 'tbl_konten_respon.tgl_respon','tbl_konten_respon.isi')
 		.whereRaw('tbl_kat_respon.tipe_respon=?',[cat])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 
 }

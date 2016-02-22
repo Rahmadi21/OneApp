@@ -1,80 +1,137 @@
 var uuid  		= require('node-uuid');
 var conn 		= require('../config/connection.js');
 var knex		= require('knex')(conn);
+var konten      = require('./content.js');
 
 module.exports = {
-	getPrestation : function (callback){
-	knex.select().from('tbl_prestasi').then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});
+	getPrestation : function (req, callback){
+	var id= req.query.id;
+	var konten = req.query.konten;
+	var peserta= req.query.peserta;
+
+	if(id && !konten && !peserta){
+	knex('tbl_prestasi')
+	.join('tbl_prestasi_pivot','tbl_prestasi.id_konten','tbl_prestasi_pivot.id_konten')
+	.join('tbl_peserta_prestasi','tbl_prestasi_pivot.id_peserta','tbl_peserta_prestasi.id')
+	.select('tbl_prestasi.*','tbl_peserta_prestasi.peserta')
+	.where('tbl_prestasi.id',id)
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	}
+	else if(!id && konten && !peserta){
+	knex('tbl_prestasi')
+	.join('tbl_prestasi_pivot','tbl_prestasi.id_konten','tbl_prestasi_pivot.id_konten')
+	.join('tbl_peserta_prestasi','tbl_prestasi_pivot.id_peserta','tbl_peserta_prestasi.id')
+	.select('tbl_prestasi.*','tbl_peserta_prestasi.peserta')
+	.where('tbl_prestasi.id_konten',konten)
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	}
+	else if(!id && !konten && peserta){
+	knex('tbl_prestasi')
+	.join('tbl_prestasi_pivot','tbl_prestasi.id_konten','tbl_prestasi_pivot.id_konten')
+	.join('tbl_peserta_prestasi','tbl_prestasi_pivot.id_peserta','tbl_peserta_prestasi.id')
+	.select('tbl_prestasi.*','tbl_peserta_prestasi.peserta')
+	.where('tbl_peserta_prestasi.peserta',peserta)
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	}
+	else{
+	knex('tbl_prestasi')
+	.join('tbl_prestasi_pivot','tbl_prestasi.id_konten','tbl_prestasi_pivot.id_konten')
+	.join('tbl_peserta_prestasi','tbl_prestasi_pivot.id_peserta','tbl_peserta_prestasi.id')
+	.select('tbl_prestasi.*','tbl_peserta_prestasi.peserta')
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});	
+	}
+
 	},
 
 	postPrestation : function(req, callback){
 		var id = req.body.id || uuid.v4();
-		var id_konten = req.body.id_konten;
 		var tingkat = req.body.tingkat;
-		var peserta = req.body.peserta;
+		var tempat = req.body.tempat;
+		var peserta = req.body.id_peserta;
 
-		if(id && id_konten && tingkat && peserta){
-			knex('tbl_prestasi')
-			.insert(knex.raw('VALUES(?,?,?,?)',[id, id_konten, tingkat, peserta]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-	});
+			konten.postContent(req,function (err,result_konten){
+				knex('tbl_prestasi')
+				.insert({
+					'id':id,
+					'id_konten':result_konten.id,
+					'tingkat':tingkat,
+					'tempat':tempat
+				})
+				.then(function (result){
+					knex('tbl_prestasi_pivot')
+					.insert({
+						'id':id,
+						'id_konten':result_konten,
+						'id_peserta':peserta
+					})
+					.then(function (){
+						callback(null, result);	
+					})
+					
+				})
+				.catch(function (error){
+					callback(error)
+				})
+			})
 		
-			}else{
-				console.log("error");
-		}
+			
+		
 	},
 
 	putPrestation : function(req, callback){
 		var id = req.body.id || uuid.v4();
 		var id_konten = req.body.id_konten;
 		var tingkat = req.body.tingkat;
-		var peserta = req.body.peserta;
+		var tempat = req.body.tempat;
 
-		if(id && id_konten && tingkat && peserta){
-			knex.raw("UPDATE tbl_prestasi SET id_konten=?, tingkat=?, peserta=? WHERE id=?",[id_konten, tingkat, peserta, id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
+			knex('tbl_prestasi')
+			.where('id',id)
+			.update({
+				'id_konten':id_konten,
+				'tingkat':tingkat,
+				'tempat':tempat
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 		
-		}
-		else{
-			console.log("error");
-		}
 	},
 
 	deletePrestation : function(req, callback){
 		var id = req.body.id;
 
-		if(!!id){
 			knex('tbl_prestasi')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
 			});
 
-			
-		}else{
-			console.log("error");
-			}
 	}
 }

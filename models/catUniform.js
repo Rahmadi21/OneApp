@@ -1,4 +1,4 @@
-var uuid  		= require('node-uuid');
+var uuID  		= require('node-uuid');
 var conn 		= require('../config/connection.js');
 var knex		= require('knex')(conn);
 
@@ -26,7 +26,10 @@ module.exports = {
 	if(Id && Kategori){
 	
 			knex('tbl_kat_seragam')
-			.insert(knex.raw('values(?,?)',[Id,Kategori]))
+			.insert({
+				'id':Id,
+				'kategori':Kategori
+			})
 			.then(function (err, rows, fields){
 				if(err){
 					callback(err);
@@ -46,7 +49,11 @@ module.exports = {
 
 	if(Id && Kategori){
 		
-			knex.raw("UPDATE tbl_kat_seragam SET kategori=? WHERE id=?",[Kategori,Id])
+			knex('tbl_kat_seragam')
+			.where('id',Id)
+			.update({
+				'kategori':Kategori
+			})
 			.then(function (err, rows, fields){
 				if(err){
 					callback(err);

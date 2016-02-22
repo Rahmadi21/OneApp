@@ -1,4 +1,4 @@
-var uuid  		= require('node-uuid');
+var uuID  		= require('node-uuid');
 var conn 		= require('../config/connection.js');
 var knex		= require('knex')(conn);
 
@@ -14,26 +14,25 @@ module.exports = {
 		.join('tbl_user','tbl_konten.id_user','tbl_user.id')
 		.select('tbl_konten.*','tbl_kat_konten.konten','tbl_user.username as penulis')
 		.whereRaw('tbl_kat_konten.konten=? AND tbl_konten.id=?',[cat,id])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});	
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});	
 	}
 	else{
 		knex('tbl_konten')
 		.join('tbl_kat_konten','tbl_konten.id_kat_konten','tbl_kat_konten.id')
 		.join('tbl_user','tbl_konten.id_user','tbl_user.id')
 		.select('tbl_konten.*','tbl_kat_konten.konten','tbl_user.username as penulis')
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});
+		.whereRaw('tbl_kat_konten.konten = ?',[cat])
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 
 },
@@ -47,20 +46,23 @@ module.exports = {
 	var Isi = req.body.isi;
 	var Status = req.body.status.toString();
 
-	if(Id && Id_Kat_Konten && Id_User && Tgl_Posting && Judul && Isi && Status){
-
 			knex('tbl_konten')
-			.insert(knex.raw('VALUES(?,?,?,?,?,?,?)',[Id,Id_Kat_Konten,Id_User,Tgl_Posting,Judul,Isi,Status]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
-	}else{
-		console.log("error");
-	}},
+			.insert({
+				'id':Id,
+				'id_kat_konten':Id_Kat_Konten,
+				'id_user':Id_User,
+				'tgl_posting':Tgl_Posting,
+				'judul':Judul,
+				'isi':Isi,
+				'status':Status
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	},
 
 	putCat : function (req, callback){
 	var Id = req.body.id;
@@ -71,35 +73,35 @@ module.exports = {
 	var Isi = req.body.isi;
 	var Status = req.body.status;
 
-	if(Id && Id_Kat_Konten && Id_User && Tgl_Posting && Judul && Isi && Status){
-
-			knex.raw("UPDATE tbl_konten SET id_kat_konten=?, id_user=?, tgl_posting=?, judul=?, isi=?, status=? WHERE id=?",[Id_Kat_Konten,Id_User,Tgl_Posting,Judul,Isi,Status,Id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
-	}else{
-		console.log("error");
-	}},
+			knex('tbl_konten')
+			.where('id',Id)
+			.update({
+				'id_kat_konten':Id_Kat_Konten,
+				'id_user':Id_User,
+				'tgl_posting':Tgl_Posting,
+				'judul':Judul,
+				'isi':Isi,
+				'status':Status
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	},
 
 	deleteCat : function (req, callback){
 	var Id = req.body.id;
 
-	if(!!Id){
 		knex('tbl_konten')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
-	}else{
-		console.log("error");
-	}}
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	}
 }

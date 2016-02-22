@@ -1,7 +1,7 @@
 var uuid  		= require('node-uuid');
 var conn 		= require('../config/connection.js');
 var knex		= require('knex')(conn);
-
+var konten      = require('./content.js');
 
 module.exports = {
 	getPosition : function(req, callback){
@@ -13,53 +13,49 @@ module.exports = {
 
 		knex('tbl_jabatan')
 		.join('tbl_kat_jabatan','tbl_kat_jabatan.id','tbl_jabatan.id_kat_jabatan')
-		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten', 'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
+		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten','tbl_jabatan.id_kat_jabatan' ,'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
 		.whereRaw('tbl_jabatan.id = ?',[id])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});	
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});	
 	}
 	else if(!id && jabatan && !konten){
 		knex('tbl_jabatan')
 		.join('tbl_kat_jabatan','tbl_kat_jabatan.id','tbl_jabatan.id_kat_jabatan')
-		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten', 'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
+		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten','tbl_jabatan.id_kat_jabatan' , 'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
 		.whereRaw('tbl_kat_jabatan.jabatan= ?',[jabatan])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});	
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 	else if(!id && !jabatan && konten){
 	knex('tbl_jabatan')
 		.join('tbl_kat_jabatan','tbl_kat_jabatan.id','tbl_jabatan.id_kat_jabatan')
-		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten', 'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
+		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten','tbl_jabatan.id_kat_jabatan' , 'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
 		.whereRaw('tbl_jabatan.id_konten = ?',[id_konten])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});	
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 	else{
 	knex('tbl_jabatan')
 		.join('tbl_kat_jabatan','tbl_kat_jabatan.id','tbl_jabatan.id_kat_jabatan')
-		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten', 'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});
+		.select('tbl_jabatan.id', 'tbl_jabatan.id_konten','tbl_jabatan.id_kat_jabatan' , 'tbl_kat_jabatan.jabatan', 'tbl_jabatan.nama', 'tbl_jabatan.bidang')
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 
 },
@@ -71,20 +67,25 @@ module.exports = {
 		var nama = req.body.nama;
 		var bidang = req.body.bidang;
 
-		if(id && id_konten && id_kat_jabatan && nama && bidang){
+			konten.postContent(req,function (err,result){
 			knex('tbl_jabatan')
-			.insert(knex.raw('VALUES(?,?,?,?,?)',[id, id_konten, id_kat_jabatan, nama, bidang]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-	});
+			.insert({
+				'id':id,
+				'id_konten':result.id,
+				'id_kat_jabatan':id_kat_jabatan,
+				'nama':result.judul,
+				'bidang':bidang
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+			})
+			
 		
-			}else{
-				console.log("error");
-		}
+		
 	},
 
 	putPosition : function(req, callback){
@@ -94,41 +95,37 @@ module.exports = {
 		var nama = req.body.nama;
 		var bidang = req.body.bidang;
 
-		if(id && id_konten && id_kat_jabatan && nama && bidang){
-			knex.raw("UPDATE tbl_jabatan SET id_konten=?, id_kat_jabatan=?, nama=?, bidang=? WHERE id=?",[id_konten, id_kat_jabatan, nama, bidang, id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
+			knex('tbl_jabatan')
+			.where('id',id)
+			.update({
+				'id_konten':id_konten,
+				'id_kat_jabatan':id_kat_jabatan,
+				'nama':nama,
+				'bidang':bidang
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 		
-		}
-		else{
-			console.log("error");
-		}
+		
 	},
 
 	deletePosition : function(req, callback){
 		var id = req.body.id;
 
-		if(!!id){
 			knex('tbl_jabatan')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
 			});
 
-			
-		}else{
-			console.log("error");
-			}
+		
 	}
 }

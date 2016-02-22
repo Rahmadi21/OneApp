@@ -11,12 +11,11 @@ var controller = {
 		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
 		.select('tbl_user.*','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
 		.whereRaw('tbl_kat_user.kategori = ?',[cat])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
+		.then(function (rows){
+				callback(null, rows);
+			})
+		.catch(function (err){
+			callback(err)
 		});	
 	}
 	else{
@@ -24,12 +23,11 @@ var controller = {
 		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
 		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
 		.select('tbl_user.*','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
+		.then(function (rows){
+				callback(null, rows);
+			})
+		.catch(function (err){
+			callback(err)
 		});
 	}
 
@@ -49,20 +47,27 @@ var controller = {
 		var jurusan_favorite = req.body.jurusan_favorite;
 		var reputasi = req.body.reputasi;
 
-		if(id && id_kat_user && email && username && password && nama_asli && tgl_lahir && password && foto_profile && jurusan_favorite && reputasi){
-
 			knex('tbl_user')
-			.insert(knex.raw('VALUES(?,?,?,?,?,?,?,?,?,?,?)',[id, id_kat_user, email, username, password, nama_asli, tgl_lahir, pekerjaan, foto_profile, jurusan_favorite, reputasi]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
+			.insert({
+				'id':id,
+				'id_kat_user':id_kat_user,
+				'email':email,
+				'username':username,
+				'password':password,
+				'nama_asli':nama_asli,
+				'tgl_lahir':tgl_lahir,
+				'pekerjaan':pekerjaan,
+				'foto_profile':foto_profile,
+				'jurusan_favorite':jurusan_favorite,
+				'reputasi':reputasi
+			})
+			.then(function (rows){
 					callback(null, rows);
-				}
+				})
+			.catch(function (err){
+				callback(err)
 			});
-		}else{
-				console.log("error");
-			}
+		
 	},
 
 	putUser : function (req, callback){
@@ -78,41 +83,43 @@ var controller = {
 			var foto_profile = req.body.foto_profile;
 			var jurusan_favorite = req.body.jurusan_favorite;
 			var reputasi = req.body.reputasi;
-			
-			if(id && id_kat_user && email && username && password && nama_asli && tgl_lahir && password && foto_profile && jurusan_favorite && reputasi){
-
-			knex.raw("UPDATE tbl_user SET id_kat_user=?, email=?, username=?, password=?, nama_asli=?, tgl_lahir=?, pekerjaan=?, foto_profile=?, jurusan_favorite=?, reputasi=? WHERE id=?",[id_kat_user, email, username, password, nama_asli, tgl_lahir, pekerjaan, foto_profile, jurusan_favorite, reputasi, id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
+		
+			knex('tbl_user')
+			.where('id',id)
+			.update({
+				'id_kat_user':id_kat_user,
+				'email':email,
+				'username':username,
+				'password':password,
+				'nama_asli':nama_asli,
+				'tgl_lahir':tgl_lahir,
+				'pekerjaan':pekerjaan,
+				'foto_profile':foto_profile,
+				'jurusan_favorite':jurusan_favorite,
+				'reputasi':reputasi
+			})
+			.then(function (rows){
 					callback(null, rows);
-				}
+				})
+			.catch(function (err){
+				callback(err)
 			});
-		}else{
-			console.log("error");
-		}
+		
 	},
 
 	deleteUser : function (req, callback){
 			var id = req.body.id;
 			
-			if(id){
 			knex('tbl_user')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
+			.then(function (rows){
 					callback(null, rows);
-				}		
-				});
+				})
+			.catch(function (err){
+				callback(err)
+			});
 
-			
-		}else{
-				console.log("error");
-			}
 		},
 
 	getCatUser : function (req,callback){
@@ -123,13 +130,12 @@ var controller = {
 		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
 		.select('tbl_user.*','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
 		.whereRaw('tbl_user.id = ?',[id])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});
+		.then(function (rows){
+					callback(null, rows);
+				})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 
 }

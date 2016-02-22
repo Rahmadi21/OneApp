@@ -4,14 +4,13 @@ var knex		= require('knex')(conn);
 module.exports = {
 	getCatResponse : function(callback){
 
-	knex.select().from('tbl_kat_respon').then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows)
-		}
-		});
-
+	knex.select().from('tbl_kat_respon')
+	.then(function (rows){
+		callback(null, rows);
+	})
+	.catch(function (err){
+		callback(err)
+	});
 
 },
 
@@ -20,22 +19,18 @@ module.exports = {
 		var id = req.body.id || uuid.v4();
 		var tipe_respon = req.body.tipe_respon;
 
-		if(id && tipe_respon){
-			
 			knex('tbl_kat_respon')
-			.insert(knex.raw('values(?,?)',[id,tipe_respon]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-	});
+			.insert({
+				'id':id,
+				'tipe_respon':tipe_respon
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 		
-			}else{
-			console.log("error");
-		}
-
 	}
 	,
 
@@ -43,21 +38,17 @@ module.exports = {
 		var id = req.body.id || uuid.v4();
 		var tipe_respon = req.body.tipe_respon;
 
-		if(id && tipe_respon){
-
-			knex.raw("UPDATE tbl_kat_respon SET tipe_respon=? WHERE id=?",[tipe_respon, id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
-		
-		}
-		else{
-			console.log("error");
-		}
+			knex('tbl_kat_respon')
+			.where('id',id)
+			.update({
+				'tipe_respon':tipe_respon
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 
 	}
 	,
@@ -65,21 +56,15 @@ module.exports = {
 	deleteCatResponse :function(req, callback){
 		var id = req.body.id;
 		
-		if(!!id){
-			knex('tbl_kat_respon')
+		knex('tbl_kat_respon')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}		
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
 			});
 
-			
-		}else{
-			console.log("error");
-			}
 	}
 }

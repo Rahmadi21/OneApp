@@ -15,12 +15,11 @@ module.exports = {
 		.join('tbl_kat_seragam','tbl_kat_seragam.id','tbl_seragam.id_kat_seragam')
 		.select('tbl_seragam.id', 'tbl_kat_seragam.kategori', 'tbl_konten.judul as jurusan', 'tbl_seragam.nama', 'tbl_seragam.waktu_pakai', 'tbl_seragam.foto')
 		.whereRaw('tbl_seragam.id=?',[id])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
+		.then(function (rows){
 			callback(null, rows);
-		}
+		})
+		.catch(function (err){
+			callback(err)
 		});	
 	}
 	else if(!id && cat && !cat2){
@@ -30,13 +29,12 @@ module.exports = {
 		.join('tbl_kat_seragam','tbl_kat_seragam.id','tbl_seragam.id_kat_seragam')
 		.select('tbl_seragam.id', 'tbl_kat_seragam.kategori', 'tbl_konten.judul as jurusan', 'tbl_seragam.nama', 'tbl_seragam.waktu_pakai', 'tbl_seragam.foto')
 		.whereRaw('tbl_konten.judul=?',[cat])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});	
+		.then(function (rows){
+					callback(null, rows);
+				})
+			.catch(function (err){
+				callback(err)
+			});	
 	}
 	else if(!id && !cat && cat2){
 
@@ -45,12 +43,11 @@ module.exports = {
 		.join('tbl_kat_seragam','tbl_kat_seragam.id','tbl_seragam.id_kat_seragam')
 		.select('tbl_seragam.id', 'tbl_kat_seragam.kategori', 'tbl_konten.judul as jurusan', 'tbl_seragam.nama', 'tbl_seragam.waktu_pakai', 'tbl_seragam.foto')
 		.whereRaw('tbl_kat_seragam.kategori=?',[cat2])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
+		.then(function (rows){
+				callback(null, rows);
+			})
+		.catch(function (err){
+			callback(err)
 		});	
 	}
 	
@@ -59,12 +56,11 @@ module.exports = {
 		.join('tbl_konten','tbl_konten.id','tbl_seragam.id_konten')
 		.join('tbl_kat_seragam','tbl_kat_seragam.id','tbl_seragam.id_kat_seragam')
 		.select('tbl_seragam.id', 'tbl_kat_seragam.kategori', 'tbl_konten.judul as jurusan', 'tbl_seragam.nama', 'tbl_seragam.waktu_pakai', 'tbl_seragam.foto')
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
+		.then(function (rows){
+				callback(null, rows);
+			})
+		.catch(function (err){
+			callback(err)
 		});
 	}
 
@@ -78,21 +74,23 @@ module.exports = {
 	var Waktu_Pakai = req.body.waktu_pakai;
 	var Foto = req.body.foto;
 
-	if(Id && Id_Kat_Seragam && Id_Konten && Nama && Waktu_Pakai && Foto){
-
 			knex('tbl_kat_konten')
-			.insert(knex.raw("VALUES(?,?,?,?,?,?)",[Id,Id_Kat_Seragam,Id_Konten,Nama,Waktu_Pakai,Foto]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
+			.insert({
+				'id':Id,
+				'id_kat_seragam':Id_Kat_Seragam,
+				'id_konten':Id_Konten,
+				'nama':Nama,
+				'waktu_pakai':Waktu_Pakai,
+				'foto':Foto
+			})
+			.then(function (rows){
 					callback(null, rows);
-				}
-
-		});
-	}else{
-		console.log("error");
-	}}
+				})
+			.catch(function (err){
+				callback(err)
+			});
+	
+}
 
 	,
 
@@ -104,38 +102,39 @@ module.exports = {
 	var Waktu_Pakai = req.body.waktu_pakai;
 	var Foto = req.body.foto;
 
-	if(Id && Id_Kat_Seragam && Id_Konten && Nama && Waktu_Pakai && Foto){
-
-			knex.raw("UPDATE tbl_seragam SET id_kat_seragam=?, id_konten=?, nama=?, waktu_pakai=?, foto=? WHERE id=?",[Id_Kat_Seragam,Id_Konten,Nama,Waktu_Pakai,Foto,Id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
+			knex('tbl_seragam')
+			.where('id',Id)
+			.update({
+				'id_kat_seragam' : Id_Kat_Seragam,
+				'id_konten':Id_Konten,
+				'nama':Nama,
+				'waktu_pakai':Waktu_Pakai,
+				'foto':Foto
+			})
+			.then(function (rows){
 					callback(null, rows);
-				}
+				})
+			.catch(function (err){
+				callback(err)
+			});
 			
-		});
-	}else{
-		console.log("error");	
-	}
+
 }
 	,
 
 	deleteUniform : function (req,callback){
 	var Id = req.body.id;
-	if(Id){
+	
 		knex('tbl_seragam')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
+			.then(function (rows){
 					callback(null, rows);
-				}
-		});
-	}else{
-		console.log("error");
-	}}
+				})
+			.catch(function (err){
+				callback(err)
+			});
+	
+}
 
 }

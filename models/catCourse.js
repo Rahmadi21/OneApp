@@ -6,75 +6,62 @@ module.exports = {
 
 	var id = req.query.kategori;
 
-		knex.select().from('tbl_kat_pelajaran').then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows)
-		}
+		knex.select().from('tbl_kat_pelajaran')
+		.then(function (rows){
+			callback(null, rows);
+		})
+		.catch(function (err){
+			callback(err)
 		});
-	
 
 },
 	postCatCourse :function (req,callback){
 	var id = uuid.v4();
 	var nama_kat = req.body.nama_kat;
 
-	if(id && nama_kat){
-	
 			knex('tbl_kat_pelajaran')
-			.insert(knex.raw('values(?,?)',[id,nama_kat]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
-	}else{
-		console.log("error");
-	}
+			.insert({
+				'id':id,
+				'nama_kat':nama_kat
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	
 },
 	putCatCourse  :function(req,callback){
 		var id = req.body.id || uuid.v4();
 		var nama_kat = req.body.nama_kat;
-
-		if(id && nama_kat){
 			
-			knex.raw("UPDATE tbl_kat_pelajaran SET nama_kat=? WHERE id=?",[nama_kat, id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
-		
-		}
-		else{
-		console.log("error");
-		}
+			knex('tbl_kat_pelajaran')
+			.where('id',id)
+			.update({
+				'nama_kat':nama_kat
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});	
 
 	},
 	deleteCatCourse : function(req,callback){
 		var id = req.body.id || uuid.v4();
 		
-		if(!!id){
-			knex('tbl_kat_pelajaran')
+		knex('tbl_kat_pelajaran')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
 			});
 
-			
-		}else{
-			console.log("error");
-			}
 	}
 }
 

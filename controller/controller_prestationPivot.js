@@ -8,8 +8,8 @@ var data = {
 };
 
 module.exports = {
-	getPrestationPivot : function (req,res){
-		model.getPrestationPivot(req, function (error,result){
+	getPresPivot : function (req,res){
+		model.getPresPivot(function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

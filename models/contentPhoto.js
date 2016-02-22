@@ -8,31 +8,31 @@ module.exports = {
 	var kon = req.query.konten;
 	var id  = req.query.id;
 	if(kon && !id){
-	knex.select().from('tbl_foto').whereRaw('id_konten = ?',[kon]).then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows)
-		}
-		});	
+	knex.select().from('tbl_foto').whereRaw('id_konten = ?',[kon])
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});	
 	}
 	else if(!kon && id){
-	knex.select().from('tbl_foto').whereRaw('id = ?',[id]).then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows)
-		}
-		});	
+	knex.select().from('tbl_foto').whereRaw('id = ?',[id])
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});	
 	}
 	else{
-	knex.select().from('tbl_foto').then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows)
-		}
-		});
+	knex.select().from('tbl_foto')
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 
 },
@@ -42,23 +42,20 @@ module.exports = {
 		var id = req.body.id || uuid.v4();
 		var id_konten = req.body.id_konten;
 		var foto = req.body.foto;
-
-		if(id && id_konten && foto){
-			
-			knex('tbl_foto')
-			.insert(knex.raw('VALUES(?,?,?)',[id, id_konten, foto]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-	});
 		
-		}else{
-			console.log("error");
-
-		}
+			knex('tbl_foto')
+			.insert({
+				'id':id,
+				'id_konten':id_konten,
+				'foto':foto
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+		
 
 	},
 
@@ -68,43 +65,34 @@ module.exports = {
 		var id_konten = req.body.id_konten;
 		var foto = req.body.foto;
 
-
-			if(id && id_konten && foto){
-	
-			knex.raw("UPDATE tbl_foto SET id_konten=?, foto=? WHERE id=?",[id_konten, foto, id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
+			knex('tbl_foto')
+			.where('id',id)
+			.update({
+				'id_konten':id_konten,
+				'foto':foto
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 		
-		}
-		else{
-			console.log("error");
-		}
 
 	},
 
 	deleteContentPhoto :  function(req, callback){
 		var id = req.body.id;
 
-		if(!!id){
-			knex('tbl_foto')
+		knex('tbl_foto')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
 			});
 
-			
-		}else{
-			console.log("error");
-			}
 	}
 }

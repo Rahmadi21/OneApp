@@ -1,3 +1,4 @@
+/*------------REQUIRE DEPENDENCY ----------*/
 var app = require('express')();
 var http = require('http').Server(app);
 var mysql = require('mysql');
@@ -21,272 +22,269 @@ var newsPivot			= require("./controller/controller_newsPivot.js");
 var newsTag				= require("./controller/controller_newsTag.js");
 var position			= require("./controller/controller_position.js");
 var prestation			= require("./controller/controller_prestation.js");
-var prestationPivot		= require("./controller/controller_prestationPivot.js");
+var presPivot			= require("./controller/controller_prestationPivot.js")
 var response			= require("./controller/controller_response.js"); 
 var responseAttend		= require("./controller/controller_responseAttend.js"); 
 var score				= require("./controller/controller_score.js"); 
 var uniform 			= require("./controller/controller_uniform.js");
 var report 				= require("./controller/controller_report.js");
+var welcome				= require("./controller/controller_welcome.js");
 
-/*-------------END INCLUDE------------------*/
-
+/* --------------------- API ---------------------- */
 var conn 		= require('./config/conn.js')
 var connection  = mysql.createConnection(conn);
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.get('/', function (req, res){
-	var data = {
-		"Data":""
-	};
-	data["Data"] = "Selamat datang di OneApp";
-	res.json(data);
-});
+app.get('/', welcome.get);
+app.get('/api', welcome.getApi)
+
 
 /*===================Category User=======================*/
 
-app.get('/cat_user', katUserModel.getKatUser);
+app.get('/api/cat_user', katUserModel.getKatUser);
 
-app.post('/cat_user', katUserModel.postKatUser);
+app.post('/api/cat_user', katUserModel.postKatUser);
 
-app.put('/cat_user', katUserModel.putKatUser);
+app.put('/api/cat_user', katUserModel.putKatUser);
 
-app.delete('/cat_user', katUserModel.deleteKatUser);
+app.delete('/api/cat_user', katUserModel.deleteKatUser);
 
 /*--------------------------------------------------------*/
 
 /*========================User=======================*/
 
-app.get('/users', userModel.getuser);
+app.get('/api/users', userModel.getuser);
 
-app.get('/users/:id', userModel.getCatUser);
+app.get('/api/users/:id', userModel.getCatUser);
 
-app.post('/users', userModel.postUser);
+app.post('/api/users', userModel.postUser);
 
-app.put('/users', userModel.putUser); 
+app.put('/api/users', userModel.putUser); 
 
-app.delete('/users', userModel.deleteUser);
+app.delete('/api/users', userModel.deleteUser);
 
 /*--------------------------------------------------------*/
 
 
 /*========================== content =======================*/
 
-app.get('/contents', content.getContent);
+app.get('/api/contents', content.getContent);
 
-app.post('/contents', content.postContent);
+app.post('/api/contents', content.postContent);
 
-app.put('/contents', content.putContent); 
+app.put('/api/contents', content.putContent); 
 
-app.delete('/contents', content.deleteContent);
+app.delete('/api/contents', content.deleteContent);
 
 /*--------------------------------------------------------*/
 
 /*================= category content =======================*/
 
-app.get('/contents/cat_content', catContent.getCatContent);
+app.get('/api/contents/cat_content', catContent.getCatContent);
 
-app.post('/contents/cat_content', catContent.postCatContent);
+app.post('/api/contents/cat_content', catContent.postCatContent);
 
-app.put('/contents/cat_content', catContent.putCatContent); 
+app.put('/api/contents/cat_content', catContent.putCatContent); 
 
-app.delete('/contents/cat_content', catContent.deleteCatContent);
+app.delete('/api/contents/cat_content', catContent.deleteCatContent);
 
 /*--------------------------------------------------------*/
 
 /*================= Isi category content =======================*/
 
-app.get('/contents/cat_content/:cat', catContentIsi.getCat);
+app.get('/api/contents/cat_content/:cat', catContentIsi.getCat);
 
-app.post('/contents/cat_content/:cat', catContentIsi.postCat);
+app.post('/api/contents/cat_content/:cat', catContentIsi.postCat);
 
-app.put('/contents/cat_content/:cat', catContentIsi.putCat);
+app.put('/api/contents/cat_content/:cat', catContentIsi.putCat);
 
-app.delete('/contents/cat_content/:cat', catContentIsi.deleteCat);
+app.delete('/api/contents/cat_content/:cat', catContentIsi.deleteCat);
 
 /*--------------------------------------------------------*/
 
 /*================= content Photo =======================*/
 
-app.get('/contents/photos', contentPhoto.getContentPhoto);
+app.get('/api/contents/photos', contentPhoto.getContentPhoto);
 
-app.post('/contents/photos', contentPhoto.postContentPhoto);
+app.post('/api/contents/photos', contentPhoto.postContentPhoto);
 
-app.put('/contents/photos', contentPhoto.putContentPhoto); 
+app.put('/api/contents/photos', contentPhoto.putContentPhoto); 
 
-app.delete('/contents/photos', contentPhoto.deleteContentPhoto);
+app.delete('/api/contents/photos', contentPhoto.deleteContentPhoto);
 
 /*--------------------------------------------------------*/
 
 /*================= category position =======================*/
 
-app.get('/contents/cat_position', catPosition.getCatPosition);
+app.get('/api/contents/cat_position', catPosition.getCatPosition);
 
-app.post('/contents/cat_position', catPosition.postCatPosition);
+app.post('/api/contents/cat_position', catPosition.postCatPosition);
 
-app.put('/contents/cat_position', catPosition.putCatPosition); 
+app.put('/api/contents/cat_position', catPosition.putCatPosition); 
 
-app.delete('/contents/cat_position', catPosition.deleteCatPosition);
+app.delete('/api/contents/cat_position', catPosition.deleteCatPosition);
 
 /*--------------------------------------------------------*/
 
 /*================= category uniform =======================*/
 
-app.get('/contents/cat_uniform', catUniform.getCatUniform);
+app.get('/api/contents/cat_uniform', catUniform.getCatUniform);
 
-app.post('/contents/cat_uniform', catUniform.postCatUniform);
+app.post('/api/contents/cat_uniform', catUniform.postCatUniform);
 
-app.put('/contents/cat_uniform', catUniform.putCatUniform); 
+app.put('/api/contents/cat_uniform', catUniform.putCatUniform); 
 
-app.delete('/contents/cat_uniform', catUniform.deleteCatUniform);
+app.delete('/api/contents/cat_uniform', catUniform.deleteCatUniform);
 
 
 /*--------------------------------------------------------*/
 
 /*================= category Course =======================*/
 
-app.get('/contents/cat_course', catCourse.getCatCourse);
+app.get('/api/contents/cat_course', catCourse.getCatCourse);
 
-app.post('/contents/cat_course', catCourse.postCatCourse);
+app.post('/api/contents/cat_course', catCourse.postCatCourse);
 
-app.put('/contents/cat_course', catCourse.putCatCourse); 
+app.put('/api/contents/cat_course', catCourse.putCatCourse); 
 
-app.delete('/contents/cat_course', catCourse.deleteCatCourse);
+app.delete('/api/contents/cat_course', catCourse.deleteCatCourse);
 
 /*--------------------------------------------------------*/
 
 /*========================= course =======================*/
 
-app.get('/contents/cat_content/:cat/courses', course.getCourse);
+app.get('/api/contents/cat_content/:cat/courses', course.getCourse);
 
-app.post('/contents/cat_content/:cat/courses', course.postCourse);
+app.post('/api/contents/cat_content/:cat/courses', course.postCourse);
 
-app.put('/contents/cat_content/:cat/courses', course.putCourse); 
+app.put('/api/contents/cat_content/:cat/courses', course.putCourse); 
 
-app.delete('/contents/cat_content/:cat/courses', course.deleteCourse);
+app.delete('/api/contents/cat_content/:cat/courses', course.deleteCourse);
 
 /*--------------------------------------------------------*/
 
 /*===================== score ===========================*/
 
-app.get('/contents/cat_content/:cat/scores', score.getScore);
+app.get('/api/contents/cat_content/:cat/scores', score.getScore);
 
-app.post('/contents/cat_content/:cat/scores', score.postScore);
+app.post('/api/contents/cat_content/:cat/scores', score.postScore);
 
-app.put('/contents/cat_content/:cat/scores', score.putScore); 
+app.put('/api/contents/cat_content/:cat/scores', score.putScore); 
 
-app.delete('/contents/cat_content/:cat/scores', score.deleteScore);
+app.delete('/api/contents/cat_content/:cat/scores', score.deleteScore);
 
 /*--------------------------------------------------------*/
 
 /*======================= uniform =========================*/
 
-app.get('/contents/cat_content/:cat/uniforms', uniform.getUniform);
+app.get('/api/contents/cat_content/:cat/uniforms', uniform.getUniform);
 
-app.post('/contents/cat_content/:cat/uniforms', uniform.postUniform);
+app.post('/api/contents/cat_content/:cat/uniforms', uniform.postUniform);
 
-app.put('/contents/cat_content/:cat/uniforms', uniform.putUniform); 
+app.put('/api/contents/cat_content/:cat/uniforms', uniform.putUniform); 
 
-app.delete('/contents/cat_content/:cat/uniforms', uniform.deleteUniform);
+app.delete('/api/contents/cat_content/:cat/uniforms', uniform.deleteUniform);
 
 /*--------------------------------------------------------*/
 
 /*================= division favorite =======================*/
 
-app.get('/contents/cat_content/:cat/favorites', divisionFavorite.getFavorite);
+app.get('/api/contents/cat_content/:cat/favorites', divisionFavorite.getFavorite);
 
 /*--------------------------------------------------------*/
 
 /*================= category response =======================*/
 
-app.get('/contents/cat_response', catResponse.getCatResponse);
+app.get('/api/contents/cat_response', catResponse.getCatResponse);
 
-app.post('/contents/cat_response', catResponse.postCatResponse);
+app.post('/api/contents/cat_response', catResponse.postCatResponse);
 
-app.put('/contents/cat_response', catResponse.putCatResponse); 
+app.put('/api/contents/cat_response', catResponse.putCatResponse); 
 
-app.delete('/contents/cat_response', catResponse.deleteCatResponse);
+app.delete('/api/contents/cat_response', catResponse.deleteCatResponse);
 
 /*--------------------------------------------------------*/
 
 /*===================== response =======================*/
 
-app.get('/contents/responses', response.getResponse);
+app.get('/api/contents/responses', response.getResponse);
 
-app.post('/contents/responses', response.postResponse);
+app.post('/api/contents/responses', response.postResponse);
 
-app.put('/contents/responses', response.putResponse); 
+app.put('/api/contents/responses', response.putResponse); 
 
-app.delete('/contents/responses', response.deleteResponse);
+app.delete('/api/contents/responses', response.deleteResponse);
 
 /*--------------------------------------------------------*/
 
 /*================= response by category =======================*/
 
-app.get('/contents/responses/:cat', responseAttend.getResponseAttend);
+app.get('/api/contents/responses/:cat', responseAttend.getResponseAttend);
 
 /*--------------------------------------------------------*/
 
 /*==================== news pivot ==========================*/
 
-app.get('/contents/cat_content/:cat/pivot', newsPivot.getNewsPivot);
+app.get('/api/contents/cat_content/:cat/pivot', newsPivot.getNewsPivot);
 
 /*--------------------------------------------------------*/
 
 /*===================== news tag ==========================*/
 
-app.get('/contents/cat_content/:cat/tags', newsTag.getNewsTag);
+app.get('/api/contents/cat_content/:cat/tags', newsTag.getNewsTag);
 
-app.post('/contents/cat_content/:cat/tags', newsTag.postNewsTag);
+app.post('/api/contents/cat_content/:cat/tags', newsTag.postNewsTag);
 
-app.put('/contents/cat_content/:cat/tags', newsTag.putNewsTag); 
+app.put('/api/contents/cat_content/:cat/tags', newsTag.putNewsTag); 
 
-app.delete('/contents/cat_content/:cat/tags', newsTag.deleteNewsTag);
+app.delete('/api/contents/cat_content/:cat/tags', newsTag.deleteNewsTag);
 
 /*--------------------------------------------------------*/
 
 /*===================== REPORT ==========================*/
 
-app.get('/reports', report.getReport);
+app.get('/api/reports', report.getReport);
 
-app.post('/reports', report.postReport);
+app.post('/api/reports', report.postReport);
 
-app.put('/reports', report.putReport); 
+app.put('/api/reports', report.putReport); 
 
-app.delete('/reports', report.deleteReport);
+app.delete('/api/reports', report.deleteReport);
 
 /*--------------------------------------------------------*/
 
 /*==================== position =======================*/
 
-app.get('/contents/cat_content/:cat/ket_jabatan', position.getPosition);
+app.get('/api/contents/cat_content/:cat/kat_jabatan', position.getPosition);
 
-app.post('/contents/cat_content/:cat/ket_jabatan', position.postPosition);
+app.post('/api/contents/cat_content/:cat/kat_jabatan', position.postPosition);
 
-app.put('/contents/cat_content/:cat/ket_jabatan', position.putPosition); 
+app.put('/api/contents/cat_content/:cat/kat_jabatan', position.putPosition); 
 
-app.delete('/contents/cat_content/:cat/ket_jabatan', position.deletePosition);
+app.delete('/api/contents/cat_content/:cat/kat_jabatan', position.deletePosition);
 
 /*--------------------------------------------------------*/
 
 /*==================== prestation =======================*/
 
-app.get('/contents/cat_content/:cat/ket_prestasi', prestation.getPrestation);
+app.get('/api/contents/cat_content/:cat/kat_prestasi', prestation.getPrestation);
 
-app.post('/contents/cat_content/:cat/ket_prestasi', prestation.postPrestation);
+app.post('/api/contents/cat_content/:cat/kat_prestasi', prestation.postPrestation);
 
-app.put('/contents/cat_content/:cat/ket_prestasi', prestation.putPrestation); 
+app.put('/api/contents/cat_content/:cat/kat_prestasi', prestation.putPrestation); 
 
-app.delete('/contents/cat_content/:cat/ket_prestasi', prestation.deletePrestation);
+app.delete('/api/contents/cat_content/:cat/kat_prestasi', prestation.deletePrestation);
+
+/*--------------------------------------------------------*/
+/*==================== prestation =======================*/
+
+app.get('/api/contents/cat_content/:cat/prestasi_pivot', presPivot.getPresPivot);
 
 /*--------------------------------------------------------*/
 
-/*==================== prestasi pivot ==========================*/
-
-app.get('/contents/cat_content/:cat/prestasi_pivot', prestationPivot.getPrestationPivot);
-
-/*--------------------------------------------------------*/
+/*---------------- END API ---------------------*/
 
 http.listen(8080,function(){
 	console.log("Connected & Listen to port 8080");

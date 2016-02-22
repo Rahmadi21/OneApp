@@ -4,13 +4,14 @@ var knex		= require('knex')(conn);
 
 module.exports = {
 	getCatContent : function (callback){
-	knex.select().from('tbl_kat_konten').then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows)
-		}
-		});
+	knex.select().from('tbl_kat_konten')
+	.then(function (rows){
+			callback(null, rows);
+	})
+	.catch(function (err){
+		callback(err);
+	})
+		
 
 	},
 
@@ -20,64 +21,56 @@ module.exports = {
 		var id = req.body.id || uuid.v4();
 		var konten = req.body.konten;
 
-		if(id && konten){
-			//dari sini di
 			knex('tbl_kat_konten')
-			.insert(knex.raw('values(?,?)',[id,konten]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
+			.insert({
+				'id':id,
+				'konten':konten
+			})
+			.then(function (rows){
 					callback(null, rows);
-				}
-			//sampe sini
-			
-	});
+				})
+			.catch(function (err){
+				callback(err)
+			})
 		
-			}else{
-			console.log("error");
-		}
+			
 }
 	,
 
 	putCatContent  : function (req, callback){
 		var id = req.body.id;
 		var konten = req.body.konten;
-		if(id && konten){
-			knex.raw("update tbl_kat_konten set konten=? WHERE id=?",[konten,id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
 		
-		}
-		else{
-			console.log("error");
-		}
+			knex('tbl_kat_konten')
+			.where('id',id)
+			.update({
+				'konten':konten
+			})
+			.then(function (rows){
+					callback(null, rows);
+				})
+			.catch(function (err){
+				callback(err)
+			})
+		
+		
 
 	}
 	,
 
 	deleteCatContent : function (req, callback){
 		var id = req.body.id;
-		if(id){
 			knex('tbl_kat_konten')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
+			.then(function (rows){
 					callback(null, rows);
-				}
+				})
+			.catch(function (err){
+				callback(err)
 			});
 
 			
-		}else{
-				console.log("error");
-			}
+		
 	}
 }

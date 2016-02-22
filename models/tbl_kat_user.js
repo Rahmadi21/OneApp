@@ -10,22 +10,21 @@ module.exports = {
 		knex.select()
 		.from('tbl_kat_konten')
 		.whereRaw("id=?",[id])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows)
-		}
-		});
+		.then(function (rows){
+					callback(null, rows);
+				})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 	else{
-		knex.select().from('tbl_kat_user').then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows)
-		}
-		});
+		knex.select().from('tbl_kat_user')
+		.then(function (rows){
+					callback(null, rows);
+				})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 
 },
@@ -35,22 +34,20 @@ module.exports = {
 		var id = req.body.id || uuid.v4();
 		var kategori = req.body.kategori;
 
-		if(id && kategori){
 			knex('tbl_kat_user')
-			.insert(knex.raw('values(?,?)',[id,kategori]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
+			.insert({
+				'id':id,
+				'kategori':kategori
+			})
+			.then(function (rows){
 					callback(null, rows);
-				}
-		
+				})
+			.catch(function (err){
+				callback(err)
 			});
 		
-			}
-			else{
-				console.log("error");
-		}
+			
+		
 	}
 	,
 
@@ -58,40 +55,33 @@ module.exports = {
 		var id = req.body.id;
 		var kategori = req.body.kategori;
 
-		if(id && kategori){
-			knex.raw("UPDATE tbl_kat_user SET kategori=? WHERE id=?",[kategori, id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
+			knex('tbl_kat_user')
+			.where('id',id)
+			.update({
+				'kategori':kategori
+			})
+			.then(function (rows){
 					callback(null, rows);
-				}			
-		});
+				})
+			.catch(function (err){
+				callback(err)
+			});
 		
-		}
-		else{
-			console.log("error");
-		}
+		
 	},
 
 	deleteKatUser : function (req, callback){
 		var id = req.body.id;
 
-		if(id){
 			knex('tbl_kat_user')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
+			.then(function (rows){
 					callback(null, rows);
-				}
+				})
+			.catch(function (err){
+				callback(err)
 			});
 
-			
-		}else{
-			console.log("error");
-			}
 	}
 }

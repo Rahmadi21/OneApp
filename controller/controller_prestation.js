@@ -9,7 +9,7 @@ var data = {
 
 module.exports = {
 	getPrestation : function (req,res){
-		model.getPrestation(function (error,result){
+		model.getPrestation(req, function (error,result){
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;

@@ -7,46 +7,27 @@ module.exports = {
 	getNewsTag : function (req, callback){
 
 	var id = req.query.id;
-	var kon = req.query.konten;
-	if(id && !kon){
+	if(id){
 		knex('tbl_konten_tag')
-		.join('tbl_konten','tbl_konten.id','tbl_konten_tag.id_konten')
-		.select('tbl_konten_tag.id', 'tbl_konten_tag.id_konten', 'tbl_konten.judul as konten', 'tbl_konten_tag.tag')
+		.select()
 		.whereRaw('tbl_konten_tag.id = ?',[id])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});	
-	}
-	else if(!id && kon){
-
-		knex('tbl_konten_tag')
-		.join('tbl_konten','tbl_konten.id','tbl_konten_tag.id_konten')
-		.select('tbl_konten_tag.id', 'tbl_konten_tag.id_konten', 'tbl_konten.judul as konten', 'tbl_konten_tag.tag')
-		.whereRaw('tbl_konten.id = ?',[kon])
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});	
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 	else{
 
 		knex('tbl_konten_tag')
-		.join('tbl_konten','tbl_konten.id','tbl_konten_tag.id_konten')
-		.select('tbl_konten_tag.id', 'tbl_konten_tag.id_konten', 'tbl_konten.judul as konten', 'tbl_konten_tag.tag')
-		.then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows);
-		}
-		});
+		.select()
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 
 
@@ -54,22 +35,21 @@ module.exports = {
 
 	postNewsTag : function(req, callback) {
 	var Id = uuID.v4();
-	var Id_Konten = req.body.id_konten;
-	var Tag = req.body.id_kat_respon;
-
-	if(Id && Id_Konten && Tag){
+	var Tag = req.body.tag;
+	var data = {
+		'id':Id,
+		'tag':Tag
+	}
 			knex('tbl_konten_pivot')
-			.insert(knex.raw('VALUES(?,?,?)',[Id,Id_Konten,Tag]))
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
-	}else{
-		console.log("error");
-	}}
+			.insert(data)
+			.then(function (rows){
+				callback(null, data);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	
+}
 
 	,
 
@@ -78,37 +58,33 @@ module.exports = {
 	var Id_Konten = req.body.id_konten;
 	var Tag = req.body.id_kat_respon;
 
-	if(Id && Id_Konten && Tag){
-			knex.raw("UPDATE tbl_konten_pivot SET id_konten=?, id_kat_respon=?, id_user=?, tgl_respon=?,isi=? WHERE id=?",[Id_Konten,Id_Kat_Respon,Id_User,Tgl_Respon,Isi,Id])
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
-	}else{
-		console.log("error");
-	}}
+			knex('tbl_konten_tag')
+			.where('id',id)
+			.update({
+				'tag':Tag
+			})
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	
+	}
 
 	,
 
 	deleteNewsTag : function(req, callback){
 	var Id = req.body.id;
 
-	if(!!Id){
 			knex('tbl_konten_pivot')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-
-		});
-	}else{
-		console.log("error");
-	}}
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	}
 }

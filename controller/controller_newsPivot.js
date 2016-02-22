@@ -20,5 +20,19 @@ module.exports = {
 			}
 			res.json(data);
 		});
+	},
+	postNews : function (req,res){
+		model.postNews(req, function (error,result){
+			if(error){
+				data["status"] = "error";
+				data["detail"] = error;
+			}
+			else{
+				data["status"] = "success";
+				data["detail"] = result;
+			}
+			res.json(data);
+		});
 	}
+
 }
