@@ -1,0 +1,24 @@
+{
+  "name": "oneApp",
+  "description": "OneApp adalah aplikasinya anak satu",
+  "main": "index.html",
+  "authors": [
+    "TeamB"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-cookies": "^1.5.0",
+    "angular-material": "^1.0.5",
+    "angular-ui-router": "^0.2.18"
+  }
+}
