@@ -11,7 +11,7 @@ var controller = {
 		knex('tbl_user')
 		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
 		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
-		.select('tbl_user.*','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
+		.select('tbl_user.id', 'tbl_user.id_kat_user', 'tbl_user.email', 'tbl_user.username', 'tbl_user.nama_asli', 'tbl_user.tgl_lahir', 'tbl_user.pekerjaan', 'tbl_user.foto_profile', 'tbl_user.jurusan_favorite', 'tbl_user.reputasi','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
 		.whereRaw('tbl_kat_user.kategori = ?',[cat])
 		.then(function (rows){
 				callback(null, rows);
@@ -24,7 +24,7 @@ var controller = {
 		knex('tbl_user')
 		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
 		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
-		.select('tbl_user.*','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
+		.select('tbl_user.id', 'tbl_user.id_kat_user', 'tbl_user.email', 'tbl_user.username', 'tbl_user.nama_asli', 'tbl_user.tgl_lahir', 'tbl_user.pekerjaan', 'tbl_user.foto_profile', 'tbl_user.jurusan_favorite', 'tbl_user.reputasi','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
 		.whereRaw('tbl_user.email = ?',[email])
 		.then(function (rows){
 				callback(null, rows);
@@ -37,7 +37,7 @@ var controller = {
 		knex('tbl_user')
 		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
 		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
-		.select('tbl_user.*','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
+		.select('tbl_user.id', 'tbl_user.id_kat_user', 'tbl_user.email', 'tbl_user.username', 'tbl_user.nama_asli', 'tbl_user.tgl_lahir', 'tbl_user.pekerjaan', 'tbl_user.foto_profile', 'tbl_user.jurusan_favorite', 'tbl_user.reputasi','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
 		.whereRaw('tbl_user.email = ? AND tbl_user.password = ?',[email,pass])
 		.then(function (rows){
 				callback(null, rows);
@@ -50,7 +50,7 @@ var controller = {
 	knex('tbl_user')
 		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
 		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
-		.select('tbl_user.*','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
+		.select('tbl_user.id', 'tbl_user.id_kat_user', 'tbl_user.email', 'tbl_user.username', 'tbl_user.nama_asli', 'tbl_user.tgl_lahir', 'tbl_user.pekerjaan', 'tbl_user.foto_profile', 'tbl_user.jurusan_favorite', 'tbl_user.reputasi','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
 		.then(function (rows){
 				callback(null, rows);
 			})
