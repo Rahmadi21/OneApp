@@ -6,7 +6,8 @@ var controller = {
 
 	var cat = req.query.kategori;
 	var email = req.query.email;
-	if(cat && !email){
+	var pass  = req.query.password;
+	if(cat && !email && !pass){
 		knex('tbl_user')
 		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
 		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
@@ -19,12 +20,25 @@ var controller = {
 			callback(err)
 		});	
 	}
-	else if(cat && !email){
+	else if(!cat && email && !pass){
 		knex('tbl_user')
 		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
 		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
 		.select('tbl_user.*','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
 		.whereRaw('tbl_user.email = ?',[email])
+		.then(function (rows){
+				callback(null, rows);
+			})
+		.catch(function (err){
+			callback(err)
+		});	
+	}
+	else if(!cat && email && pass){
+		knex('tbl_user')
+		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
+		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
+		.select('tbl_user.*','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
+		.whereRaw('tbl_user.email = ? AND tbl_user.password = ?',[email,pass])
 		.then(function (rows){
 				callback(null, rows);
 			})
