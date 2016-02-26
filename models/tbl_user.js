@@ -38,7 +38,20 @@ var controller = {
 		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
 		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
 		.select('tbl_user.id', 'tbl_user.id_kat_user', 'tbl_user.email', 'tbl_user.username', 'tbl_user.nama_asli', 'tbl_user.tgl_lahir', 'tbl_user.pekerjaan', 'tbl_user.foto_profile', 'tbl_user.jurusan_favorite', 'tbl_user.reputasi','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
-		.whereRaw('tbl_user.email = ? AND tbl_user.password = ?',[email,pass])
+		.whereRaw('tbl_user.email = ? AND tbl_user.password = ? AND tbl_kat_user',[email,pass])
+		.then(function (rows){
+				callback(null, rows);
+			})
+		.catch(function (err){
+			callback(err)
+		});	
+	}
+	else if(cat && email && pass){
+		knex('tbl_user')
+		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
+		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
+		.select('tbl_user.id', 'tbl_user.id_kat_user', 'tbl_user.email', 'tbl_user.username', 'tbl_user.nama_asli', 'tbl_user.tgl_lahir', 'tbl_user.pekerjaan', 'tbl_user.foto_profile', 'tbl_user.jurusan_favorite', 'tbl_user.reputasi','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
+		.whereRaw('tbl_user.email = ? AND tbl_user.password = ? AND tbl_kat_user.kategori=?',[email,pass,cat])
 		.then(function (rows){
 				callback(null, rows);
 			})
@@ -74,9 +87,7 @@ var controller = {
 		var foto_profile = req.body.foto_profile;
 		var jurusan_favorite = req.body.jurusan_favorite;
 		var reputasi = req.body.reputasi;
-
-			knex('tbl_user')
-			.insert({
+		var data= {
 				'id':id,
 				'id_kat_user':id_kat_user,
 				'email':email,
@@ -88,7 +99,9 @@ var controller = {
 				'foto_profile':foto_profile,
 				'jurusan_favorite':jurusan_favorite,
 				'reputasi':reputasi
-			})
+		}
+			knex('tbl_user')
+			.insert(data)
 			.then(function (rows){
 					callback(null, rows);
 				})

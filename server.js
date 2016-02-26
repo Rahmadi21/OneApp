@@ -4,6 +4,7 @@ var http = require('http').Server(app);
 var mysql = require('mysql');
 var uuid = require('node-uuid');
 var bodyParser = require("body-parser");
+var path = require('path');
 /*-------------include Model----------------*/
 
 var userModel 			= require("./controller/controller_user.js");
@@ -29,13 +30,26 @@ var score				= require("./controller/controller_score.js");
 var uniform 			= require("./controller/controller_uniform.js");
 var report 				= require("./controller/controller_report.js");
 var welcome				= require("./controller/controller_welcome.js");
-
-/* --------------------- API ---------------------- */
 var conn 		= require('./config/conn.js')
 var connection  = mysql.createConnection(conn);
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+
+// app.get('/admin',function(req,res){
+// 	var option={
+// 		root:__dirname
+// 	};
+// 	res.sendFile('dummy.html',option);
+// })
+/* --------------------- API ---------------------- */
 
 app.get('/', welcome.get);
 app.get('/api', welcome.getApi)
