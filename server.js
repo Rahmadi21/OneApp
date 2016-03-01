@@ -1,5 +1,6 @@
 /*------------REQUIRE DEPENDENCY ----------*/
 var app = require('express')();
+var express = require('express');
 var http = require('http').Server(app);
 var mysql = require('mysql');
 var uuid = require('node-uuid');
@@ -42,13 +43,17 @@ app.use(function(req, res, next) {
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+app.use('/bower_components',express.static('bower_components'));
+app.use('/app',express.static('app'));
+app.use('/asset',express.static('asset'));
+app.use('/templates',express.static('templates'));
 
-// app.get('/admin',function(req,res){
-// 	var option={
-// 		root:__dirname
-// 	};
-// 	res.sendFile('dummy.html',option);
-// })
+app.get('/admin',function(req,res){
+	var option={
+		root:__dirname
+	};
+	res.sendFile('index.html',option);
+})
 /* --------------------- API ---------------------- */
 
 app.get('/', welcome.get);
