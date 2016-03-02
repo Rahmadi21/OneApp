@@ -1,7 +1,7 @@
 var uuid  		= require('node-uuid');
 var conn 		= require('../config/connection.js');
 var knex		= require('knex')(conn);
-
+var konten		= require('./content.js');
 module.exports = {
 	getContentPhoto : function(req, callback){
 
@@ -43,6 +43,7 @@ module.exports = {
 		var id_konten = req.body.id_konten;
 		var foto = req.body.foto;
 		
+			konten.postContent(req, function (err, result){
 			knex('tbl_foto')
 			.insert({
 				'id':id,
@@ -50,10 +51,11 @@ module.exports = {
 				'foto':foto
 			})
 			.then(function (rows){
-				callback(null, rows);
+				callback(null, data);
 			})
 			.catch(function (err){
 				callback(err)
+			});
 			});
 		
 
