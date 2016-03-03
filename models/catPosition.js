@@ -56,7 +56,7 @@ module.exports = {
 	},
 
 	deleteCatPosition : function(req, callback){
-		var id = req.body.id;
+		var id = req.params.id;
 
 		knex('tbl_kat_jabatan')
 			.whereRaw("id = ?",[id])

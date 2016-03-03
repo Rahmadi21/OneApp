@@ -122,8 +122,8 @@ putCourse  : function(req, callback){
 
 },
 
-	deleteCourse : function (req,call){
-	var Id = req.body.id || uuid.v4();
+	deleteCourse : function (req,callback){
+	var id = req.params.id;
 
 			knex('tbl_nama_pelajaran')
 			.whereRaw("id = ?",[id])

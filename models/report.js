@@ -96,8 +96,8 @@ module.exports = {
 
 	,
 
-	deleteReport :function (req, res){
-		var id = req.body.id;
+	deleteReport :function (req, callback){
+		var id = req.params.id;
 
 			knex('tbl_report')
 			.whereRaw("id = ?",[id])

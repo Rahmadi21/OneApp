@@ -63,7 +63,7 @@ module.exports = {
 }
 ,
 
-	postNews : function(req, callback) {
+	postNewsPivot : function(req, callback) {
 	var Id = uuID.v4();
 	var Tag = req.body.id_tag;
 
@@ -81,5 +81,20 @@ module.exports = {
 				callback(err)
 			});
 			});
-}
+},
+deleteNewsPivot :function (req, res){
+		var id = req.params.id;
+
+			knex('tbl_konten_pivot')
+			.whereRaw("id = ?",[id])
+			.del()
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+
+	}
+
 }

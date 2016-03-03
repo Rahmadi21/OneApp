@@ -75,7 +75,7 @@ module.exports = {
 	,
 
 	deleteNewsTag : function(req, callback){
-	var Id = req.body.id;
+	var id = req.params.id;
 
 			knex('tbl_konten_pivot')
 			.whereRaw("id = ?",[id])

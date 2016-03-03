@@ -59,7 +59,7 @@ module.exports = {
 	,
 
 	deleteCatContent : function (req, callback){
-		var id = req.body.id;
+		var id = req.params.id;
 			knex('tbl_kat_konten')
 			.whereRaw("id = ?",[id])
 			.del()

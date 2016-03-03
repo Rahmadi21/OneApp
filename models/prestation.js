@@ -121,7 +121,7 @@ module.exports = {
 	},
 
 	deletePrestation : function(req, callback){
-		var id = req.body.id;
+		var id = req.params.id;
 
 			knex('tbl_prestasi')
 			.whereRaw("id = ?",[id])

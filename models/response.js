@@ -165,7 +165,7 @@ module.exports = {
 	,
 
 	deleteResponse : function(req, callback){
-	var Id = req.body.id;
+	var id = req.params.id;
 	
 			knex('tbl_konten_respon')
 			.whereRaw("id = ?",[id])

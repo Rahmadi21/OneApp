@@ -114,7 +114,7 @@ module.exports = {
 	},
 
 	deletePosition : function(req, callback){
-		var id = req.body.id;
+		var id = req.params.id;
 
 			knex('tbl_jabatan')
 			.whereRaw("id = ?",[id])

@@ -38,7 +38,7 @@ var controller = {
 		.join('tbl_kat_user','tbl_user.id_kat_user','tbl_kat_user.id')
 		.leftJoin('tbl_konten','tbl_konten.id','tbl_user.jurusan_favorite')
 		.select('tbl_user.*','tbl_konten.judul as jurusan_favorite', 'tbl_kat_user.kategori')
-		.whereRaw('tbl_user.email = ? AND tbl_user.password = ? AND tbl_kat_user',[email,pass])
+		.whereRaw('tbl_user.email = ? AND tbl_user.password = ?',[email,pass])
 		.then(function (rows){
 				callback(null, rows);
 			})
@@ -149,7 +149,7 @@ var controller = {
 	},
 
 	deleteUser : function (req, callback){
-			var id = req.body.id;
+			var id = req.params.id;
 			
 			knex('tbl_user')
 			.whereRaw("id = ?",[id])

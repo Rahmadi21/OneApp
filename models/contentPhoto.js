@@ -84,7 +84,7 @@ module.exports = {
 	},
 
 	deleteContentPhoto :  function(req, callback){
-		var id = req.body.id;
+		var id = req.params.id;
 
 		knex('tbl_foto')
 			.whereRaw("id = ?",[id])

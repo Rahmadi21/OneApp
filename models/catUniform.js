@@ -68,10 +68,9 @@ module.exports = {
 	,
 
 	deleteCatUniform : function(req,callback){
-	var Id = req.body.id;
+	var id = req.params.id;
 
-	if(!!Id){
-		knex('tbl_kat_seragam')
+	knex('tbl_kat_seragam')
 			.whereRaw("id = ?",[id])
 			.del()
 			.then(function (err, rows, fields){
@@ -81,8 +80,6 @@ module.exports = {
 					callback(null, rows);
 				}
 		});
-	}else{
-		console.log("error");
-	}}
+	}
 	
 }

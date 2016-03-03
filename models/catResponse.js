@@ -54,7 +54,7 @@ module.exports = {
 	,
 
 	deleteCatResponse :function(req, callback){
-		var id = req.body.id;
+		var id = req.params.id;
 		
 		knex('tbl_kat_respon')
 			.whereRaw("id = ?",[id])

@@ -71,7 +71,7 @@ module.exports = {
 	},
 
 	deleteKatUser : function (req, callback){
-		var id = req.body.id;
+		var id = req.params.id;
 
 			knex('tbl_kat_user')
 			.whereRaw("id = ?",[id])

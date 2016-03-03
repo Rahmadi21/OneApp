@@ -50,7 +50,7 @@ module.exports = {
 
 	},
 	deleteCatCourse : function(req,callback){
-		var id = req.body.id || uuid.v4();
+		var id = req.paramas.id;
 		
 		knex('tbl_kat_pelajaran')
 			.whereRaw("id = ?",[id])

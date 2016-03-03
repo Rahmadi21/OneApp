@@ -68,7 +68,7 @@ app.post('/api/cat_user', katUserModel.postKatUser);
 
 app.put('/api/cat_user', katUserModel.putKatUser);
 
-app.delete('/api/cat_user', katUserModel.deleteKatUser);
+app.delete('/api/cat_user/:id', katUserModel.deleteKatUser);
 
 /*--------------------------------------------------------*/
 
@@ -82,7 +82,7 @@ app.post('/api/users', userModel.postUser);
 
 app.put('/api/users', userModel.putUser); 
 
-app.delete('/api/users', userModel.deleteUser);
+app.delete('/api/users/:id', userModel.deleteUser);
 
 /*--------------------------------------------------------*/
 
@@ -95,7 +95,7 @@ app.post('/api/contents', content.postContent);
 
 app.put('/api/contents', content.putContent); 
 
-app.delete('/api/contents', content.deleteContent);
+app.delete('/api/contents/:id', content.deleteContent);
 
 /*--------------------------------------------------------*/
 
@@ -107,7 +107,7 @@ app.post('/api/contents/cat_content', catContent.postCatContent);
 
 app.put('/api/contents/cat_content', catContent.putCatContent); 
 
-app.delete('/api/contents/cat_content', catContent.deleteCatContent);
+app.delete('/api/contents/cat_content/:id', catContent.deleteCatContent);
 
 /*--------------------------------------------------------*/
 
@@ -119,7 +119,7 @@ app.post('/api/contents/cat_content/:cat', catContentIsi.postCat);
 
 app.put('/api/contents/cat_content/:cat', catContentIsi.putCat);
 
-app.delete('/api/contents/cat_content/:cat', catContentIsi.deleteCat);
+app.delete('/api/contents/cat_content/:cat/:id', catContentIsi.deleteCat);
 
 /*--------------------------------------------------------*/
 
@@ -131,7 +131,7 @@ app.post('/api/contents/photos', contentPhoto.postContentPhoto);
 
 app.put('/api/contents/photos', contentPhoto.putContentPhoto); 
 
-app.delete('/api/contents/photos', contentPhoto.deleteContentPhoto);
+app.delete('/api/contents/photos/:id', contentPhoto.deleteContentPhoto);
 
 /*--------------------------------------------------------*/
 
@@ -143,7 +143,7 @@ app.post('/api/contents/cat_position', catPosition.postCatPosition);
 
 app.put('/api/contents/cat_position', catPosition.putCatPosition); 
 
-app.delete('/api/contents/cat_position', catPosition.deleteCatPosition);
+app.delete('/api/contents/cat_position/:id', catPosition.deleteCatPosition);
 
 /*--------------------------------------------------------*/
 
@@ -155,7 +155,7 @@ app.post('/api/contents/cat_uniform', catUniform.postCatUniform);
 
 app.put('/api/contents/cat_uniform', catUniform.putCatUniform); 
 
-app.delete('/api/contents/cat_uniform', catUniform.deleteCatUniform);
+app.delete('/api/contents/cat_uniform/:id', catUniform.deleteCatUniform);
 
 
 /*--------------------------------------------------------*/
@@ -168,7 +168,7 @@ app.post('/api/contents/cat_course', catCourse.postCatCourse);
 
 app.put('/api/contents/cat_course', catCourse.putCatCourse); 
 
-app.delete('/api/contents/cat_course', catCourse.deleteCatCourse);
+app.delete('/api/contents/cat_course/:id', catCourse.deleteCatCourse);
 
 /*--------------------------------------------------------*/
 
@@ -180,7 +180,7 @@ app.post('/api/contents/cat_content/:cat/courses', course.postCourse);
 
 app.put('/api/contents/cat_content/:cat/courses', course.putCourse); 
 
-app.delete('/api/contents/cat_content/:cat/courses', course.deleteCourse);
+app.delete('/api/contents/cat_content/:cat/courses/:id', course.deleteCourse);
 
 /*--------------------------------------------------------*/
 
@@ -192,7 +192,7 @@ app.post('/api/contents/cat_content/:cat/scores', score.postScore);
 
 app.put('/api/contents/cat_content/:cat/scores', score.putScore); 
 
-app.delete('/api/contents/cat_content/:cat/scores', score.deleteScore);
+app.delete('/api/contents/cat_content/:cat/scores/:id', score.deleteScore);
 
 /*--------------------------------------------------------*/
 
@@ -204,7 +204,7 @@ app.post('/api/contents/cat_content/:cat/uniforms', uniform.postUniform);
 
 app.put('/api/contents/cat_content/:cat/uniforms', uniform.putUniform); 
 
-app.delete('/api/contents/cat_content/:cat/uniforms', uniform.deleteUniform);
+app.delete('/api/contents/cat_content/:cat/uniforms/:id', uniform.deleteUniform);
 
 /*--------------------------------------------------------*/
 
@@ -222,7 +222,7 @@ app.post('/api/contents/cat_response', catResponse.postCatResponse);
 
 app.put('/api/contents/cat_response', catResponse.putCatResponse); 
 
-app.delete('/api/contents/cat_response', catResponse.deleteCatResponse);
+app.delete('/api/contents/cat_response/:id', catResponse.deleteCatResponse);
 
 /*--------------------------------------------------------*/
 
@@ -234,7 +234,7 @@ app.post('/api/contents/responses', response.postResponse);
 
 app.put('/api/contents/responses', response.putResponse); 
 
-app.delete('/api/contents/responses', response.deleteResponse);
+app.delete('/api/contents/responses/:id', response.deleteResponse);
 
 /*--------------------------------------------------------*/
 
@@ -247,6 +247,8 @@ app.get('/api/contents/responses/:cat', responseAttend.getResponseAttend);
 /*==================== news pivot ==========================*/
 
 app.get('/api/contents/cat_content/:cat/pivot', newsPivot.getNewsPivot);
+app.post('/api/contents/cat_content/:cat/pivot', newsPivot.postNewsPivot);
+app.delete('/api/contents/cat_content/:cat/pivot/:id', newsPivot.deleteNewsPivot);
 
 /*--------------------------------------------------------*/
 
@@ -258,7 +260,7 @@ app.post('/api/contents/cat_content/:cat/tags', newsTag.postNewsTag);
 
 app.put('/api/contents/cat_content/:cat/tags', newsTag.putNewsTag); 
 
-app.delete('/api/contents/cat_content/:cat/tags', newsTag.deleteNewsTag);
+app.delete('/api/contents/cat_content/:cat/tags/:id', newsTag.deleteNewsTag);
 
 /*--------------------------------------------------------*/
 
@@ -270,7 +272,7 @@ app.post('/api/reports', report.postReport);
 
 app.put('/api/reports', report.putReport); 
 
-app.delete('/api/reports', report.deleteReport);
+app.delete('/api/reports/:id', report.deleteReport);
 
 /*--------------------------------------------------------*/
 
@@ -282,7 +284,7 @@ app.post('/api/contents/cat_content/:cat/kat_jabatan', position.postPosition);
 
 app.put('/api/contents/cat_content/:cat/kat_jabatan', position.putPosition); 
 
-app.delete('/api/contents/cat_content/:cat/kat_jabatan', position.deletePosition);
+app.delete('/api/contents/cat_content/:cat/kat_jabatan/:id', position.deletePosition);
 
 /*--------------------------------------------------------*/
 
@@ -294,7 +296,7 @@ app.post('/api/contents/cat_content/:cat/kat_prestasi', prestation.postPrestatio
 
 app.put('/api/contents/cat_content/:cat/kat_prestasi', prestation.putPrestation); 
 
-app.delete('/api/contents/cat_content/:cat/kat_prestasi', prestation.deletePrestation);
+app.delete('/api/contents/cat_content/:cat/kat_prestasi/:id', prestation.deletePrestation);
 
 /*--------------------------------------------------------*/
 /*==================== prestation =======================*/

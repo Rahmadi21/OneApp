@@ -123,7 +123,7 @@ module.exports = {
 	,
 
 	deleteUniform : function (req,callback){
-	var Id = req.body.id;
+	var id = req.params.id;
 	
 		knex('tbl_seragam')
 			.whereRaw("id = ?",[id])
