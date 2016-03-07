@@ -7,13 +7,27 @@ module.exports = {
 
 	var id = req.query.id;
 	var cat = req.params.cat;
-	if(id){
+	var status = req.query.status;
+	if(id && !status){
 
 		knex('tbl_konten')
 		.join('tbl_kat_konten','tbl_konten.id_kat_konten','tbl_kat_konten.id')
 		.join('tbl_user','tbl_konten.id_user','tbl_user.id')
 		.select('tbl_konten.*','tbl_kat_konten.konten','tbl_user.username as penulis')
 		.whereRaw('tbl_kat_konten.konten=? AND tbl_konten.id=?',[cat,id])
+		.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});	
+	}
+	else if(!id && status){
+		knex('tbl_konten')
+		.join('tbl_kat_konten','tbl_konten.id_kat_konten','tbl_kat_konten.id')
+		.join('tbl_user','tbl_konten.id_user','tbl_user.id')
+		.select('tbl_konten.*','tbl_kat_konten.konten','tbl_user.username as penulis')
+		.whereRaw('tbl_kat_konten.konten=? AND tbl_konten.status=?',[cat,status])
 		.then(function (rows){
 				callback(null, rows);
 			})
