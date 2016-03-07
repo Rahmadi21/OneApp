@@ -20,5 +20,32 @@ module.exports = {
 			}
 			res.json(data);
 		});
+	},
+	postPrestasiPivot : function (req,res){
+		model.postPrestasiPivot(req, function (error,result){
+			if(error){
+				data["status"] = "error";
+				data["detail"] = error;
+			}
+			else{
+				data["status"] = "success";
+				data["detail"] = result;
+			}
+			res.json(data);
+		});
+	},
+
+	deletePrestasiPivot : function (req,res){
+		model.deletePrestasiPivot(req, function (error,result){
+			if(error){
+				data["status"] = "error";
+				data["detail"] = error;
+			}
+			else{
+				data["status"] = "success";
+				data["detail"] = result;
+			}
+			res.json(data);
+		});
 	}
 }

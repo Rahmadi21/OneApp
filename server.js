@@ -31,6 +31,7 @@ var score				= require("./controller/controller_score.js");
 var uniform 			= require("./controller/controller_uniform.js");
 var report 				= require("./controller/controller_report.js");
 var welcome				= require("./controller/controller_welcome.js");
+var peserta 			= require('./controller/controller_pesertaPrestasi.js');
 var conn 		= require('./config/conn.js')
 var connection  = mysql.createConnection(conn);
 
@@ -302,6 +303,19 @@ app.delete('/api/contents/cat_content/:cat/kat_prestasi/:id', prestation.deleteP
 /*==================== prestation =======================*/
 
 app.get('/api/contents/cat_content/:cat/prestasi_pivot', presPivot.getPresPivot);
+app.post('/api/contents/cat_content/:cat/prestasi_pivot', presPivot.postPrestasiPivot);
+app.delete('/api/contents/cat_content/:cat/prestasi_pivot/:id', presPivot.deletePrestasiPivot);
+
+/*--------------------------------------------------------*/
+/*==================== peserta prestation =======================*/
+
+app.get('/api/contents/cat_content/:cat/peserta', peserta.getPesertaPrestasi);
+
+app.post('/api/contents/cat_content/:cat/peserta', peserta.postPesertaPrestasi);
+
+app.put('/api/contents/cat_content/:cat/peserta', peserta.putPesertaPrestasi); 
+
+app.delete('/api/contents/cat_content/:cat/peserta/:id', peserta.deletePesertaPrestasi);
 
 /*--------------------------------------------------------*/
 

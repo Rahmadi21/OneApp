@@ -4,13 +4,13 @@ var knex		= require('knex')(conn);
 
 module.exports = {
 
-	getNewsTag : function (req, callback){
+	getPesertaPrestasi : function (req, callback){
 
 	var id = req.query.id;
 	if(id){
-		knex('tbl_konten_tag')
+		knex('tbl_peserta_prestasi')
 		.select()
-		.whereRaw('tbl_konten_tag.id = ?',[id])
+		.whereRaw('tbl_peserta_prestasi.id = ?',[id])
 		.then(function (rows){
 				callback(null, rows);
 			})
@@ -20,7 +20,7 @@ module.exports = {
 	}
 	else{
 
-		knex('tbl_konten_tag')
+		knex('tbl_peserta_prestasi')
 		.select()
 		.then(function (rows){
 				callback(null, rows);
@@ -33,14 +33,14 @@ module.exports = {
 
 },
 
-	postNewsTag : function(req, callback) {
+	postPesertaPrestasi : function(req, callback) {
 	var Id = uuID.v4();
-	var Tag = req.body.tag;
+	var peserta = req.body.peserta;
 	var data = {
 		'id':Id,
-		'tag':Tag
+		'peserta':peserta
 	}
-			knex('tbl_konten_tag')
+			knex('tbl_peserta_prestasi')
 			.insert(data)
 			.then(function (rows){
 				callback(null, data);
@@ -53,14 +53,14 @@ module.exports = {
 
 	,
 
-	putNewsTag  : function(req, callback){
+	putPesertaPrestasi  : function(req, callback){
 	var Id = uuID.v4();
-	var Tag = req.body.tag;
+	var peserta = req.body.peserta;
 
-			knex('tbl_konten_tag')
+			knex('tbl_peserta_prestasi')
 			.where('id',id)
 			.update({
-				'tag':Tag
+				'peserta':peserta
 			})
 			.then(function (rows){
 				callback(null, rows);
@@ -73,10 +73,10 @@ module.exports = {
 
 	,
 
-	deleteNewsTag : function(req, callback){
+	deletePesertaPrestasi : function(req, callback){
 	var id = req.params.id;
 
-			knex('tbl_konten_tag')
+			knex('tbl_peserta_prestasi')
 			.whereRaw("id = ?",[id])
 			.del()
 			.then(function (rows){
