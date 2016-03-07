@@ -14,6 +14,7 @@ var id = req.query.id;
 		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
 		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
 		.whereRaw('tbl_nem.id = ?',[id])
+		.orderBy('tbl_nem.tahun', 'desc')
 		.then(function (rows){
 					callback(null, rows);
 				})
@@ -26,6 +27,7 @@ var id = req.query.id;
 		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
 		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
 		.whereRaw('tbl_nem.tahun = ?',[tahun])
+		.orderBy('tbl_nem.tahun', 'desc')
 		.then(function (rows){
 					callback(null, rows);
 				})
@@ -38,6 +40,7 @@ var id = req.query.id;
 		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
 		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
 		.whereRaw('tbl_konten.judul = ?',[jur])
+		.orderBy('tbl_nem.tahun', 'desc')
 		.then(function (rows){
 					callback(null, rows);
 				})
@@ -50,6 +53,7 @@ var id = req.query.id;
 		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
 		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
 		.whereRaw('tbl_nem.tahun = ? AND tbl_konten.judul = ?',[tahun,jur])
+		.orderBy('tbl_nem.tahun', 'desc')
 		.then(function (rows){
 					callback(null, rows);
 				})
@@ -62,6 +66,7 @@ var id = req.query.id;
 	knex('tbl_nem')
 		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
 		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
+		.orderBy('tbl_nem.tahun', 'desc')
 		.then(function (rows){
 					callback(null, rows);
 				})
