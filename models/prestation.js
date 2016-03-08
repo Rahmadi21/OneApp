@@ -11,9 +11,8 @@ module.exports = {
 
 	if(id && !konten && !peserta){
 	knex('tbl_prestasi')
-	.join('tbl_prestasi_pivot','tbl_prestasi.id_konten','tbl_prestasi_pivot.id_konten')
-	.join('tbl_peserta_prestasi','tbl_prestasi_pivot.id_peserta','tbl_peserta_prestasi.id')
-	.select('tbl_prestasi.*','tbl_peserta_prestasi.peserta')
+	.join('tbl_konten','tbl_prestasi.id_konten','tbl_konten.id')
+	.select('tbl_prestasi.*','tbl_konten.judul as prestasi')
 	.where('tbl_prestasi.id',id)
 	.then(function (rows){
 				callback(null, rows);
@@ -24,9 +23,8 @@ module.exports = {
 	}
 	else if(!id && konten && !peserta){
 	knex('tbl_prestasi')
-	.join('tbl_prestasi_pivot','tbl_prestasi.id_konten','tbl_prestasi_pivot.id_konten')
-	.join('tbl_peserta_prestasi','tbl_prestasi_pivot.id_peserta','tbl_peserta_prestasi.id')
-	.select('tbl_prestasi.*','tbl_peserta_prestasi.peserta')
+	.join('tbl_konten','tbl_prestasi.id_konten','tbl_konten.id')
+	.select('tbl_prestasi.*','tbl_konten.judul as prestasi')
 	.where('tbl_prestasi.id_konten',konten)
 	.then(function (rows){
 				callback(null, rows);
@@ -37,9 +35,8 @@ module.exports = {
 	}
 	else if(!id && !konten && peserta){
 	knex('tbl_prestasi')
-	.join('tbl_prestasi_pivot','tbl_prestasi.id_konten','tbl_prestasi_pivot.id_konten')
-	.join('tbl_peserta_prestasi','tbl_prestasi_pivot.id_peserta','tbl_peserta_prestasi.id')
-	.select('tbl_prestasi.*','tbl_peserta_prestasi.peserta')
+	.join('tbl_konten','tbl_prestasi.id_konten','tbl_konten.id')
+	.select('tbl_prestasi.*','tbl_konten.judul as prestasi')
 	.where('tbl_peserta_prestasi.peserta',peserta)
 	.then(function (rows){
 				callback(null, rows);
@@ -50,9 +47,8 @@ module.exports = {
 	}
 	else{
 	knex('tbl_prestasi')
-	.join('tbl_prestasi_pivot','tbl_prestasi.id_konten','tbl_prestasi_pivot.id_konten')
-	.join('tbl_peserta_prestasi','tbl_prestasi_pivot.id_peserta','tbl_peserta_prestasi.id')
-	.select('tbl_prestasi.*','tbl_peserta_prestasi.peserta')
+	.join('tbl_konten','tbl_prestasi.id_konten','tbl_konten.id')
+	.select('tbl_prestasi.*','tbl_konten.judul as prestasi')
 	.then(function (rows){
 				callback(null, rows);
 			})
