@@ -12,7 +12,7 @@ var id = req.query.id;
 	
 		knex('tbl_nem')
 		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
-		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
+		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah','tbl_nem.nem_rata_rata')
 		.whereRaw('tbl_nem.id = ?',[id])
 		.orderBy('tbl_nem.tahun', 'desc')
 		.then(function (rows){
@@ -25,7 +25,7 @@ var id = req.query.id;
 	else if(!id && tahun && !jur){
 		knex('tbl_nem')
 		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
-		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
+		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah','tbl_nem.nem_rata_rata')
 		.whereRaw('tbl_nem.tahun = ?',[tahun])
 		.orderBy('tbl_nem.tahun', 'desc')
 		.then(function (rows){
@@ -38,7 +38,7 @@ var id = req.query.id;
 	else if(!id && !tahun && jur){
 		knex('tbl_nem')
 		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
-		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
+		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah','tbl_nem.nem_rata_rata')
 		.whereRaw('tbl_konten.judul = ?',[jur])
 		.orderBy('tbl_nem.tahun', 'desc')
 		.then(function (rows){
@@ -51,7 +51,7 @@ var id = req.query.id;
 	else if(!id && tahun && jur){
 		knex('tbl_nem')
 		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
-		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
+		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah','tbl_nem.nem_rata_rata')
 		.whereRaw('tbl_nem.tahun = ? AND tbl_konten.judul = ?',[tahun,jur])
 		.orderBy('tbl_nem.tahun', 'desc')
 		.then(function (rows){
@@ -65,7 +65,7 @@ var id = req.query.id;
 	else{
 	knex('tbl_nem')
 		.join('tbl_konten','tbl_konten.id','tbl_nem.id_konten')
-		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah')
+		.select('tbl_nem.id', 'tbl_konten.judul as jurusan', 'tbl_nem.tahun', 'tbl_nem.nem_tinggi', 'tbl_nem.nem_rendah','tbl_nem.nem_rata_rata')
 		.orderBy('tbl_nem.tahun', 'desc')
 		.then(function (rows){
 					callback(null, rows);
