@@ -5,7 +5,7 @@ var knex		= require('knex')(conn);
 module.exports = {
 	getScore : function (req, callback){
 
-var id = req.query.id;
+	var id = req.query.id;
 	var tahun = req.query.tahun;
 	var jur = req.query.jurusan;
 	if(id && !tahun && !jur){
@@ -76,6 +76,39 @@ var id = req.query.id;
 	}
 
 },
+	getScoreAll : function (req, callback){
+		
+		var tahun = req.query.tahun;
+		
+		if(tahun){
+			knex('tbl_nem')
+			.max('nem_tinggi as nem_tertinggi')
+			.min('nem_rendah as nem_terendah')
+			.sum('nem_rata_rata as rata_rata')
+			.count('* as jumlah_data')
+			.where('tahun',tahun)
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+		}
+		else{
+			knex('tbl_nem')
+			.max('nem_tinggi as nem_tertinggi')
+			.min('nem_rendah as nem_terendah')
+			.sum('nem_rata_rata as rata_rata')
+			.count('* as jumlah_data')
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+		}
+
+	},
 
 	postScore : function (req,callback){
 	var id = uuid.v4;

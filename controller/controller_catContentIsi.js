@@ -3,8 +3,7 @@ var model = require("../models/catContentIsi.js");
 var data = {
 
 	"status" : "error",
-	"detail" : "data not found"
-	
+	"detail" : "data not found"	
 };
 
 module.exports = {

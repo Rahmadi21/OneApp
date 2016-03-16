@@ -8,9 +8,15 @@ module.exports = {
 	var id = req.query.id;
 	var pelapor = req.query.pelapor;
 	var terlapor = req.query.terlapor;
-	if(id && !pelapor && !terlapor){
-	knex.select().from('tbl_report')
-	.whereRaw('id = ?',[id])
+	var status = req.query.status;
+	
+	if(id && !pelapor && !terlapor && !status){
+	knex('tbl_report')
+	.join('tbl_user','tbl_user.id','tbl_report.id_user_terlapor')
+	.join('tbl_konten_respon','tbl_konten_respon.id','tbl_report.id_respon')
+	.select('tbl_report.id','tbl_report.id_user_terlapor','tbl_report.id_user_pelapor','tbl_report.id_respon','tbl_report.status','tbl_report.tgl_report', 'tbl_user.username as user_terlapor','tbl_konten_respon.isi as isi_komentar')
+	.whereRaw('tbl_report.id = ?',[id])
+	.orderBy('tbl_report.tgl_report', 'desc')
 	.then(function (rows){
 				callback(null, rows);
 			})
@@ -18,9 +24,13 @@ module.exports = {
 				callback(err)
 			});
 	}		
-	else if(!id && pelapor && !terlapor){
-	knex.select().from('tbl_report')
-	.whereRaw('id_user_pelapor = ?',[pelapor])
+	else if(!id && pelapor && !terlapor && !status){
+	knex('tbl_report')
+	.join('tbl_user','tbl_user.id','tbl_report.id_user_terlapor')
+	.join('tbl_konten_respon','tbl_konten_respon.id','tbl_report.id_respon')
+	.select('tbl_report.id','tbl_report.id_user_terlapor','tbl_report.id_user_pelapor','tbl_report.id_respon','tbl_report.status','tbl_report.tgl_report', 'tbl_user.username as user_terlapor','tbl_konten_respon.isi as isi_komentar')
+	.whereRaw('tbl_report.id_user_pelapor = ?',[pelapor])
+	.orderBy('tbl_report.tgl_report', 'desc')
 	.then(function (rows){
 				callback(null, rows);
 			})
@@ -28,9 +38,27 @@ module.exports = {
 				callback(err)
 			});
 	}
-	else if(!id && !pelapor && terlapor){
-	knex.select().from('tbl_report')
-	.whereRaw('id_user_terlapor = ?', [terlapor])
+	else if(!id && !pelapor && terlapor && !status){
+	knex('tbl_report')
+	.join('tbl_user','tbl_user.id','tbl_report.id_user_terlapor')
+	.join('tbl_konten_respon','tbl_konten_respon.id','tbl_report.id_respon')
+	.select('tbl_report.id','tbl_report.id_user_terlapor','tbl_report.id_user_pelapor','tbl_report.id_respon','tbl_report.status','tbl_report.tgl_report', 'tbl_user.username as user_terlapor','tbl_konten_respon.isi as isi_komentar')
+	.whereRaw('tbl_report.id_user_terlapor = ?', [terlapor])
+	.orderBy('tbl_report.tgl_report', 'desc')
+	.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	}
+	else if(!id && !pelapor && !terlapor && status){
+	knex('tbl_report')
+	.join('tbl_user','tbl_user.id','tbl_report.id_user_terlapor')
+	.join('tbl_konten_respon','tbl_konten_respon.id','tbl_report.id_respon')
+	.select('tbl_report.id','tbl_report.id_user_terlapor','tbl_report.id_user_pelapor','tbl_report.id_respon','tbl_report.status','tbl_report.tgl_report', 'tbl_user.username as user_terlapor','tbl_konten_respon.isi as isi_komentar')
+	.whereRaw('tbl_report.status = ?', [status])
+	.orderBy('tbl_report.tgl_report', 'desc')
 	.then(function (rows){
 				callback(null, rows);
 			})
@@ -39,7 +67,11 @@ module.exports = {
 			});
 	}
 	else{
-	knex.select().from('tbl_report')
+	knex('tbl_report')
+	.join('tbl_user','tbl_user.id','tbl_report.id_user_terlapor')
+	.join('tbl_konten_respon','tbl_konten_respon.id','tbl_report.id_respon')
+	.select('tbl_report.id','tbl_report.id_user_terlapor','tbl_report.id_user_pelapor','tbl_report.id_respon','tbl_report.status','tbl_report.tgl_report', 'tbl_user.username as user_terlapor','tbl_konten_respon.isi as isi_komentar')
+	.orderBy('tbl_report.tgl_report', 'desc')
 	.then(function (rows){
 				callback(null, rows);
 			})

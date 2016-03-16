@@ -3,8 +3,7 @@ var model = require("../models/content.js");
 var data = {
 
 	"status" : "error",
-	"detail" : "data not found"
-	
+	"detail" : "data not found"	
 };
 
 module.exports = {
@@ -13,6 +12,7 @@ module.exports = {
 			if(error){
 				data["status"] = "error";
 				data["detail"] = error;
+				data["count"] ="error";
 			}
 			else{
 				data["status"] = "success";

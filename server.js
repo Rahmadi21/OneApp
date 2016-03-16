@@ -188,6 +188,7 @@ app.delete('/api/contents/cat_content/:cat/courses/:id', course.deleteCourse);
 /*===================== score ===========================*/
 
 app.get('/api/contents/cat_content/:cat/scores', score.getScore);
+app.get('/api/contents/cat_content/:cat/scores/all', score.getScoreAll);
 
 app.post('/api/contents/cat_content/:cat/scores', score.postScore);
 

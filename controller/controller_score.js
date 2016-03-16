@@ -21,6 +21,19 @@ module.exports = {
 			res.json(data);
 		});
 	},
+	getScoreAll : function (req,res){
+		model.getScoreAll(req, function (error,result){
+			if(error){
+				data["status"] = "error";
+				data["detail"] = error;
+			}
+			else{
+				data["status"] = "success";
+				data["detail"] = result;
+			}
+			res.json(data);
+		});
+	},
 
 	postScore : function (req,res){
 		model.postScore(req, function (error,result){
