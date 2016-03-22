@@ -19,7 +19,7 @@ module.exports = {
 
 	postCatPosition : function(req, callback){
 	
-		var id = req.body.id;
+		var id = uuid.v4();
 		var jabatan = req.body.jabatan;
 
 			knex('tbl_kat_jabatan')
