@@ -8,13 +8,13 @@ module.exports = {
 
 	var id = req.query.kategori;
 
-	knex.select().from('tbl_kat_seragam').then(function (err, rows, fields){
-		if(err){
-			callback(err);
-		}else{
-			callback(null, rows)
-		}
-		});
+	knex.select().from('tbl_kat_seragam')
+	.then(function (rows){
+		callback(null, rows);
+	})
+	.catch(function (err){
+		callback(err)
+	});
 	
 
 },
@@ -23,23 +23,19 @@ module.exports = {
 	var Id = uuID.v4();
 	var Kategori = req.body.kategori;
 
-	if(Id && Kategori){
-	
-			knex('tbl_kat_seragam')
+	knex('tbl_kat_seragam')
 			.insert({
 				'id':Id,
 				'kategori':Kategori
 			})
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
-	}else{
-		console.log("error");
-	}}
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+
+}
 
 	,
 
@@ -47,23 +43,19 @@ module.exports = {
 	var Id = req.body.id;
 	var Kategori = req.body.kategori;
 
-	if(Id && Kategori){
-		
 			knex('tbl_kat_seragam')
 			.where('id',Id)
 			.update({
 				'kategori':Kategori
 			})
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
-	}else{
-		console.log("error");
-	}}
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
+	
+}
 
 	,
 
@@ -73,13 +65,12 @@ module.exports = {
 	knex('tbl_kat_seragam')
 			.whereRaw("id = ?",[id])
 			.del()
-			.then(function (err, rows, fields){
-				if(err){
-					callback(err);
-				}else{
-					callback(null, rows);
-				}
-		});
+			.then(function (rows){
+				callback(null, rows);
+			})
+			.catch(function (err){
+				callback(err)
+			});
 	}
 	
 }
