@@ -8,8 +8,8 @@ module.exports = {
 	if(id){
 	
 		knex('tbl_konten')
-		.join('tbl_kat_konten','tbl_kat_konten.id','tbl_konten.id_kat_konten')
-		.join('tbl_user','tbl_user.id','tbl_konten.id_user')
+		.leftJoin('tbl_kat_konten','tbl_kat_konten.id','tbl_konten.id_kat_konten')
+		.leftJoin('tbl_user','tbl_user.id','tbl_konten.id_user')
 		.select('tbl_konten.*','tbl_kat_konten.konten','tbl_user.username as penulis')
 		.whereRaw('tbl_konten.id = ?',[id])
 		.then(function (rows){
@@ -21,8 +21,8 @@ module.exports = {
 	}
 	else{
 	knex('tbl_konten')
-		.join('tbl_kat_konten','tbl_kat_konten.id','tbl_konten.id_kat_konten')
-		.join('tbl_user','tbl_user.id','tbl_konten.id_user')
+		.leftJoin('tbl_kat_konten','tbl_kat_konten.id','tbl_konten.id_kat_konten')
+		.leftJoin('tbl_user','tbl_user.id','tbl_konten.id_user')
 		.select('tbl_konten.*','tbl_kat_konten.konten','tbl_user.username as penulis')
 		.then(function (rows){
 				callback(null, rows);
